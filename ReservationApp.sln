@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationApp.Web", "ReservationApp.Web\ReservationApp.Web.csproj", "{4D0ABA10-1D59-4E57-A1FE-7D24F7DD273B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationApp.Domain", "ReservationApp.Domain\ReservationApp.Domain.csproj", "{20DB05CA-D953-42B4-B20A-2D411415B592}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationApp.Application", "ReservationApp.Application\ReservationApp.Application.csproj", "{0872D080-EF12-43BC-AA9F-5A068766D253}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationApp.Infrastructure", "ReservationApp.Infrastructure\ReservationApp.Infrastructure.csproj", "{DE658D6B-8FBC-4689-803A-2A460D978A1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,17 @@ Global
 		{4D0ABA10-1D59-4E57-A1FE-7D24F7DD273B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D0ABA10-1D59-4E57-A1FE-7D24F7DD273B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D0ABA10-1D59-4E57-A1FE-7D24F7DD273B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20DB05CA-D953-42B4-B20A-2D411415B592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20DB05CA-D953-42B4-B20A-2D411415B592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20DB05CA-D953-42B4-B20A-2D411415B592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20DB05CA-D953-42B4-B20A-2D411415B592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0872D080-EF12-43BC-AA9F-5A068766D253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0872D080-EF12-43BC-AA9F-5A068766D253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0872D080-EF12-43BC-AA9F-5A068766D253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0872D080-EF12-43BC-AA9F-5A068766D253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE658D6B-8FBC-4689-803A-2A460D978A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE658D6B-8FBC-4689-803A-2A460D978A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE658D6B-8FBC-4689-803A-2A460D978A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE658D6B-8FBC-4689-803A-2A460D978A1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
