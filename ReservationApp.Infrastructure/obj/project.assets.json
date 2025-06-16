@@ -585,6 +585,12 @@
           }
         }
       },
+      "Microsoft.EntityFrameworkCore.Tools/9.0.5": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "9.0.5"
+        }
+      },
       "Microsoft.Extensions.Caching.Abstractions/9.0.5": {
         "type": "package",
         "dependencies": {
@@ -1601,20 +1607,6 @@
         },
         "runtime": {
           "bin/placeholder/ReservationApp.Domain.dll": {}
-        }
-      },
-      "ReservationApp.Infrastructure/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v9.0",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore.SqlServer": "9.0.5",
-          "ReservationApp.Domain": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/ReservationApp.Infrastructure.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/ReservationApp.Infrastructure.dll": {}
         }
       }
     }
@@ -2892,6 +2884,31 @@
         "lib/net8.0/Microsoft.EntityFrameworkCore.SqlServer.xml",
         "microsoft.entityframeworkcore.sqlserver.9.0.5.nupkg.sha512",
         "microsoft.entityframeworkcore.sqlserver.nuspec"
+      ]
+    },
+    "Microsoft.EntityFrameworkCore.Tools/9.0.5": {
+      "sha512": "ZXWaG/tNZpgJUX8rFVEsgskuFzCvhQnQu8IkEEn4kAepYWpnUZa08vME289OYZ+bYfucH/uSVQi+rh6mOZtfVA==",
+      "type": "package",
+      "path": "microsoft.entityframeworkcore.tools/9.0.5",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "docs/PACKAGE.md",
+        "microsoft.entityframeworkcore.tools.9.0.5.nupkg.sha512",
+        "microsoft.entityframeworkcore.tools.nuspec",
+        "tools/EntityFrameworkCore.PS2.psd1",
+        "tools/EntityFrameworkCore.PS2.psm1",
+        "tools/EntityFrameworkCore.psd1",
+        "tools/EntityFrameworkCore.psm1",
+        "tools/about_EntityFrameworkCore.help.txt",
+        "tools/init.ps1",
+        "tools/net472/any/ef.exe",
+        "tools/net472/win-arm64/ef.exe",
+        "tools/net472/win-x86/ef.exe",
+        "tools/netcoreapp2.0/any/ef.dll",
+        "tools/netcoreapp2.0/any/ef.runtimeconfig.json"
       ]
     },
     "Microsoft.Extensions.Caching.Abstractions/9.0.5": {
@@ -4699,18 +4716,14 @@
       "type": "project",
       "path": "../ReservationApp.Domain/ReservationApp.Domain.csproj",
       "msbuildProject": "../ReservationApp.Domain/ReservationApp.Domain.csproj"
-    },
-    "ReservationApp.Infrastructure/1.0.0": {
-      "type": "project",
-      "path": "../ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj",
-      "msbuildProject": "../ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
       "Microsoft.EntityFrameworkCore.Design >= 9.0.5",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.5",
-      "ReservationApp.Infrastructure >= 1.0.0"
+      "Microsoft.EntityFrameworkCore.Tools >= 9.0.5",
+      "ReservationApp.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4720,11 +4733,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\ReservationApp.Web.csproj",
-      "projectName": "ReservationApp.Web",
-      "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\ReservationApp.Web.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj",
+      "projectName": "ReservationApp.Infrastructure",
+      "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\obj\\",
+      "outputPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4745,8 +4758,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj"
+            "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\ReservationApp.Domain.csproj": {
+              "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\ReservationApp.Domain.csproj"
             }
           }
         }
@@ -4776,6 +4789,12 @@
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
             "version": "[9.0.5, )"
+          },
+          "Microsoft.EntityFrameworkCore.Tools": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[9.0.5, )"
           }
         },
         "imports": [
@@ -4790,9 +4809,6 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
