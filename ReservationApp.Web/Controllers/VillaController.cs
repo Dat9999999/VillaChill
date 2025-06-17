@@ -25,6 +25,10 @@ public class VillaController : Controller
     [HttpPost]
     public IActionResult Create(Villa obj)
     {
+        if (obj.Name == obj.Description)
+        {
+            ModelState.AddModelError("Description", "Name and Description cannot be the same");
+        }
         if (!ModelState.IsValid)
         {
             return View(obj);
