@@ -1,0 +1,43 @@
+﻿@using ReservationApp.Domain.Entities;
+@model IEnumerable<Villa>
+<div class="w-100 card  border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="text-white py-2">Villas</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border py-4">
+        <div class="row pb-3">
+            <div class="col-6 offset-6 text-end">
+                <a asp-controller="Villa" asp-action="Create" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg> Create Villa
+                </a>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Sqft</th>
+                <th>Price</th>
+                <th>Occupancy</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var villa in Model)
+            {
+                <tr>
+                    <td>@villa.Name</td>
+                    <td>@villa.Sqft</td>
+                    <td>@villa.Price</td>
+                    <td>@villa.Occupancy</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
