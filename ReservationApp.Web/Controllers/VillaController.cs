@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 
 namespace ReservationApp.Controllers;
@@ -19,7 +20,17 @@ public class VillaController : Controller
 
     public IActionResult Create()
     {
-        
         return View();
+    }
+    [HttpPost]
+    public IActionResult Create(Villa obj)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(obj);
+        }
+        _context.Villas.Add(obj);
+        _context.SaveChanges();
+        return RedirectToAction("Index");
     }
 }
