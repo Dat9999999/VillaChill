@@ -37,4 +37,14 @@ public class VillaController : Controller
         _context.SaveChanges();
         return RedirectToAction("Index");
     }
+    public IActionResult Update(int villaId)
+    {
+        var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
+        if (villa == null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        return View(villa);
+    }
+    
 }
