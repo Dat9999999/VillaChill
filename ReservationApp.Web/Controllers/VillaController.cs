@@ -31,10 +31,12 @@ public class VillaController : Controller
         }
         if (!ModelState.IsValid)
         {
+            TempData["Error"] = "Villa not created";
             return View(obj);
         }
         _context.Villas.Add(obj);
         _context.SaveChanges();
+        TempData["Success"] = "Villa created successfully";
         return RedirectToAction("Index");
     }
     public IActionResult Update(int villaId)
@@ -53,8 +55,10 @@ public class VillaController : Controller
         {
             _context.Villas.Update(obj);
             _context.SaveChanges();
+            TempData["Success"] = "Villa updated successfully";
             return RedirectToAction("Index");
         } 
+        TempData["Error"] = "Villa not found";
         return View(obj);
     }
     public IActionResult Delete(int villaId)
@@ -62,6 +66,7 @@ public class VillaController : Controller
         var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
         if (villa is null)
         {
+            TempData["Error"] = "Villa not found";
             return RedirectToAction("Error", "Home");
         }
         return View(villa);
@@ -74,8 +79,10 @@ public class VillaController : Controller
         {
             _context.Villas.Remove(objToDelete);
             _context.SaveChanges();
+            TempData["Success"] = "Villa deleted successfully";
             return RedirectToAction("Index");
         } 
+        TempData["Error"] = "Villa not found";
         return RedirectToAction("Error", "Home");
     }
 }
