@@ -40,7 +40,7 @@ public class VillaController : Controller
     public IActionResult Update(int villaId)
     {
         var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
-        if (villa == null)
+        if (villa is null)
         {
             return RedirectToAction("Error", "Home");
         }
@@ -56,5 +56,26 @@ public class VillaController : Controller
             return RedirectToAction("Index");
         } 
         return View(obj);
+    }
+    public IActionResult Delete(int villaId)
+    {
+        var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
+        if (villa is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        return View(villa);
+    }
+    [HttpPost]
+    public IActionResult Delete(Villa obj)
+    {
+        var objToDelete = _context.Villas.FirstOrDefault(x => x.Id == obj.Id);
+        if (objToDelete is not null)
+        {
+            _context.Villas.Remove(objToDelete);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        } 
+        return RedirectToAction("Error", "Home");
     }
 }
