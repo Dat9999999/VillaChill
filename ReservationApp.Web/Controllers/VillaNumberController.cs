@@ -23,20 +23,16 @@ public class VillaNumberController : Controller
         return View();
     }
     [HttpPost]
-    public IActionResult Create(Villa obj)
+    public IActionResult Create(VillaNumber obj)
     {
-        if (obj.Name == obj.Description)
-        {
-            ModelState.AddModelError("Description", "Name and Description cannot be the same");
-        }
         if (!ModelState.IsValid)
         {
-            TempData["Error"] = "Villa not created";
+            TempData["Error"] = "Villa number is not created";
             return View(obj);
         }
-        _context.Villas.Add(obj);
+        _context.VillaNumbers.Add(obj);
         _context.SaveChanges();
-        TempData["Success"] = "Villa created successfully";
+        TempData["Success"] = "Villa number is created successfully";
         return RedirectToAction("Index");
     }
     public IActionResult Update(int villaId)
