@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\ReservationApp.Web.csproj": {}
+    "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/ReservationApp.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\ReservationApp.Domain.csproj": {
+    "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/ReservationApp.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\ReservationApp.Domain.csproj",
+        "projectUniqueName": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/ReservationApp.Domain.csproj",
         "projectName": "ReservationApp.Domain",
-        "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\ReservationApp.Domain.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\obj\\",
+        "projectPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/ReservationApp.Domain.csproj",
+        "packagesPath": "/Users/huynhtandat/.nuget/packages/",
+        "outputPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/huynhtandat/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -49,6 +43,12 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -65,40 +65,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj": {
+    "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj",
+        "projectUniqueName": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj",
         "projectName": "ReservationApp.Infrastructure",
-        "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\obj\\",
+        "projectPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj",
+        "packagesPath": "/Users/huynhtandat/.nuget/packages/",
+        "outputPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/huynhtandat/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\ReservationApp.Domain.csproj": {
-                "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Domain\\ReservationApp.Domain.csproj"
+              "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/ReservationApp.Domain.csproj": {
+                "projectPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/ReservationApp.Domain.csproj"
               }
             }
           }
@@ -152,40 +146,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\ReservationApp.Web.csproj": {
+    "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/ReservationApp.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\ReservationApp.Web.csproj",
+        "projectUniqueName": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/ReservationApp.Web.csproj",
         "projectName": "ReservationApp.Web",
-        "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\ReservationApp.Web.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Web\\obj\\",
+        "projectPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/ReservationApp.Web.csproj",
+        "packagesPath": "/Users/huynhtandat/.nuget/packages/",
+        "outputPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/huynhtandat/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\admin\\RiderProjects\\ReservationApp\\ReservationApp.Infrastructure\\ReservationApp.Infrastructure.csproj"
+              "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj": {
+                "projectPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj"
               }
             }
           }
@@ -236,7 +224,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
