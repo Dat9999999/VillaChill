@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
+using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
@@ -21,27 +22,29 @@ public class VillaNumberController : Controller
 
     public IActionResult Create()
     {
-        IEnumerable<SelectListItem> villas = _context.Villas.ToList().Select(u => new SelectListItem
+        VillaNumbersVM obj = new VillaNumbersVM()
         {
+            villas = _context.Villas.ToList().Select(u => new SelectListItem
+            {
             Text = u.Name,
             Value = u.Id.ToString()
-        });   
-        ViewData["VillaList"] = villas;
-        return View();
+        })
+        };
+        return View(obj);
     }
-    [HttpPost]
-    public IActionResult Create(VillaNumber obj)
-    {
-        if (!ModelState.IsValid)
-        {
-            TempData["Error"] = "Villa number is not created";
-            return View(obj);
-        }
-        _context.VillaNumbers.Add(obj);
-        _context.SaveChanges();
-        TempData["Success"] = "Villa number is created successfully";
-        return RedirectToAction("Index");
-    }
+    // [HttpPost]
+    // public IActionResult Create(VillaNumber obj)
+    // {
+    //     if (!ModelState.IsValid)
+    //     {
+    //         TempData["Error"] = "Villa number is not created";
+    //         return View(obj);
+    //     }
+    //     _context.VillaNumbers.Add(obj);
+    //     _context.SaveChanges();
+    //     TempData["Success"] = "Villa number is created successfully";
+    //     return RedirectToAction("Index");
+    // }
     public IActionResult Update(int villaId)
     {
         var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
