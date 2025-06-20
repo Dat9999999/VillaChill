@@ -1980,6 +1980,19 @@
           }
         }
       },
+      "ReservationApp.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "ReservationApp.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ReservationApp.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ReservationApp.Application.dll": {}
+        }
+      },
       "ReservationApp.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -1998,6 +2011,7 @@
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.5",
+          "ReservationApp.Application": "1.0.0",
           "ReservationApp.Domain": "1.0.0"
         },
         "compile": {
@@ -5428,6 +5442,11 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "ReservationApp.Application/1.0.0": {
+      "type": "project",
+      "path": "../ReservationApp.Application/ReservationApp.Application.csproj",
+      "msbuildProject": "../ReservationApp.Application/ReservationApp.Application.csproj"
     },
     "ReservationApp.Domain/1.0.0": {
       "type": "project",

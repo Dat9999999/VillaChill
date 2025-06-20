@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Infrastructure.Data;
+using ReservationApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

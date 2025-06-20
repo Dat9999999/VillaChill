@@ -1986,6 +1986,19 @@
           }
         }
       },
+      "ReservationApp.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "ReservationApp.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ReservationApp.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ReservationApp.Application.dll": {}
+        }
+      },
       "ReservationApp.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -5446,6 +5459,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "ReservationApp.Application/1.0.0": {
+      "type": "project",
+      "path": "../ReservationApp.Application/ReservationApp.Application.csproj",
+      "msbuildProject": "../ReservationApp.Application/ReservationApp.Application.csproj"
+    },
     "ReservationApp.Domain/1.0.0": {
       "type": "project",
       "path": "../ReservationApp.Domain/ReservationApp.Domain.csproj",
@@ -5457,6 +5475,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 9.0.5",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.5",
+      "ReservationApp.Application >= 1.0.0",
       "ReservationApp.Domain >= 1.0.0"
     ]
   },
@@ -5485,6 +5504,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
+            "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Application/ReservationApp.Application.csproj": {
+              "projectPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Application/ReservationApp.Application.csproj"
+            },
             "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/ReservationApp.Domain.csproj": {
               "projectPath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Domain/ReservationApp.Domain.csproj"
             }
