@@ -6,8 +6,8 @@ namespace ReservationApp.Application.Common.Interfaces;
 
 public interface IVillaRepository
 {
-    IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, Strings? includeProperty = null);
-    IEnumerable<Villa> Get(Expression<Func<Villa, bool>> filter, Strings? includeProperty = null);
+    IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, string? includeProperty = null);
+    Villa Get(Expression<Func<Villa, bool>> filter, string? includeProperty = null);
     void Add(Villa villa);
     void Update(Villa villa);
     void Delete(Villa villa);
