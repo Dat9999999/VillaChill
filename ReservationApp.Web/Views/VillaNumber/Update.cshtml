@@ -11,6 +11,7 @@
         <form method="post" class="row" enctype="multipart/form-data">
             <div class="p-3">
                 @* <div asp-validation-summary="All"></div> *@
+                <input asp-for="villaNumber.Villa_Number" hidden/>
                 <div class="form-floating py-1 col-12">
                     <select asp-for="@Model.villaNumber.VillaId" asp-items="@Model.villas" class="form-control border shadow">
                         <option disabled selected>Select Villa</option>
@@ -19,11 +20,11 @@
                     <span asp-validation-for="@Model.villaNumber.VillaId" class="text-danger"></span>
                     
                 </div>
-                @* <div class="form-floating py-1 col-12"> *@
-                @*     <input asp-for="@Model.villaNumber.Villa_Number" class="form-control border shadow" /> *@
-                @*     <label asp-for="@Model.villaNumber.Villa_Number" class="ms-2"></label> *@
-                @*     <span asp-validation-for="@Model.villaNumber.Villa_Number" class="text-danger"></span> *@
-                @* </div> *@
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="@Model.villaNumber.Villa_Number" class="form-control border shadow" disabled />
+                    <label asp-for="@Model.villaNumber.Villa_Number" class="ms-2"></label>
+                    <span asp-validation-for="@Model.villaNumber.Villa_Number" class="text-danger"></span>
+                </div>
                 <div class="form-floating py-1 col-12">
                     <input asp-for="@Model.villaNumber.SpecialDetails" class="form-control border shadow" />
                     <label asp-for="@Model.villaNumber.SpecialDetails" class="ms-2"></label>
