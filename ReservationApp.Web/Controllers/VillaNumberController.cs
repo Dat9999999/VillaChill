@@ -99,12 +99,12 @@ public class VillaNumberController : Controller
         return View(obj);
     }
     [HttpPost]
-    public IActionResult Delete(Villa obj)
+    public IActionResult Delete(VillaNumbersVM obj)
     {
-        var objToDelete = _context.Villas.FirstOrDefault(x => x.Id == obj.Id);
+        var objToDelete = _context.VillaNumbers.FirstOrDefault(x => x.Villa_Number== obj.villaNumber.Villa_Number);
         if (objToDelete is not null)
         {
-            _context.Villas.Remove(objToDelete);
+            _context.VillaNumbers.Remove(objToDelete);
             _context.SaveChanges();
             TempData["Success"] = "Villa deleted successfully";
             return RedirectToAction("Index");
