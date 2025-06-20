@@ -33,19 +33,26 @@ public class VillaNumberController : Controller
         };
         return View(obj);
     }
-    // [HttpPost]
-    // public IActionResult Create(VillaNumber obj)
-    // {
-    //     if (!ModelState.IsValid)
-    //     {
-    //         TempData["Error"] = "Villa number is not created";
-    //         return View(obj);
-    //     }
-    //     _context.VillaNumbers.Add(obj);
-    //     _context.SaveChanges();
-    //     TempData["Success"] = "Villa number is created successfully";
-    //     return RedirectToAction("Index");
-    // }
+    [HttpPost]
+    public IActionResult Create(VillaNumbersVM obj)
+    {
+        var isExists = _context.VillaNumbers.Any(u => u.Villa_Number == obj.villaNumber.Villa_Number);
+        if (ModelState.IsValid && !isExists)
+        {
+            _context.VillaNumbers.Add(obj.villaNumber);
+            _context.SaveChanges();
+            TempData["Success"] = "Villa number is created successfully";
+            return RedirectToAction("Index");
+        }
+        TempData["Error"] = "Villa number is exists";
+        obj.villas = _context.Villas.ToList().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }
+        );
+        return View(obj);
+    }
     public IActionResult Update(int villaId)
     {
         var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
