@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 using ReservationApp.ViewModels;
@@ -16,7 +17,7 @@ public class VillaNumberController : Controller
     // GET
     public IActionResult Index()
     {
-        var villaNumbers = _context.VillaNumbers.ToList();
+        var villaNumbers = _context.VillaNumbers.Include(u => u.Villa).ToList();
         return View(villaNumbers);
     }
 
