@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 
@@ -20,6 +21,12 @@ public class VillaNumberController : Controller
 
     public IActionResult Create()
     {
+        IEnumerable<SelectListItem> villas = _context.Villas.ToList().Select(u => new SelectListItem
+        {
+            Text = u.Name,
+            Value = u.Id.ToString()
+        });   
+        ViewData["VillaList"] = villas;
         return View();
     }
     [HttpPost]
