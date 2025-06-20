@@ -42,7 +42,7 @@ public class VillaNumberController : Controller
             _context.VillaNumbers.Add(obj.villaNumber);
             _context.SaveChanges();
             TempData["Success"] = "Villa number is created successfully";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
         TempData["Error"] = "Villa number is exists";
         obj.villas = _context.Villas.ToList().Select(u => new SelectListItem
@@ -74,7 +74,7 @@ public class VillaNumberController : Controller
             _context.VillaNumbers.Update(obj.villaNumber);
             _context.SaveChanges();
             TempData["Success"] = "Villa number is updated successfully";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
         TempData["Error"] = "Villa number updated failure";
         obj.villas = _context.Villas.ToList().Select(u => new SelectListItem
@@ -107,7 +107,7 @@ public class VillaNumberController : Controller
             _context.VillaNumbers.Remove(objToDelete);
             _context.SaveChanges();
             TempData["Success"] = "Villa deleted successfully";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         } 
         TempData["Error"] = "Villa not found";
         return RedirectToAction("Error", "Home");
