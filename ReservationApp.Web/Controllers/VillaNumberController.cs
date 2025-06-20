@@ -85,15 +85,18 @@ public class VillaNumberController : Controller
         );
         return View(obj);
     }
-    public IActionResult Delete(int villaId)
+    public IActionResult Delete(int VillaNumberId)
     {
-        var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
-        if (villa is null)
+        VillaNumbersVM obj = new VillaNumbersVM()
         {
-            TempData["Error"] = "Villa not found";
-            return RedirectToAction("Error", "Home");
-        }
-        return View(villa);
+            villas = _context.Villas.ToList().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }),
+            villaNumber = _context.VillaNumbers.FirstOrDefault(x => x.Villa_Number == VillaNumberId)
+        };
+        return View(obj);
     }
     [HttpPost]
     public IActionResult Delete(Villa obj)
