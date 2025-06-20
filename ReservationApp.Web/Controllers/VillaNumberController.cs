@@ -53,28 +53,32 @@ public class VillaNumberController : Controller
         );
         return View(obj);
     }
-    public IActionResult Update(int villaId)
+    public IActionResult Update(int VillaNumberId)
     {
-        var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
-        if (villa is null)
+        VillaNumbersVM obj = new VillaNumbersVM()
         {
-            return RedirectToAction("Error", "Home");
-        }
-        return View(villa);
-    }
-    [HttpPost]
-    public IActionResult Update(Villa obj)
-    {
-        if (ModelState.IsValid && obj.Id > 0)
-        {
-            _context.Villas.Update(obj);
-            _context.SaveChanges();
-            TempData["Success"] = "Villa updated successfully";
-            return RedirectToAction("Index");
-        } 
-        TempData["Error"] = "Villa not found";
+            villas = _context.Villas.ToList().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }),
+            villaNumber = _context.VillaNumbers.FirstOrDefault(x => x.Villa_Number == VillaNumberId)
+        };
         return View(obj);
     }
+    // [HttpPost]
+    // public IActionResult Update(Villa obj)
+    // {
+    //     if (ModelState.IsValid && obj.Id > 0)
+    //     {
+    //         _context.Villas.Update(obj);
+    //         _context.SaveChanges();
+    //         TempData["Success"] = "Villa updated successfully";
+    //         return RedirectToAction("Index");
+    //     } 
+    //     TempData["Error"] = "Villa not found";
+    //     return View(obj);
+    // }
     public IActionResult Delete(int villaId)
     {
         var villa = _context.Villas.FirstOrDefault(x => x.Id == villaId);
