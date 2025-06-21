@@ -8,9 +8,11 @@ namespace ReservationApp.Controllers;
 public class VillaController : Controller
 {
     private  readonly IUnitOfWork _unitOfWork;
-    public VillaController(IUnitOfWork unitOfWork)
+    private readonly IWebHostEnvironment _env;
+    public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
     {
         _unitOfWork = unitOfWork;
+        _env = env;
     }
     // GET
     public IActionResult Index()
@@ -34,6 +36,21 @@ public class VillaController : Controller
         {
             TempData["Error"] = "Villa not created";
             return View(obj);
+        }
+
+        if (obj.Image is not null)
+        {
+                 string fileName = Path.GetFileName(obj.Image.FileName);
+                 string filePath = Path.Combine(_env.WebRootPath, @"images/VillaImage", fileName);
+                 using (var stream = new FileStream(filePath, FileMode.Create))
+                 {
+                     obj.Image.CopyTo(stream);
+                 }
+                 obj.ImageUrl = @"/images/VillaImage/" + fileName;
+        }
+        else
+        {  
+            obj.ImageUrl = @"/images/VillaImage/placeholder.png";
         }
         _unitOfWork.Villas.Add(obj);
         _unitOfWork.Save();
