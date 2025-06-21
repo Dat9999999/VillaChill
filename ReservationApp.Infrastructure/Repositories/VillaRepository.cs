@@ -14,15 +14,8 @@ public class VillaRepository: Repository<Villa>, IVillaRepository
     {
         _context = context;
     }
-   
-
     public void Update(Villa villa)
     {
         _context.Villas.Update(villa);
-    }
-
-    public void Save()
-    {
-        _context.SaveChanges();   
     }
 }

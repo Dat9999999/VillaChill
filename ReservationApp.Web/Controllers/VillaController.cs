@@ -36,7 +36,7 @@ public class VillaController : Controller
             return View(obj);
         }
         _unitOfWork.Villas.Add(obj);
-        _unitOfWork.Villas.Save();
+        _unitOfWork.Save();
         TempData["Success"] = "Villa created successfully";
         return RedirectToAction(nameof(Index));
     }
@@ -55,7 +55,7 @@ public class VillaController : Controller
         if (ModelState.IsValid && obj.Id > 0)
         {
             _unitOfWork.Villas.Update(obj);
-            _unitOfWork.Villas.Save();
+            _unitOfWork.Save();
             TempData["Success"] = "Villa updated successfully";
             return RedirectToAction(nameof(Index));
         } 
@@ -79,7 +79,7 @@ public class VillaController : Controller
         if (objToDelete is not null)
         {
             _unitOfWork.Villas.Delete(objToDelete);
-            _unitOfWork.Villas.Save();
+            _unitOfWork.Save();
             TempData["Success"] = "Villa deleted successfully";
             return RedirectToAction(nameof(Index));
         } 

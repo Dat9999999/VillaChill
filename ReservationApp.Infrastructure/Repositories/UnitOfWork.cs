@@ -7,6 +7,11 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
     public IVillaRepository Villas { get; }
+    public void Save()
+    {
+        _context.SaveChanges();   
+    }
+
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
