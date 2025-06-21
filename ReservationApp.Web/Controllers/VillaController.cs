@@ -40,7 +40,7 @@ public class VillaController : Controller
 
         if (obj.Image is not null)
         {
-                 string fileName = Path.GetFileName(obj.Image.FileName);
+                 string fileName = Guid.NewGuid() + ( Path.GetFileName(obj.Image.FileName));
                  string filePath = Path.Combine(_env.WebRootPath, @"images/VillaImage", fileName);
                  using (var stream = new FileStream(filePath, FileMode.Create))
                  {
@@ -71,6 +71,24 @@ public class VillaController : Controller
     {
         if (ModelState.IsValid && obj.Id > 0)
         {
+            if (obj.Image is not null)
+            {
+                string fileName = Guid.NewGuid() + Path.GetFileName(obj.Image.FileName);
+                string filePath = Path.Combine(_env.WebRootPath, @"images/VillaImage", fileName);
+                if (!string.IsNullOrEmpty(obj.ImageUrl))
+                {
+                    var filePathToDelete = Path.Combine(_env.WebRootPath, obj.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(filePathToDelete))
+                    {
+                        System.IO.File.Delete(filePathToDelete);
+                    }
+                }
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    obj.Image.CopyTo(stream);
+                }
+                obj.ImageUrl = @"/images/VillaImage/" + fileName;
+            }
             _unitOfWork.Villas.Update(obj);
             _unitOfWork.Save();
             TempData["Success"] = "Villa updated successfully";
