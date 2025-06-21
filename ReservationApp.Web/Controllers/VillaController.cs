@@ -7,15 +7,15 @@ namespace ReservationApp.Controllers;
 
 public class VillaController : Controller
 {
-    private  readonly IVillaRepository _villaRepository;
-    public VillaController(IVillaRepository villaRepository)
+    private  readonly IUnitOfWork _unitOfWork;
+    public VillaController(IUnitOfWork unitOfWork)
     {
-        _villaRepository = villaRepository;
+        _unitOfWork = unitOfWork;
     }
     // GET
     public IActionResult Index()
     {
-        var villas = _villaRepository.GetAll();
+        var villas = _unitOfWork.Villas.GetAll();
         return View(villas);
     }
 
@@ -35,14 +35,14 @@ public class VillaController : Controller
             TempData["Error"] = "Villa not created";
             return View(obj);
         }
-        _villaRepository.Add(obj);
-        _villaRepository.Save();
+        _unitOfWork.Villas.Add(obj);
+        _unitOfWork.Villas.Save();
         TempData["Success"] = "Villa created successfully";
         return RedirectToAction(nameof(Index));
     }
     public IActionResult Update(int villaId)
     {
-        var villa = _villaRepository.Get(x => x.Id == villaId);
+        var villa = _unitOfWork.Villas.Get(x => x.Id == villaId);
         if (villa is null)
         {
             return RedirectToAction("Error", "Home");
@@ -54,8 +54,8 @@ public class VillaController : Controller
     {
         if (ModelState.IsValid && obj.Id > 0)
         {
-            _villaRepository.Update(obj);
-            _villaRepository.Save();
+            _unitOfWork.Villas.Update(obj);
+            _unitOfWork.Villas.Save();
             TempData["Success"] = "Villa updated successfully";
             return RedirectToAction(nameof(Index));
         } 
@@ -64,7 +64,7 @@ public class VillaController : Controller
     }
     public IActionResult Delete(int villaId)
     {
-        var villa = _villaRepository.Get(x => x.Id == villaId);
+        var villa = _unitOfWork.Villas.Get(x => x.Id == villaId);
         if (villa is null)
         {
             TempData["Error"] = "Villa not found";
@@ -75,11 +75,11 @@ public class VillaController : Controller
     [HttpPost]
     public IActionResult Delete(Villa obj)
     {
-        var objToDelete = _villaRepository.Get(x => x.Id == obj.Id);
+        var objToDelete = _unitOfWork.Villas.Get(x => x.Id == obj.Id);
         if (objToDelete is not null)
         {
-            _villaRepository.Delete(objToDelete);
-            _villaRepository.Save();
+            _unitOfWork.Villas.Delete(objToDelete);
+            _unitOfWork.Villas.Save();
             TempData["Success"] = "Villa deleted successfully";
             return RedirectToAction(nameof(Index));
         } 
