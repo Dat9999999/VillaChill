@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace ReservationApp.Domain.Entities;
 
@@ -16,6 +18,8 @@ public class Villa
     [DisplayName( "Price per night")]
     [Range(0, 1000000, ErrorMessage = "Price must be between 0 and 1000000")]
     public double Price { get; set; }
+    [NotMapped]
+    public IFormFile? Image { get; set; }
     [DisplayName( "Image Url")]
     public string? ImageUrl { get; set; }
     public DateTime CreatedAt { get; set; }
