@@ -7,6 +7,8 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
     public IVillaRepository Villas { get; }
+    public IVillaNumberRepository VillaNumbers { get; }
+
     public void Save()
     {
         _context.SaveChanges();   
@@ -16,5 +18,6 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
         Villas = new VillaRepository(context);
+        VillaNumbers = new VillaNumberRepository(context);
     }
 }
