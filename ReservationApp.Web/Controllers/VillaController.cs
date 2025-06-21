@@ -113,6 +113,14 @@ public class VillaController : Controller
         var objToDelete = _unitOfWork.Villas.Get(x => x.Id == obj.Id);
         if (objToDelete is not null)
         {
+            if (!string.IsNullOrEmpty(objToDelete.ImageUrl))
+            {
+                var filePathToDelete = Path.Combine(_env.WebRootPath, objToDelete.ImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(filePathToDelete))
+                {
+                    System.IO.File.Delete(filePathToDelete);
+                }
+            }
             _unitOfWork.Villas.Delete(objToDelete);
             _unitOfWork.Save();
             TempData["Success"] = "Villa deleted successfully";
