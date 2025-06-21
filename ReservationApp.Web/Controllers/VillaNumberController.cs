@@ -37,7 +37,7 @@ public class VillaNumberController : Controller
     [HttpPost]
     public IActionResult Create(VillaNumbersVM obj)
     {
-        var isExists = _unitOfWork.VillaNumbers.GetAll().Any(u => u.Villa_Number == obj.villaNumber.Villa_Number);
+        var isExists = _unitOfWork.VillaNumbers.Any(u => u.Villa_Number == obj.villaNumber.Villa_Number);
         if (ModelState.IsValid && !isExists)
         {
             _unitOfWork.VillaNumbers.Add(obj.villaNumber);

@@ -51,6 +51,11 @@ public class Repository<T> : IRepository<T> where T : class
         return query.FirstOrDefault();
     }
 
+    public bool Any(Expression<Func<T, bool>> filter)
+    {
+        return _dbSet.Any(filter);
+    }
+
     public void Add(T obj)
     {
         _dbSet.Add(obj);
