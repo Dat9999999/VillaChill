@@ -1,21 +1,28 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Models;
+using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private  readonly IUnitOfWork _unitOfWork;
+    public HomeController(IUnitOfWork unitOfWork)
     {
-        _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public IActionResult Index()
     {
-        return View();
+        HomeVM home = new ()
+        {
+            VillaList = _unitOfWork.Villas.GetAll(null, "Amenities"),
+            CheckInDate = DateOnly.FromDateTime(DateTime.Now),
+            Nights = 1
+        };
+        return View(home);
     }
 
     public IActionResult Privacy()
