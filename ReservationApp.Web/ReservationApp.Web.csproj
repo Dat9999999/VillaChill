@@ -23,4 +23,11 @@
       <Folder Include="wwwroot\images\VillaImage\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Amenity\Create.cshtml" />
+      <AdditionalFiles Include="Views\Amenity\Delete.cshtml" />
+      <AdditionalFiles Include="Views\Amenity\Index.cshtml" />
+      <AdditionalFiles Include="Views\Amenity\Update.cshtml" />
+    </ItemGroup>
+
 </Project>
