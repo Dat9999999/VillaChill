@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
     }
     public DbSet<Villa> Villas { get; set; }
     public DbSet<VillaNumber> VillaNumbers { get; set; }
+    public DbSet<Amenity> Amenities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
