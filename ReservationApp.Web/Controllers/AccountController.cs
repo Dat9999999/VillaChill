@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.ViewModels;
@@ -38,6 +39,14 @@ public class AccountController : Controller
             _roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
             _roleManager.CreateAsync(new IdentityRole("User")).Wait();
         }
-        return View();
+        RegisterVM registerVm = new()
+        {
+            Roles = _roleManager.Roles.Select(u => new SelectListItem()
+            {
+                Text = u.Name,
+                Value = u.Name
+            })
+        };
+        return View(registerVm);
     }
 }
