@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
+using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
@@ -21,9 +22,14 @@ public class AccountController : Controller
         _roleManager = roleManager;
     }
     // GET
-    public IActionResult Login()
+    public IActionResult Login(string returnUrl = null)
     {
-        return View();
+        returnUrl??= Url.Content("~/");
+        LoginVM loginVm = new()
+        {
+            ReturnUrl = returnUrl
+        };
+        return View(loginVm);
     }
     public IActionResult Register()
     {
