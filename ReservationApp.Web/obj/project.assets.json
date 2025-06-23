@@ -2079,7 +2079,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
-          "Microsoft.AspNetCore.Mvc.Core": "2.3.0"
+          "Microsoft.AspNetCore.Mvc.Core": "2.3.0",
+          "Microsoft.Extensions.Identity.Stores": "9.0.6"
         },
         "compile": {
           "bin/placeholder/ReservationApp.Domain.dll": {}
