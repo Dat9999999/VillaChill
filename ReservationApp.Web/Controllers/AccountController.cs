@@ -33,6 +33,25 @@ public class AccountController : Controller
         };
         return View(loginVm);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginVM loginVm)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _signInManager.PasswordSignInAsync(loginVm.Email, loginVm.Password, loginVm.RememberMe, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                if (string.IsNullOrEmpty(loginVm.ReturnUrl))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                return Redirect(loginVm.ReturnUrl);
+            }
+            ModelState.AddModelError("", "Invalid login attempt.");
+        }
+        return View(loginVm);
+    }
     public IActionResult Register()
     {
         if (!_roleManager.RoleExistsAsync(SD.Role_Admin).Result)
