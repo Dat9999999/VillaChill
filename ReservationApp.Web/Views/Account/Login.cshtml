@@ -39,7 +39,7 @@
                                     <a>Forgot your password?</a>
                                 </p>
                                 <p>
-                                    <a asp-controller="Account" asp-action="Register" >Register as a new user</a>
+                                    <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
                                 </p>
                             </div>
                         </form>

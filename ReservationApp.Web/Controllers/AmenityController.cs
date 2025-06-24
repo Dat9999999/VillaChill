@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReservationApp.Application.Common.Interfaces;
@@ -8,6 +9,7 @@ using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class AmenityController : Controller
 {
     private  readonly IUnitOfWork _unitOfWork;

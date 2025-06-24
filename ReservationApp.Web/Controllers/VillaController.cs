@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 
 namespace ReservationApp.Controllers;
 
+[Authorize]
 public class VillaController : Controller
 {
     private  readonly IUnitOfWork _unitOfWork;

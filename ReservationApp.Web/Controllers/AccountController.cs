@@ -52,8 +52,9 @@ public class AccountController : Controller
         }
         return View(loginVm);
     }
-    public IActionResult Register()
+    public IActionResult Register(string returnUrl = null)
     {
+        returnUrl??= Url.Content("~/");
         if (!_roleManager.RoleExistsAsync(SD.Role_Admin).Result)
         {
             _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).Wait();
@@ -67,6 +68,7 @@ public class AccountController : Controller
                 Value = u.Name
             })
         };
+        registerVm.ReturnUrl = returnUrl;
         return View(registerVm);
     }
 
@@ -74,40 +76,45 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterVM registerVm)
     {
-        ApplicationUser user = new()
+        if (ModelState.IsValid)
         {
-            Name = registerVm.Name,
-            Email = registerVm.Email,
-            UserName = registerVm.Email,
-            NormalizedEmail = registerVm.Email.ToUpper(),
-            PhoneNumber = registerVm.PhoneNumber,
-            EmailConfirmed =   true,
-            CreatedAt = DateTime.Now,
-        };
-        var result = await _userManager.CreateAsync(user, registerVm.Password);
-        if (result.Succeeded)
-        {
-            if (!string.IsNullOrEmpty(registerVm.Role))
+            ApplicationUser user = new()
             {
-                await _userManager.AddToRoleAsync(user, registerVm.Role);
-            }
-            else
+                Name = registerVm.Name,
+                Email = registerVm.Email,
+                UserName = registerVm.Email,
+                NormalizedEmail = registerVm.Email.ToUpper(),
+                PhoneNumber = registerVm.PhoneNumber,
+                EmailConfirmed = true,
+                CreatedAt = DateTime.Now,
+            };
+            var result = await _userManager.CreateAsync(user, registerVm.Password);
+            if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+                if (!string.IsNullOrEmpty(registerVm.Role))
+                {
+                    await _userManager.AddToRoleAsync(user, registerVm.Role);
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+                }
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                if (string.IsNullOrEmpty(registerVm.ReturnUrl))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return Redirect(registerVm.ReturnUrl);
             }
 
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            if (string.IsNullOrEmpty(registerVm.ReturnUrl))
+            foreach (var error in result.Errors)
             {
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("", error.Description);
             }
-            return Redirect(registerVm.ReturnUrl);
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError("", error.Description);
-        }
         registerVm.Roles = _roleManager.Roles.Select(u => new SelectListItem()
         {
             Text = u.Name,
@@ -121,4 +128,10 @@ public class AccountController : Controller
         await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
+
+    public IActionResult AccessDenied()
+    {
+        return View();   
+    }
+    
 }
