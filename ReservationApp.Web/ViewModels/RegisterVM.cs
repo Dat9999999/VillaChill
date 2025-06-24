@@ -18,6 +18,7 @@ public class RegisterVM
     public string? ConfirmPassword { get; set; }
     [Required]
     public string Name { get; set; }
+    public string? Role { get; set; }
     [Required]
     public string PhoneNumber { get; set; }
     public string? ReturnUrl { get; set; }

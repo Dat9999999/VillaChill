@@ -50,4 +50,50 @@ public class AccountController : Controller
         };
         return View(registerVm);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(RegisterVM registerVm)
+    {
+        ApplicationUser user = new()
+        {
+            Name = registerVm.Name,
+            Email = registerVm.Email,
+            UserName = registerVm.Email,
+            NormalizedEmail = registerVm.Email.ToUpper(),
+            PhoneNumber = registerVm.PhoneNumber,
+            EmailConfirmed =   true,
+            CreatedAt = DateTime.Now,
+        };
+        var result = await _userManager.CreateAsync(user, registerVm.Password);
+        if (result.Succeeded)
+        {
+            if (!string.IsNullOrEmpty(registerVm.Role))
+            {
+                await _userManager.AddToRoleAsync(user, registerVm.Role);
+            }
+            else
+            {
+                await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+            }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            if (string.IsNullOrEmpty(registerVm.ReturnUrl))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return Redirect(registerVm.ReturnUrl);
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError("", error.Description);
+        }
+        registerVm.Roles = _roleManager.Roles.Select(u => new SelectListItem()
+        {
+            Text = u.Name,
+            Value = u.Name
+        });
+        return View(registerVm);
+    }
 }
