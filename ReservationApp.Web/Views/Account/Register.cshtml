@@ -12,37 +12,38 @@
             <div class="row pt-3">
                 <div class="col-md-12">
                     <form class="row" method="post">
+                        <div asp-validation-summary="All"></div>
                         <div class="form-floating mb-3 col-md-12">
-                            <input class="form-control" aria-required="true" />
-                            <label class="ms-2 text-muted">Email</label>
+                            <input asp-for="@Model.Email" class="form-control" aria-required="true"/>
+                            <label asp-for="@Model.Email" class="ms-2 text-muted">Email</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <input class="form-control"  />
-                            <label class="ms-2 text-muted">Full Name</label>
+                            <input asp-for="@Model.Name" class="form-control"/>
+                            <label asp-for="@Model.Name" class="ms-2 text-muted">Full Name</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <input class="form-control" />
-                            <label class="ms-2 text-muted">Phone Number</label>
+                            <input asp-for="@Model.PhoneNumber" class="form-control"/>
+                            <label asp-for="@Model.PhoneNumber" class="ms-2 text-muted">Phone Number</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <input class="form-control"/>
-                            <label class="ms-2 text-muted">Password</label>
+                            <input asp-for="@Model.Password" class="form-control"/>
+                            <label asp-for="@Model.Password" class="ms-2 text-muted">Password</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <input class="form-control" />
-                            <label class="ms-2 text-muted">Confirm Password</label>
+                            <input asp-for="@Model.ConfirmPassword"  class="form-control"/>
+                            <label asp-for="@Model.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
                         </div>
 
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select">
+                            <select asp-for = "@Model.Role" class="form-select">
                                 <option disabled selected>-Select Role-</option>
                                 @foreach (var role in Model.Roles)
                                 {
-                                    <option value="@role.Value">@role.Value</option>   
+                                    <option value="@role.Value">@role.Value</option>
                                 }
                             </select>
-                            <label asp-for ="@Model.Roles" class="ms-2 text-muted"></label>
-                            
+                            <label asp-for="@Model.Roles" class="ms-2 text-muted"></label>
+
                         </div>
                         <div class="col-12">
                             <button type="submit" class="w-100 btn btn-lg btn-outline-success">Register</button>
