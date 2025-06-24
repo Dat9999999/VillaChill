@@ -115,4 +115,10 @@ public class AccountController : Controller
         });
         return View(registerVm);
     }
+    
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
 }
