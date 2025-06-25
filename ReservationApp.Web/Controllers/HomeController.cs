@@ -44,6 +44,27 @@ public class HomeController : Controller
         }
         return View(homevm);
     }
+    [HttpPost]
+    public IActionResult CheckAvailability(int nights, DateOnly checkInDate)
+    {
+        
+        var villaList = _unitOfWork.Villas.GetAll(null, "Amenities");
+        foreach (var item in villaList)
+        {
+            if (item.Id % 2 == 0)
+            {
+                item.IsAvaliable = false;
+            }
+        }
+
+        HomeVM home = new HomeVM()
+        {
+            VillaList = villaList,
+            CheckInDate = checkInDate,
+            Nights = nights
+        };
+        return PartialView("_VillasList",home);
+    }
 
     public IActionResult Privacy()
     {
