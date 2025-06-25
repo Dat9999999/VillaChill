@@ -77,7 +77,7 @@
 $(document).ready(function() {
     $("form").submit(function(e) {
         e.preventDefault(); // Prevent default form submission
-        
+        $(".spinner").show();
         var checkInDate = $("#CheckInDate").val();
         var nights = $(".form-select").val();
         
@@ -95,6 +95,9 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 console.error('Error:', error);
                 alert('Failed to check availability. Please try again.');
+            },
+            complete: function() {
+                $( ".spinner" ).hide();
             }
         });
     });

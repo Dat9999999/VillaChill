@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/ReservationApp.Web.styles.css" asp-append-version="true"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+    <link href="~/css/Spinner.css" rel="stylesheet"/>
+    </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow ">
@@ -41,6 +42,9 @@
 </header>
 <div class="">
     <main role="main" class="">
+        <div class = "loading spinner" style = "display:none">
+            Loading...
+        </div>
         <partial name="_Notification"/>
         @RenderBody()
     </main>
