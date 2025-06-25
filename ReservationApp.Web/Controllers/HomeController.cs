@@ -22,7 +22,27 @@ public class HomeController : Controller
             CheckInDate = DateOnly.FromDateTime(DateTime.Now),
             Nights = 1
         };
+        foreach (var item in home.VillaList)
+        {
+            if (item.Id % 2 == 0)
+            {
+                item.IsAvaliable = false;
+            }
+        }
         return View(home);
+    }
+    [HttpPost]
+    public IActionResult Index(HomeVM homevm)
+    {
+        homevm.VillaList = _unitOfWork.Villas.GetAll(null, "Amenities");
+        foreach (var item in homevm.VillaList)
+        {
+            if (item.Id % 2 == 0)
+            {
+                item.IsAvaliable = false;
+            }
+        }
+        return View(homevm);
     }
 
     public IActionResult Privacy()
