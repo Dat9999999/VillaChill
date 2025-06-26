@@ -5,4 +5,6 @@ namespace ReservationApp.Application.Common.Interfaces;
 public interface IBookingRepository : IRepository<Booking>
 {
     public void Update(Booking Booking);
+    public void UpdateStatus(int bookingId, string status);
+    public void UpdateStripePaymentId(int bookingId, string sessionId , string paymentId);
 }

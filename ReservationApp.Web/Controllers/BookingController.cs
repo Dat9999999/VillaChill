@@ -55,11 +55,10 @@ public class BookingController : Controller
         _unitOfWork.Bookings.Add(booking);
         _unitOfWork.Save();
         
-        return View(nameof(BookingConfirmation), new { bookingid = booking.Id});
+        return View(nameof(BookingConfirmation), booking.Id);
     }
     public IActionResult BookingConfirmation(int bookingid)
     {
-        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingid);
-        return View(booking);
+        return View(bookingid);
     }
 }
