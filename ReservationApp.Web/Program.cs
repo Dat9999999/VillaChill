@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
+using ReservationApp.Infrastructure.Payments;
 using ReservationApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+// connect vnpay
+builder.Services.AddScoped<IVnPayService, VnPayService>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

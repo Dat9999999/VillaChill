@@ -11,4 +11,7 @@ public static class SD
     public const string StatusCompleted = "Completed";
     public const string StatusCancelled = "Cancelled";
     public const string StatusRefunded = "Refunded";
+    
+    
+    public const double UsdDiffVND = 25000;
 }

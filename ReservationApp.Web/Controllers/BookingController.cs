@@ -11,9 +11,11 @@ namespace ReservationApp.Controllers;
 public class BookingController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
-    public BookingController(IUnitOfWork unitOfWork)
+    private readonly IVnPayService _vnPayService;
+    public BookingController(IUnitOfWork unitOfWork, IVnPayService vnPayService)
     {
         _unitOfWork = unitOfWork;
+        _vnPayService = vnPayService;
     }
     
     public IActionResult FinalizeBooking(int VillaId, string checkInDate, int Nights)
@@ -54,11 +56,36 @@ public class BookingController : Controller
         
         _unitOfWork.Bookings.Add(booking);
         _unitOfWork.Save();
+
+        return RedirectToAction(nameof(CreatePaymentUrlVnpay), new { bookingId = booking.Id });
+
+    }
+    public IActionResult CreatePaymentUrlVnpay(int bookingId)
+    {
+        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "Villa");
+
+        var model = new PaymentInformationModel
+        {
+            Amount = booking.TotalCost * SD.UsdDiffVND,
+            Name = booking.Name,
+            OrderDescription = $"Okay",
+            OrderType = "other",
+        };
+
+        var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
+        return Redirect(url);
+    }
+
+    [HttpGet]
+    public IActionResult PaymentCallbackVnpay()
+    {
+        var response = _vnPayService.PaymentExecute(Request.Query);
         
-        return View(nameof(BookingConfirmation), booking.Id);
+        return Json(response);
     }
     public IActionResult BookingConfirmation(int bookingid)
     {
         return View(bookingid);
     }
+
 }
