@@ -68,8 +68,8 @@ public class BookingController : Controller
         {
             Amount = booking.TotalCost * SD.UsdDiffVND,
             Name = booking.Name,
-            OrderDescription = $"Okay",
-            OrderType = "other",
+            OrderDescription = $"{booking.Id}",
+            OrderType = "booking",
         };
 
         var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
@@ -80,10 +80,13 @@ public class BookingController : Controller
     public IActionResult PaymentCallbackVnpay()
     {
         var response = _vnPayService.PaymentExecute(Request.Query);
-        
-        return Json(response);
+        if (response.VnPayResponseCode == "00")
+        {
+            return View(nameof(BookingConfirmation), response.OrderDescription);
+        }
+        return RedirectToAction("Error","Home");
     }
-    public IActionResult BookingConfirmation(int bookingid)
+    public IActionResult BookingConfirmation(string bookingid )
     {
         return View(bookingid);
     }
