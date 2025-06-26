@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Common.utility;
 using ReservationApp.Domain.Entities;
 
 namespace ReservationApp.Controllers;
@@ -45,7 +46,20 @@ public class BookingController : Controller
     [HttpPost]
     public IActionResult FinalizeBooking(Booking booking)
     {
+        var villa = _unitOfWork.Villas.Get(x => x.Id == booking.VillaId);
+        booking.TotalCost = villa.Price * booking.Nights;
         
+        booking.Status = SD.StatusPending;
+        booking.BookingDate = DateTime.Now;
+        
+        _unitOfWork.Bookings.Add(booking);
+        _unitOfWork.Save();
+        
+        return View(nameof(BookingConfirmation), new { bookingid = booking.Id});
+    }
+    public IActionResult BookingConfirmation(int bookingid)
+    {
+        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingid);
         return View(booking);
     }
 }
