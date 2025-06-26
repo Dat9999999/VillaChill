@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
@@ -21,9 +22,11 @@ public class BookingController : Controller
             ModelState.AddModelError("CheckInDate", "Invalid date format. Please use dd/MM/yyyy.");
             return BadRequest("Invalid date format.");
         }
-
+        var claimIdentity = (ClaimsIdentity)User.Identity;
+        var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        
+        var user = _unitOfWork.ApplicationUsers.Get(x => x.Id == userId);
         var villa = _unitOfWork.Villas.Get(x => x.Id == VillaId, "Amenities");
-
         Booking booking = new Booking()
         {
             VillaId = VillaId,
@@ -31,9 +34,12 @@ public class BookingController : Controller
             Nights = Nights,
             CheckOutDate = parsedDate.AddDays(Nights),
             Villa = villa,
-            TotalCost = villa.Price * Nights
+            TotalCost = villa.Price * Nights,
+            UserId = userId,
+            Name = user.Name,
+            Email = user.Email,
+            Phone = user.PhoneNumber,
         };
-
         return View(booking);
     }
     [HttpPost]
