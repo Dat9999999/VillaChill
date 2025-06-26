@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     public IVillaRepository Villas { get; }
     public IVillaNumberRepository VillaNumbers { get; }
     public IAmenityRepository Amenities { get; }
+    public IBookingRepository Bookings { get; }
 
     public void Save()
     {
@@ -22,5 +23,6 @@ public class UnitOfWork : IUnitOfWork
         Villas = new VillaRepository(context);
         VillaNumbers = new VillaNumberRepository(context);
         Amenities = new AmenityRepository(context);
+        Bookings = new BookingRepository(context);
     }
 }
