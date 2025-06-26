@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
 
 namespace ReservationApp.Controllers;
 
+[Authorize]
 public class BookingController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
