@@ -45,7 +45,7 @@
             <div class="col-8 col-md-3 pl-2 pr-2">
                 <div class="form-group">
                     <label>No. of nights</label>
-                    <select class="form-select">
+                    <select class="form-select" asp-for="Nights">
                         @for (int i = 1; i <= 10; i++)
                         {
                             <option value="@i">@i</option>
@@ -80,7 +80,7 @@ $(document).ready(function() {
         $(".spinner").show();
         var checkInDate = $("#CheckInDate").val();
         var nights = $(".form-select").val();
-        
+
         $.ajax({
             url: '/Home/CheckAvailability',
             type: 'POST',
@@ -89,7 +89,7 @@ $(document).ready(function() {
                 nights: nights
             },
             success: function(response) {
-                
+
                 $("#VillasList").html(response);
             },
             error: function(xhr, status, error) {
