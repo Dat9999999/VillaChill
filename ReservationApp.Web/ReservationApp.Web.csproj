@@ -30,4 +30,11 @@
       <AdditionalFiles Include="Views\Amenity\Update.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\DataTables\datatables.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\DataTables\datatables.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\DataTables\datatables.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\DataTables\datatables.min.js" />
+    </ItemGroup>
+
 </Project>

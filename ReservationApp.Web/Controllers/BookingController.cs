@@ -17,6 +17,11 @@ public class BookingController : Controller
         _unitOfWork = unitOfWork;
         _vnPayService = vnPayService;
     }
+
+    public IActionResult Index()
+    {
+        return View();   
+    }
     
     public IActionResult FinalizeBooking(int VillaId, string checkInDate, int Nights)
     {
@@ -103,5 +108,38 @@ public class BookingController : Controller
     {
         return View(bookingid);
     }
+
+    #region  API  Call
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+            IEnumerable<Booking> objBookings;
+            // string userId = "";
+            // if (string.IsNullOrEmpty(status))
+            // {
+            //     status = "";
+            // }
+            //
+            // if (!User.IsInRole(SD.Role_Admin))
+            // {
+            //     var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //     userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // }
+            //
+            // objBookings = _unitOfWork.Bookings.GetAll(x => x.Status == status && x.UserId == userId);
+            //         
+            if (!User.IsInRole(SD.Role_Admin))
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                objBookings = _unitOfWork.Bookings.GetAll(x=> x.UserId == userId);
+            }
+            else objBookings = _unitOfWork.Bookings.GetAll();
+            return Json(new { data = objBookings });
+    }
+    
+
+    #endregion
 
 }
