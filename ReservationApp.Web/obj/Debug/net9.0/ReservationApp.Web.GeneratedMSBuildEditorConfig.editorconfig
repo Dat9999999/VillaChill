@@ -68,6 +68,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9Cb29raW5nQ29uZmlybWF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/Views/Booking/BookingDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9Cb29raW5nRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/Views/Booking/FinalizeBooking.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9GaW5hbGl6ZUJvb2tpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
