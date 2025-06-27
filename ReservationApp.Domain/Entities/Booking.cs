@@ -39,8 +39,7 @@ public class Booking
     public bool IsPaymentSuccessful { get; set; } = false;
     public DateTime PaymentDate { get; set; }
 
-    public string? StripeSessionId { get; set; }
-    public string? StripePaymentIntentId { get; set; }
+    public string? VnPayPaymentId { get; set; }
 
     public DateTime ActualCheckInDate { get; set; }
     public DateTime ActualCheckOutDate { get; set; }

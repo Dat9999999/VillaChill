@@ -67,7 +67,7 @@ public class BookingController : Controller
         var model = new PaymentInformationModel
         {
             Amount = booking.TotalCost * SD.UsdDiffVND,
-            Name = booking.Name,
+            Name = booking.Email,
             OrderDescription = $"{booking.Id}",
             OrderType = "booking",
         };
@@ -82,11 +82,24 @@ public class BookingController : Controller
         var response = _vnPayService.PaymentExecute(Request.Query);
         if (response.VnPayResponseCode == "00")
         {
-            return View(nameof(BookingConfirmation), response.OrderDescription);
+            var value   = response.OrderDescription.Split(" ");
+            var email = value[0];
+            // get bookingID
+            var bookingId = int.Parse(value[1]);
+            
+            // cost in VND currency
+            var totalCost = value[2];
+            
+            //update booking after payment successfully
+            _unitOfWork.Bookings.UpdateStatus(bookingId, SD.StatusApproved);
+            _unitOfWork.Bookings.UpdatePaymentId(bookingId, response.PaymentId);
+            _unitOfWork.Save();
+            
+            return View(nameof(BookingConfirmation), bookingId);
         }
         return RedirectToAction("Error","Home");
     }
-    public IActionResult BookingConfirmation(string bookingid )
+    public IActionResult BookingConfirmation(int bookingid )
     {
         return View(bookingid);
     }

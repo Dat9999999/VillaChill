@@ -37,20 +37,15 @@ public class BookingRepository: Repository<Booking>, IBookingRepository
         
     }
 
-    public void UpdatePaymentId(int bookingId, string sessionId, string paymentId)
+    public void UpdatePaymentId(int bookingId,  string paymentId)
     {
         var bookingFromDB = _context.Bookings.FirstOrDefault(x => x.Id == bookingId);
         if (bookingFromDB is not null)
         {
-            if (!string.IsNullOrEmpty(sessionId))
-            {
-                bookingFromDB.StripeSessionId = sessionId;
-            }
-
             if (!string.IsNullOrEmpty(paymentId))
             {
                 bookingFromDB.IsPaymentSuccessful = true;
-                // bookingFromDB.StripePaymentIntentId = paymentId;
+                // bookingFromDB.VnPayPaymentId = paymentId;
                 bookingFromDB.PaymentDate = DateTime.Now;
             }
         }
