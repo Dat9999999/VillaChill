@@ -50,6 +50,12 @@ public class BookingController : Controller
         };
         return View(booking);
     }
+
+    public IActionResult BookingDetails(int bookingId)
+    {
+        var bookingFromDB = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "User,Villa");
+        return View(bookingFromDB);   
+    }
     [HttpPost]
     public IActionResult FinalizeBooking(Booking booking)
     {
