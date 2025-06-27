@@ -112,7 +112,7 @@ public class BookingController : Controller
     #region  API  Call
 
     [HttpGet]
-    public IActionResult GetAll()
+    public IActionResult GetAll(string status)
     {
             IEnumerable<Booking> objBookings;
             // string userId = "";
@@ -136,6 +136,11 @@ public class BookingController : Controller
                 objBookings = _unitOfWork.Bookings.GetAll(x=> x.UserId == userId);
             }
             else objBookings = _unitOfWork.Bookings.GetAll();
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                objBookings = objBookings.Where(x => x.Status.ToLower() == status.ToLower());           
+            }
             return Json(new { data = objBookings });
     }
     
