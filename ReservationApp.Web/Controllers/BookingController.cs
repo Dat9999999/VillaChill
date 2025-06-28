@@ -54,6 +54,7 @@ public class BookingController : Controller
     public IActionResult BookingDetails(int bookingId)
     {
         var bookingFromDB = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "User,Villa");
+        bookingFromDB.Villa.Amenities = _unitOfWork.Amenities.GetAll(x => x.VillaId == bookingFromDB.VillaId);
         return View(bookingFromDB);   
     }
     [HttpPost]

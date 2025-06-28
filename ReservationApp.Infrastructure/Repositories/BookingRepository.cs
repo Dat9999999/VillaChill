@@ -45,7 +45,7 @@ public class BookingRepository: Repository<Booking>, IBookingRepository
             if (!string.IsNullOrEmpty(paymentId))
             {
                 bookingFromDB.IsPaymentSuccessful = true;
-                // bookingFromDB.VnPayPaymentId = paymentId;
+                bookingFromDB.VnPayPaymentId = paymentId;
                 bookingFromDB.PaymentDate = DateTime.Now;
             }
         }
