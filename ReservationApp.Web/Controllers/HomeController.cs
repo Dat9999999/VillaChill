@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Common.utility;
 using ReservationApp.Models;
 using ReservationApp.ViewModels;
 
@@ -49,12 +50,14 @@ public class HomeController : Controller
     {
         
         var villaList = _unitOfWork.Villas.GetAll(null, "Amenities");
-        foreach (var item in villaList)
+        var villasBooked = _unitOfWork.Bookings.GetAll(u => u.Status == SD.StatusApproved 
+                                                            || u.Status == SD.StatusCheckedIn).ToList();
+        var villaNumbers = _unitOfWork.VillaNumbers.GetAll().ToList();
+        
+        foreach (var villa in villaList)
         {
-            if (item.Id % 2 == 0)
-            {
-                item.IsAvaliable = false;
-            }
+            int roomAvailable = SD.VillaRoomsAvailable_Count(villa.Id, villaNumbers ,checkInDate, nights, villasBooked);
+            villa.IsAvaliable = roomAvailable > 0;
         }
 
         HomeVM home = new HomeVM()
