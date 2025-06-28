@@ -140,6 +140,15 @@ public class BookingController : Controller
         return availableVillaNumber;
 
     }
+    [HttpPost]
+    [Authorize(Roles = SD.Role_Admin)]
+    public IActionResult CheckIn(Booking booking)
+    {
+        _unitOfWork.Bookings.UpdateStatus(booking.Id, SD.StatusCheckedIn, booking.VillaNumber);
+        _unitOfWork.Save();
+        TempData["Success"] = "Booking is checked in successfully";
+        return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
+    }
 
     #region  API  Call
 
