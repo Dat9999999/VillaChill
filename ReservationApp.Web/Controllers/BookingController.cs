@@ -149,6 +149,15 @@ public class BookingController : Controller
         TempData["Success"] = "Booking is checked in successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
+    [HttpPost]
+    [Authorize(Roles = SD.Role_Admin)]
+    public IActionResult CheckOut(Booking booking)
+    {
+        _unitOfWork.Bookings.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
+        _unitOfWork.Save();
+        TempData["Success"] = "Booking is checked out successfully";
+        return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
+    }
 
     #region  API  Call
 
