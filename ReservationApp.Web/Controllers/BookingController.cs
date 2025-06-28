@@ -55,6 +55,13 @@ public class BookingController : Controller
     {
         var bookingFromDB = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "User,Villa");
         bookingFromDB.Villa.Amenities = _unitOfWork.Amenities.GetAll(x => x.VillaId == bookingFromDB.VillaId);
+
+        if (bookingFromDB.Status == SD.StatusApproved && bookingFromDB.VillaNumber == 0)
+        {
+            var availableVillaNumber = AssignVillaNumber(bookingFromDB.VillaId);
+            bookingFromDB.VillaNumbers = _unitOfWork.VillaNumbers.GetAll(u => u.Villa.Id == bookingFromDB.VillaId
+                && availableVillaNumber.Contains(u.Villa_Number)).ToList();
+        } 
         return View(bookingFromDB);   
     }
     [HttpPost]
@@ -114,6 +121,24 @@ public class BookingController : Controller
     public IActionResult BookingConfirmation(int bookingid )
     {
         return View(bookingid);
+    }
+
+    private List<int> AssignVillaNumber(int villaId)
+    {
+        List<int> availableVillaNumber = new List<int>();
+        var villaNumbers = _unitOfWork.VillaNumbers.GetAll(u => u.Villa.Id == villaId);
+        var checkedInVillaNumber = _unitOfWork.Bookings.GetAll(u => u.Villa.Id == villaId 
+        && u.Status == SD.StatusCheckedIn).Select(u => u.VillaNumber).ToList();
+        foreach (var villaNumber in villaNumbers)
+        {
+            if (!checkedInVillaNumber.Contains(villaNumber.Villa_Number))
+            {
+                availableVillaNumber.Add(villaNumber.Villa_Number);
+            }
+        }
+
+        return availableVillaNumber;
+
     }
 
     #region  API  Call
