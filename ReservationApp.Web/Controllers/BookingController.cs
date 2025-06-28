@@ -103,7 +103,7 @@ public class BookingController : Controller
             var totalCost = value[2];
             
             //update booking after payment successfully
-            _unitOfWork.Bookings.UpdateStatus(bookingId, SD.StatusApproved);
+            _unitOfWork.Bookings.UpdateStatus(bookingId, SD.StatusApproved, 0);
             _unitOfWork.Bookings.UpdatePaymentId(bookingId, response.PaymentId);
             _unitOfWork.Save();
             

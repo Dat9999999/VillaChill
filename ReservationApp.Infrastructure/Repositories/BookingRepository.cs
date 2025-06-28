@@ -18,11 +18,12 @@ public class BookingRepository: Repository<Booking>, IBookingRepository
         _context.Bookings.Update(Booking);
     }
 
-    public void UpdateStatus(int bookingId, string status)
+    public void UpdateStatus(int bookingId, string status, int VillaNumber = 0)
     {
         var bookingFromDB = _context.Bookings.FirstOrDefault(x => x.Id == bookingId);
         if (bookingFromDB is not null)
         {
+            bookingFromDB.VillaNumber = VillaNumber;
             bookingFromDB.Status = status;
             if (status == SD.StatusCheckedIn)
             {
