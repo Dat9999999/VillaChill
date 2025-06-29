@@ -42,6 +42,11 @@ public class AccountController : Controller
             var result = await _signInManager.PasswordSignInAsync(loginVm.Email, loginVm.Password, loginVm.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+                var user = await _userManager.FindByEmailAsync(loginVm.Email);
+                if (_userManager.IsInRoleAsync(user, SD.Role_Admin).Result)
+                {
+                    return RedirectToAction("Index", "Dashboard");   
+                }
                 if (string.IsNullOrEmpty(loginVm.ReturnUrl))
                 {
                     return RedirectToAction("Index", "Home");
