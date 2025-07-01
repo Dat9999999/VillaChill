@@ -8,6 +8,14 @@ namespace ReservationApp.Infrastructure.Exporting;
 
 public class Exporter: IExporter
 {
+    void addRows(Table table, (string label, string value)[] rows)
+    {
+        for (int i = 0; i < rows.Length; i++)
+        {
+            table.Rows[i].Cells[0].Paragraphs[0].Append(rows[i].label);
+            table.Rows[i].Cells[1].Paragraphs[0].Append(rows[i].value);
+        }
+    }
     public byte[] ExportBookingInvoice(Booking booking)
     {
         using (var stream = new MemoryStream())
@@ -32,27 +40,21 @@ public class Exporter: IExporter
                     .Alignment = Alignment.center;
     
                 doc.InsertParagraph().SpacingAfter(15);
-    
+                
                 // Customer info
                 var customerTable = doc.AddTable(5, 2);
                 customerTable.Alignment = Alignment.left;
                 customerTable.Design = TableDesign.ColorfulList;
-    
-                customerTable.Rows[0].Cells[0].Paragraphs[0].Append("Customer Name:");
-                customerTable.Rows[0].Cells[1].Paragraphs[0].Append(booking.Name);
-    
-                customerTable.Rows[1].Cells[0].Paragraphs[0].Append("Phone:");
-                customerTable.Rows[1].Cells[1].Paragraphs[0].Append(booking.Phone);
-    
-                customerTable.Rows[2].Cells[0].Paragraphs[0].Append("Email:");
-                customerTable.Rows[2].Cells[1].Paragraphs[0].Append(booking.Email);
-    
-                customerTable.Rows[3].Cells[0].Paragraphs[0].Append("Invoice Date:");
-                customerTable.Rows[3].Cells[1].Paragraphs[0].Append(DateTime.Now.ToString("dd/MM/yyyy"));
-    
-                customerTable.Rows[4].Cells[0].Paragraphs[0].Append("Booking ID:");
-                customerTable.Rows[4].Cells[1].Paragraphs[0].Append($"#{booking.Id}");
-    
+
+                var rows = new (string label, string value)[]
+                {
+                    ("Customer Name", booking.Name),
+                    ("Phone", booking.Phone),
+                    ("Email", booking.Email),
+                    ("Invoice Date", DateTime.Now.ToString("dd/MM/yyyy")),
+                    ("Booking ID", $"#{booking.Id}")
+                };
+                addRows(customerTable, rows);
                 doc.InsertTable(customerTable);
                 doc.InsertParagraph().SpacingAfter(20);
     
@@ -61,24 +63,16 @@ public class Exporter: IExporter
                 detailsTable.Alignment = Alignment.left;
                 detailsTable.Design = TableDesign.LightShadingAccent1;
     
-                detailsTable.Rows[0].Cells[0].Paragraphs[0].Append("Villa Name");
-                detailsTable.Rows[0].Cells[1].Paragraphs[0].Append(booking.Villa.Name);
-    
-                detailsTable.Rows[1].Cells[0].Paragraphs[0].Append("Check-In Date");
-                detailsTable.Rows[1].Cells[1].Paragraphs[0].Append(booking.CheckInDate.ToString("dd/MM/yyyy"));
-    
-                detailsTable.Rows[2].Cells[0].Paragraphs[0].Append("Check-Out Date");
-                detailsTable.Rows[2].Cells[1].Paragraphs[0].Append(booking.CheckOutDate.ToString("dd/MM/yyyy"));
-    
-                detailsTable.Rows[3].Cells[0].Paragraphs[0].Append("Nights");
-                detailsTable.Rows[3].Cells[1].Paragraphs[0].Append(booking.Nights.ToString());
-    
-                detailsTable.Rows[4].Cells[0].Paragraphs[0].Append("Status");
-                detailsTable.Rows[4].Cells[1].Paragraphs[0].Append(booking.Status);
-    
-                detailsTable.Rows[5].Cells[0].Paragraphs[0].Append("Total Cost");
-                detailsTable.Rows[5].Cells[1].Paragraphs[0].Append(booking.TotalCost.ToString("C"));
-    
+                rows = new (string label, string value)[]
+                {
+                    ("Villa Name", booking.Villa.Name),
+                    ("Check-In Date", booking.CheckInDate.ToString("dd/MM/yyyy")),
+                    ("Check-Out Date", booking.CheckOutDate.ToString("dd/MM/yyyy")),
+                    ("Nights", booking.Nights.ToString()),
+                    ("Status", booking.Status),
+                    ("Total Cost", booking.TotalCost.ToString("C"))
+                };
+                addRows(detailsTable, rows);;
                 doc.InsertTable(detailsTable);
                 
                 //Thanks for choosing

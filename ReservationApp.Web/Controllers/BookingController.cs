@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Domain.Entities;
-using Xceed.Document.NET;
-using Xceed.Words.NET;
 
 namespace ReservationApp.Controllers;
 
@@ -176,6 +174,11 @@ public class BookingController : Controller
     {
         var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "Villa");
         if (booking is null) return NotFound();
+        
+        //check if user download their invoice 
+        var claimIdentity = (ClaimsIdentity)User.Identity;
+        var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        if (booking.UserId != userId) return Unauthorized();
 
         var stream = _exporter.ExportBookingInvoice(booking);
         var fileName = $"Invoice_{booking.Id}.docx";
