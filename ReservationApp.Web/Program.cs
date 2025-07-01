@@ -46,7 +46,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
-
+SeedData();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
@@ -56,3 +56,14 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+
+//seed data when the server runs for the first time
+void SeedData()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInit = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInit.Initialize();
+    }
+}
