@@ -4,9 +4,11 @@ namespace ReservationApp.Application.Common.utility;
 
 public static class SD
 {
+    // user role 
     public const string Role_Customer = "Customer";
     public const string Role_Admin = "Admin";
     
+    // booking status
     public const string StatusPending = "Pending";
     public const string StatusApproved = "Approved";
     public const string StatusCheckedIn = "CheckedIn";
@@ -15,8 +17,9 @@ public static class SD
     public const string StatusRefunded = "Refunded";
     public const double UsdDiffVND = 25000;
     
-    
+    //invoice string
     public const string ThanksMessage = "\nThank you for choosing our Villa Service!";
+    public const string LogoPath = "wwwroot/images/resort.png";
     
     public static int VillaRoomsAvailable_Count(int villaId, 
         List<VillaNumber> villaNumberList, DateOnly checkInDate, int nights,

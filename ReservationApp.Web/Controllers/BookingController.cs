@@ -179,7 +179,7 @@ public class BookingController : Controller
         {
             using (var doc = DocX.Create(stream))
             {
-                var logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/resort.png");
+                var logoPath = Path.Combine(Directory.GetCurrentDirectory(), SD.LogoPath);
 
                 if (System.IO.File.Exists(logoPath))
                 {
