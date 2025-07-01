@@ -15,9 +15,13 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet = context.Set<T>();
         
     }
-    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool isTracked = false)
     {
         IQueryable<T> query = _dbSet;
+        if (!isTracked)
+        {
+            query = _dbSet.AsNoTracking();
+        }
         if (filter is not null)
         {
             query = query.Where(filter);
@@ -33,9 +37,13 @@ public class Repository<T> : IRepository<T> where T : class
         return query.ToList();
     }
 
-    public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+    public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool isTracked = false)
     {
         IQueryable<T> query = _context.Set<T>();
+        if (!isTracked)
+        {
+            query = _dbSet.AsNoTracking();
+        }
         if (filter is not null)
         {
             query = query.Where(filter);
