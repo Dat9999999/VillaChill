@@ -2164,7 +2164,10 @@
         },
         "runtime": {
           "bin/placeholder/ReservationApp.Application.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "ReservationApp.Domain/1.0.0": {
         "type": "project",

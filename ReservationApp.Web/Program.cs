@@ -8,7 +8,6 @@ using ReservationApp.Infrastructure.Data;
 using ReservationApp.Infrastructure.Exporting;
 using ReservationApp.Infrastructure.Payments;
 using ReservationApp.Infrastructure.Repositories;
-using ReservationApp.Infrastructure.UploadFile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +35,6 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 //services 
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IVillaService, VillaService>();
-builder.Services.AddScoped<IVillaImageService, VillaImageService>();
 
 var app = builder.Build();
 
