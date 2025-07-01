@@ -1,6 +1,6 @@
 namespace ReservationApp.ViewModels;
 
-public class LineChartVM
+public class LineChartDTO
 {
     public List<LineChartData> series { get; set; }
     public string[] categories { get; set; }

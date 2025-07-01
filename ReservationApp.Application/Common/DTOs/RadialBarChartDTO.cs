@@ -1,6 +1,6 @@
 namespace ReservationApp.ViewModels;
 
-public class RadialBarChartVM
+public class RadialBarChartDTO
 {
     public decimal TotalCount { get; set; }
     public decimal CountInCurrentMonth { get; set; }

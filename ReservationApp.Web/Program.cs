@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Services.implements;
+using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 using ReservationApp.Infrastructure.Exporting;
@@ -25,6 +27,10 @@ builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 //export file 
 builder.Services.AddScoped<IExporter, Exporter>();
+
+
+//services 
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 

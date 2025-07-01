@@ -1,6 +1,6 @@
 namespace ReservationApp.ViewModels;
 
-public class PieChartVM
+public class PieChartDTO
 {
     public int[] series { get; set; }
     public string[] labels { get; set; }
