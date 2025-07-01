@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
+using ReservationApp.Infrastructure.Exporting;
 using ReservationApp.Infrastructure.Payments;
 using ReservationApp.Infrastructure.Repositories;
 
@@ -21,6 +22,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // connect vnpay
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+
+//export file 
+builder.Services.AddScoped<IExporter, Exporter>();
 
 var app = builder.Build();
 

@@ -15,11 +15,13 @@ public static class SD
     public const string StatusCompleted = "Completed";
     public const string StatusCancelled = "Cancelled";
     public const string StatusRefunded = "Refunded";
+    
     public const double UsdDiffVND = 25000;
     
     //invoice string
     public const string ThanksMessage = "\nThank you for choosing our Villa Service!";
     public const string LogoPath = "wwwroot/images/resort.png";
+    public const string InvoiceTitle = "VILLA BOOKING INVOICE";
     
     public static int VillaRoomsAvailable_Count(int villaId, 
         List<VillaNumber> villaNumberList, DateOnly checkInDate, int nights,
