@@ -2181,6 +2181,7 @@
           "DocX": "4.0.25105.5786",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.5",
+          "Microsoft.Extensions.Hosting.Abstractions": "9.0.6",
           "ReservationApp.Application": "1.0.0",
           "ReservationApp.Domain": "1.0.0"
         },
@@ -2189,7 +2190,10 @@
         },
         "runtime": {
           "bin/placeholder/ReservationApp.Infrastructure.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
