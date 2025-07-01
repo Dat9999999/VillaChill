@@ -29,8 +29,12 @@ builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IExporter, Exporter>();
 
 
+//intialDB 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 //services 
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IVillaService, VillaService>();
 
 var app = builder.Build();
 
