@@ -31,6 +31,24 @@ public class DbInitializer : IDbInitializer
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).Wait();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).Wait();
             }
+
+            if (_userManager.FindByEmailAsync("admin@gmail.com").Result == null)
+            {
+                var adminUser = new ApplicationUser
+                {
+                    UserName = "admin@gmail.com",
+                    Email = "admin@gmail.com",
+                    EmailConfirmed = true,
+                    Name = "Admin"
+                };
+
+                var result = _userManager.CreateAsync(adminUser, "Admin123@").Result; //password 
+
+                if (result.Succeeded)
+                {
+                    _userManager.AddToRoleAsync(adminUser, SD.Role_Admin).Wait();
+                }
+            }
         }
         catch (Exception e)
         {
