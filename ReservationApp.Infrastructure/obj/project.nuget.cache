@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "w8AwsWqyZ2U=",
+  "dgSpecHash": "MxIqbeXMgpA=",
   "success": true,
   "projectFilePath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -75,6 +75,9 @@
     "/Users/huynhtandat/.nuget/packages/microsoft.sqlserver.server/1.0.0/microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/skiasharp/2.88.8/skiasharp.2.88.8.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/skiasharp.nativeassets.macos/2.88.8/skiasharp.nativeassets.macos.2.88.8.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/skiasharp.nativeassets.win32/2.88.8/skiasharp.nativeassets.win32.2.88.8.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.buffers/4.6.0/system.buffers.4.6.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.clientmodel/1.0.0/system.clientmodel.1.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.codedom/6.0.0/system.codedom.6.0.0.nupkg.sha512",
@@ -90,6 +93,7 @@
     "/Users/huynhtandat/.nuget/packages/system.drawing.common/6.0.0/system.drawing.common.6.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.formats.asn1/9.0.5/system.formats.asn1.9.0.5.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.identitymodel.tokens.jwt/6.35.0/system.identitymodel.tokens.jwt.6.35.0.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/system.io.packaging/4.5.0/system.io.packaging.4.5.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.io.pipelines/7.0.0/system.io.pipelines.7.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.memory.data/1.0.2/system.memory.data.1.0.2.nupkg.sha512",
@@ -109,7 +113,11 @@
     "/Users/huynhtandat/.nuget/packages/system.text.json/9.0.5/system.text.json.9.0.5.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.threading.tasks.extensions/4.6.0/system.threading.tasks.extensions.4.6.0.nupkg.sha512",
-    "/Users/huynhtandat/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512"
+    "/Users/huynhtandat/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/xceed.document.net/5.0.25228.6154/xceed.document.net.5.0.25228.6154.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/xceed.drawing.net/1.0.25228.6154/xceed.drawing.net.1.0.25228.6154.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/xceed.pdf/5.0.25228.6154/xceed.pdf.5.0.25228.6154.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/xceed.words.net/5.0.25228.6154/xceed.words.net.5.0.25228.6154.nupkg.sha512"
   ],
   "logs": []
 }

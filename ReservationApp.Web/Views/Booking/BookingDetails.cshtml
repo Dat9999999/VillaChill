@@ -41,6 +41,10 @@
                         {
                             <button asp-controller="Booking" asp-action="Cancel" type="submit" class="btn btn-sm btn-outline-danger form-control my-1"><i class="bi bi-x-circle"></i> &nbsp; Cancel Booking</button>
                         }
+                        @if (Model.Status == SD.StatusCompleted)
+                        {
+                            <button asp-controller="Booking" asp-action="downloadInvoice" asp-route-bookingId ="@Model.Id" type="submit" class="btn btn-sm btn-warning form-control my-1"><i class="bi bi-file-earmark-arrow-down"></i>&nbsp;download invoice</button>
+                        }
                     </div>
                 </div>
                 <div class="row">

@@ -168,6 +168,11 @@ public class BookingController : Controller
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
 
+    public IActionResult downloadInvoice(int bookingId)
+    {
+        return Content("Download invoice");  
+    }
+
     #region  API  Call
 
     [HttpGet]
