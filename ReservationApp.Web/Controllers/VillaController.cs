@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
-using ReservationApp.Infrastructure.Data;
-
 namespace ReservationApp.Controllers;
 
 [Authorize]
@@ -11,16 +10,18 @@ public class VillaController : Controller
 {
     private  readonly IUnitOfWork _unitOfWork;
     private readonly IWebHostEnvironment _env;
-    public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
+    
+    private readonly IVillaService _villaService;
+    public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment env, IVillaService villaService)
     {
         _unitOfWork = unitOfWork;
         _env = env;
+        _villaService = villaService;
     }
     // GET
     public IActionResult Index()
     {
-        var villas = _unitOfWork.Villas.GetAll();
-        return View(villas);
+        return View(_villaService.GetAll());
     }
 
     public IActionResult Create()
@@ -30,38 +31,22 @@ public class VillaController : Controller
     [HttpPost]
     public IActionResult Create(Villa obj)
     {
-        if (obj.Name == obj.Description)
+
+        if (!_villaService.Add(obj, out string errorMessage))
         {
-            ModelState.AddModelError("Description", "Name and Description cannot be the same");
-        }
-        if (!ModelState.IsValid)
-        {
-            TempData["Error"] = "Villa not created";
+            if(errorMessage == "Name and Description cannot be the same")
+            {
+                ModelState.AddModelError("Description", "Name and Description cannot be the same");
+            }
             return View(obj);
         }
-
-        if (obj.Image is not null)
-        {
-                 string fileName = Guid.NewGuid() + ( Path.GetFileName(obj.Image.FileName));
-                 string filePath = Path.Combine(_env.WebRootPath, @"images/VillaImage", fileName);
-                 using (var stream = new FileStream(filePath, FileMode.Create))
-                 {
-                     obj.Image.CopyTo(stream);
-                 }
-                 obj.ImageUrl = @"/images/VillaImage/" + fileName;
-        }
-        else
-        {  
-            obj.ImageUrl = @"/images/VillaImage/placeholder.png";
-        }
-        _unitOfWork.Villas.Add(obj);
-        _unitOfWork.Save();
+        
         TempData["Success"] = "Villa created successfully";
         return RedirectToAction(nameof(Index));
     }
     public IActionResult Update(int villaId)
     {
-        var villa = _unitOfWork.Villas.Get(x => x.Id == villaId);
+        var villa = _villaService.GetById(villaId);
         if (villa is null)
         {
             return RedirectToAction("Error", "Home");
@@ -73,26 +58,7 @@ public class VillaController : Controller
     {
         if (ModelState.IsValid && obj.Id > 0)
         {
-            if (obj.Image is not null)
-            {
-                string fileName = Guid.NewGuid() + Path.GetFileName(obj.Image.FileName);
-                string filePath = Path.Combine(_env.WebRootPath, @"images/VillaImage", fileName);
-                if (!string.IsNullOrEmpty(obj.ImageUrl))
-                {
-                    var filePathToDelete = Path.Combine(_env.WebRootPath, obj.ImageUrl.TrimStart('/'));
-                    if (System.IO.File.Exists(filePathToDelete))
-                    {
-                        System.IO.File.Delete(filePathToDelete);
-                    }
-                }
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    obj.Image.CopyTo(stream);
-                }
-                obj.ImageUrl = @"/images/VillaImage/" + fileName;
-            }
-            _unitOfWork.Villas.Update(obj);
-            _unitOfWork.Save();
+            _villaService.Update(obj);
             TempData["Success"] = "Villa updated successfully";
             return RedirectToAction(nameof(Index));
         } 
@@ -101,7 +67,7 @@ public class VillaController : Controller
     }
     public IActionResult Delete(int villaId)
     {
-        var villa = _unitOfWork.Villas.Get(x => x.Id == villaId);
+        var villa = _villaService.GetById(villaId);
         if (villa is null)
         {
             TempData["Error"] = "Villa not found";
@@ -112,23 +78,13 @@ public class VillaController : Controller
     [HttpPost]
     public IActionResult Delete(Villa obj)
     {
-        var objToDelete = _unitOfWork.Villas.Get(x => x.Id == obj.Id);
-        if (objToDelete is not null)
+        if (_villaService.Delete(obj, out string errorMessage))
         {
-            if (!string.IsNullOrEmpty(objToDelete.ImageUrl))
-            {
-                var filePathToDelete = Path.Combine(_env.WebRootPath, objToDelete.ImageUrl.TrimStart('/'));
-                if (System.IO.File.Exists(filePathToDelete))
-                {
-                    System.IO.File.Delete(filePathToDelete);
-                }
-            }
-            _unitOfWork.Villas.Delete(objToDelete);
-            _unitOfWork.Save();
             TempData["Success"] = "Villa deleted successfully";
             return RedirectToAction(nameof(Index));
-        } 
-        TempData["Error"] = "Villa not found";
+        }
+
+        TempData["Error"] = errorMessage;
         return RedirectToAction("Error", "Home");
     }
 }
