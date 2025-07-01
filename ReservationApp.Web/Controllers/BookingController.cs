@@ -248,7 +248,7 @@ public class BookingController : Controller
                 
                 //Thanks for choosing
                 doc.InsertParagraph()
-                    .AppendLine("\nThank you for choosing our Villa Service!")
+                    .AppendLine(SD.ThanksMessage)
                     .Italic()
                     .FontSize(12);
     

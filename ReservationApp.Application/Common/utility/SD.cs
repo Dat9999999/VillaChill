@@ -15,6 +15,9 @@ public static class SD
     public const string StatusRefunded = "Refunded";
     public const double UsdDiffVND = 25000;
     
+    
+    public const string ThanksMessage = "\nThank you for choosing our Villa Service!";
+    
     public static int VillaRoomsAvailable_Count(int villaId, 
         List<VillaNumber> villaNumberList, DateOnly checkInDate, int nights,
         List<Booking> bookings)
