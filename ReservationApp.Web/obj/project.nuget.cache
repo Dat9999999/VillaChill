@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "cccHGmId3TY=",
+  "dgSpecHash": "ZwhXk8eps5Q=",
   "success": true,
   "projectFilePath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/ReservationApp.Web.csproj",
   "expectedPackageFiles": [
     "/Users/huynhtandat/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/docx/4.0.25105.5786/docx.4.0.25105.5786.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.3.0/microsoft.aspnetcore.authentication.abstractions.2.3.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.aspnetcore.authentication.core/2.3.0/microsoft.aspnetcore.authentication.core.2.3.0.nupkg.sha512",
@@ -112,11 +113,7 @@
     "/Users/huynhtandat/.nuget/packages/system.text.json/9.0.5/system.text.json.9.0.5.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.threading.tasks.extensions/4.6.0/system.threading.tasks.extensions.4.6.0.nupkg.sha512",
-    "/Users/huynhtandat/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
-    "/Users/huynhtandat/.nuget/packages/xceed.document.net/5.0.25228.6154/xceed.document.net.5.0.25228.6154.nupkg.sha512",
-    "/Users/huynhtandat/.nuget/packages/xceed.drawing.net/1.0.25228.6154/xceed.drawing.net.1.0.25228.6154.nupkg.sha512",
-    "/Users/huynhtandat/.nuget/packages/xceed.pdf/5.0.25228.6154/xceed.pdf.5.0.25228.6154.nupkg.sha512",
-    "/Users/huynhtandat/.nuget/packages/xceed.words.net/5.0.25228.6154/xceed.words.net.5.0.25228.6154.nupkg.sha512"
+    "/Users/huynhtandat/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }

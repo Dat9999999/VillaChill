@@ -183,6 +183,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "DocX": {
+              "target": "Package",
+              "version": "[4.0.25105.5786, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.6, )"
@@ -202,10 +206,6 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.5, )"
-            },
-            "Xceed.Words.NET": {
-              "target": "Package",
-              "version": "[5.0.25228.6154, )"
             }
           },
           "imports": [

@@ -18,8 +18,8 @@
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design/9.0.5/build/net8.0/Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design/9.0.5/build/net8.0/Microsoft.EntityFrameworkCore.Design.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgXceed_Words_NET Condition=" '$(PkgXceed_Words_NET)' == '' ">/Users/huynhtandat/.nuget/packages/xceed.words.net/5.0.25228.6154</PkgXceed_Words_NET>
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">/Users/huynhtandat/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.4</PkgMicrosoft_CodeAnalysis_Analyzers>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">/Users/huynhtandat/.nuget/packages/microsoft.entityframeworkcore.tools/9.0.5</PkgMicrosoft_EntityFrameworkCore_Tools>
+    <PkgDocX Condition=" '$(PkgDocX)' == '' ">/Users/huynhtandat/.nuget/packages/docx/4.0.25105.5786</PkgDocX>
   </PropertyGroup>
 </Project>
