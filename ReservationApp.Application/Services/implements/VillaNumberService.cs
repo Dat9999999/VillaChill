@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
 
@@ -10,7 +11,7 @@ public class VillaNumberService: IVillaNumberService
     {
         _unitOfWork = unitOfWork;
     }
-    public IEnumerable<VillaNumber> GetAll()
+    public IEnumerable<VillaNumber> GetAll(Expression<Func<Booking, bool>>? filter = null, string includeProperties = "")
     {
         return _unitOfWork.VillaNumbers.GetAll(null, "Villa");
     }

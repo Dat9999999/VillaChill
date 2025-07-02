@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 
@@ -11,7 +13,7 @@ public class AmenityService : IAmenityService
     {
         _unitOfWork = unitOfWork;
     }
-    public IEnumerable<Amenity> GetAll(string includeProperties = "")
+    public IEnumerable<Amenity> GetAll(Expression<Func<Amenity, bool>> filter = null ,string includeProperties = "")
     {
         return _unitOfWork.Amenities.GetAll(null, includeProperties);
     }
@@ -58,4 +60,6 @@ public class AmenityService : IAmenityService
         errorMessage = string.Empty;
         return true;
     }
+
+    
 }

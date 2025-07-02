@@ -1,8 +1,10 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
+using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 
 namespace ReservationApp.Controllers;
@@ -13,11 +15,24 @@ public class BookingController : Controller
     private readonly IUnitOfWork _unitOfWork;
     private readonly IVnPayService _vnPayService;
     private readonly IExporter _exporter;
-    public BookingController(IUnitOfWork unitOfWork, IVnPayService vnPayService, IExporter exporter)
+    private readonly IBookingService _bookingService;
+    private readonly IVillaNumberService _villaNumberService;
+    private readonly IVillaService _villaService;
+    private readonly IAmenityService _amenityService;
+    private readonly UserManager<ApplicationUser> _userManager;
+    public BookingController(IUnitOfWork unitOfWork, IVnPayService vnPayService, IExporter exporter,
+        IBookingService bookingService, IVillaNumberService villaNumberService, IVillaService villaService,
+        IAmenityService amenityService,
+        UserManager<ApplicationUser> userManager)
     {
         _unitOfWork = unitOfWork;
         _vnPayService = vnPayService;
         _exporter = exporter;
+        _bookingService = bookingService;
+        _villaNumberService = villaNumberService;
+        _villaService = villaService;
+        _amenityService = amenityService;
+        _userManager = userManager;
     }
 
     public IActionResult Index()
@@ -35,8 +50,8 @@ public class BookingController : Controller
         var claimIdentity = (ClaimsIdentity)User.Identity;
         var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
         
-        var user = _unitOfWork.ApplicationUsers.Get(x => x.Id == userId);
-        var villa = _unitOfWork.Villas.Get(x => x.Id == VillaId, "Amenities");
+        ApplicationUser user = _userManager.FindByIdAsync(userId).Result;
+        var villa = _villaService.GetById(VillaId, "Amenities");
         Booking booking = new Booking()
         {
             VillaId = VillaId,
@@ -55,35 +70,34 @@ public class BookingController : Controller
 
     public IActionResult BookingDetails(int bookingId)
     {
-        var bookingFromDB = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "User,Villa");
-        bookingFromDB.Villa.Amenities = _unitOfWork.Amenities.GetAll(x => x.VillaId == bookingFromDB.VillaId);
+        var bookingFromDB = _bookingService.GetById(x => x.Id == bookingId, "User,Villa");
+        bookingFromDB.Villa.Amenities = _amenityService.GetAll(x => x.VillaId == bookingFromDB.VillaId);
 
         if (bookingFromDB.Status == SD.StatusApproved && bookingFromDB.VillaNumber == 0)
         {
             var availableVillaNumber = AssignVillaNumber(bookingFromDB.VillaId);
-            bookingFromDB.VillaNumbers = _unitOfWork.VillaNumbers.GetAll(u => u.Villa.Id == bookingFromDB.VillaId
-                && availableVillaNumber.Contains(u.Villa_Number)).ToList();
+            bookingFromDB.VillaNumbers = _villaNumberService.GetAll(u => u.Villa.Id == bookingFromDB.VillaId
+                && availableVillaNumber.Contains(u.VillaNumber)).ToList();
         } 
         return View(bookingFromDB);   
     }
     [HttpPost]
     public IActionResult FinalizeBooking(Booking booking)
     {
-        var villa = _unitOfWork.Villas.Get(x => x.Id == booking.VillaId);
+        var villa = _villaService.GetById(booking.VillaId);
         booking.TotalCost = villa.Price * booking.Nights;
         
         booking.Status = SD.StatusPending;
         booking.BookingDate = DateTime.Now;
         
-        _unitOfWork.Bookings.Add(booking);
-        _unitOfWork.Save();
+        _bookingService.Add(booking);
 
         return RedirectToAction(nameof(CreatePaymentUrlVnpay), new { bookingId = booking.Id });
 
     }
     public IActionResult CreatePaymentUrlVnpay(int bookingId)
     {
-        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "Villa");
+        var booking = _bookingService.GetById(x => x.Id == bookingId, "Villa");
 
         var model = new PaymentInformationModel
         {
@@ -108,13 +122,9 @@ public class BookingController : Controller
             // get bookingID
             var bookingId = int.Parse(value[1]);
             
-            // cost in VND currency
-            var totalCost = value[2];
-            
             //update booking after payment successfully
-            _unitOfWork.Bookings.UpdateStatus(bookingId, SD.StatusApproved, 0);
-            _unitOfWork.Bookings.UpdatePaymentId(bookingId, response.PaymentId);
-            _unitOfWork.Save();
+            _bookingService.UpdateStatus(bookingId, SD.StatusApproved, 0);
+            _bookingService.UpdatePaymentId(bookingId, response.PaymentId);
             
             return View(nameof(BookingConfirmation), bookingId);
         }
@@ -128,8 +138,8 @@ public class BookingController : Controller
     private List<int> AssignVillaNumber(int villaId)
     {
         List<int> availableVillaNumber = new List<int>();
-        var villaNumbers = _unitOfWork.VillaNumbers.GetAll(u => u.Villa.Id == villaId);
-        var checkedInVillaNumber = _unitOfWork.Bookings.GetAll(u => u.Villa.Id == villaId 
+        var villaNumbers = _villaNumberService.GetAll(u => u.Villa.Id == villaId);
+        var checkedInVillaNumber = _bookingService.GetAll(u => u.Villa.Id == villaId 
         && u.Status == SD.StatusCheckedIn).Select(u => u.VillaNumber).ToList();
         foreach (var villaNumber in villaNumbers)
         {
@@ -146,8 +156,7 @@ public class BookingController : Controller
     [Authorize(Roles = SD.Role_Admin)]
     public IActionResult CheckIn(Booking booking)
     {
-        _unitOfWork.Bookings.UpdateStatus(booking.Id, SD.StatusCheckedIn, booking.VillaNumber);
-        _unitOfWork.Save();
+        _bookingService.UpdateStatus(booking.Id, SD.StatusCheckedIn, booking.VillaNumber);
         TempData["Success"] = "Booking is checked in successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
@@ -155,8 +164,7 @@ public class BookingController : Controller
     [Authorize(Roles = SD.Role_Admin)]
     public IActionResult CheckOut(Booking booking)
     {
-        _unitOfWork.Bookings.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
-        _unitOfWork.Save();
+        _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
         TempData["Success"] = "Booking is checked out successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
@@ -164,15 +172,14 @@ public class BookingController : Controller
     [Authorize(Roles = SD.Role_Admin)]
     public IActionResult Cancel(Booking booking)
     {
-        _unitOfWork.Bookings.UpdateStatus(booking.Id, SD.StatusCancelled, 0);
-        _unitOfWork.Save();
+        _bookingService.UpdateStatus(booking.Id, SD.StatusCancelled, 0);
         TempData["Success"] = "Booking is Canceled successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
 
     public IActionResult DownloadInvoice(int bookingId)
     {
-        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "Villa");
+        var booking = _bookingService.GetById(x => x.Id == bookingId, "Villa");
         if (booking is null) return NotFound();
         
         //check if user download their invoice 
@@ -193,28 +200,14 @@ public class BookingController : Controller
     [HttpGet]
     public IActionResult GetAll(string status)
     {
-            IEnumerable<Booking> objBookings;
-            // string userId = "";
-            // if (string.IsNullOrEmpty(status))
-            // {
-            //     status = "";
-            // }
-            //
-            // if (!User.IsInRole(SD.Role_Admin))
-            // {
-            //     var claimsIdentity = (ClaimsIdentity)User.Identity;
-            //     userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            // }
-            //
-            // objBookings = _unitOfWork.Bookings.GetAll(x => x.Status == status && x.UserId == userId);
-            //         
+            IEnumerable<Booking> objBookings;         
             if (!User.IsInRole(SD.Role_Admin))
             {
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                objBookings = _unitOfWork.Bookings.GetAll(x=> x.UserId == userId);
+                objBookings = _bookingService.GetAll(x=> x.UserId == userId);
             }
-            else objBookings = _unitOfWork.Bookings.GetAll();
+            else objBookings = _bookingService.GetAll();
 
             if (!string.IsNullOrEmpty(status))
             {

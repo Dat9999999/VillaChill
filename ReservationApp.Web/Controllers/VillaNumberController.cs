@@ -13,13 +13,11 @@ namespace ReservationApp.Controllers;
 [Authorize]
 public class VillaNumberController : Controller
 {
-    private  readonly IUnitOfWork _unitOfWork;
     private readonly IVillaService _villaService;
     private readonly IVillaNumberService _villaNumberService;
-    public VillaNumberController(IUnitOfWork unitOfWork, IVillaService villaService,
+    public VillaNumberController(IVillaService villaService,
         IVillaNumberService villaNumberService)
     {
-        _unitOfWork = unitOfWork;
         _villaService = villaService;
         _villaNumberService = villaNumberService;
     }
@@ -34,7 +32,7 @@ public class VillaNumberController : Controller
     {
         VillaNumbersVM obj = new VillaNumbersVM()
         {
-            villas = _unitOfWork.Villas.GetAll().Select(u => new SelectListItem
+            villas = _villaService.GetAll().Select(u => new SelectListItem
             {
             Text = u.Name,
             Value = u.Id.ToString()

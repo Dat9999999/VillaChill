@@ -13,19 +13,17 @@ namespace ReservationApp.Controllers;
 [Authorize(Roles = "Admin")]
 public class AmenityController : Controller
 {
-    private  readonly IUnitOfWork _unitOfWork;
     private readonly IVillaService _villaService;
     private readonly IAmenityService _amenityService;
-    public AmenityController(IUnitOfWork unitOfWork, IVillaService villaService, IAmenityService amenityService)
+    public AmenityController( IVillaService villaService, IAmenityService amenityService)
     {
-        _unitOfWork = unitOfWork;
         _villaService = villaService;
         _amenityService = amenityService;
     }
     // GET
     public IActionResult Index()
     {
-        var Amenities = _amenityService.GetAll("Villa");
+        var Amenities = _amenityService.GetAll(null,"Villa");
         return View(Amenities);
     }
 
@@ -99,7 +97,7 @@ public class AmenityController : Controller
                 Text = u.Name,
                 Value = u.Id.ToString()
             }),
-            Amenity = _unitOfWork.Amenities.Get(x => x.Id == Id)
+            Amenity = _amenityService.GetById(Id)
         };
         return View(obj);
     }

@@ -1,10 +1,11 @@
+using System.Linq.Expressions;
 using ReservationApp.Domain.Entities;
 
 namespace ReservationApp.Application.Common.Interfaces;
 
 public interface IVillaNumberService
 {
-    public IEnumerable<VillaNumber> GetAll();
+    public IEnumerable<VillaNumber> GetAll(Expression<Func<Booking, bool>>? filter = null, string includeProperties = "");
     public VillaNumber GetById(int villaNumber);
     public bool IsExist(int villaNumber);
     public void Update(VillaNumber villaNumber);

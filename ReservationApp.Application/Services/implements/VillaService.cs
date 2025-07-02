@@ -21,9 +21,9 @@ public class VillaService : IVillaService
         return _unitOfWork.Villas.GetAll(includeProperties: includeProperties);;
     }
 
-    public Villa GetById(int id)
+    public Villa GetById(int id, string includeProperties = "")
     {
-        return _unitOfWork.Villas.Get(x => x.Id == id);
+        return _unitOfWork.Villas.Get(x => x.Id == id, includeProperties);
     }
 
     public void Update(Villa villa)

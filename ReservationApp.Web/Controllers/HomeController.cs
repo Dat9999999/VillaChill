@@ -10,14 +10,15 @@ namespace ReservationApp.Controllers;
 
 public class HomeController : Controller
 {
-    private  readonly IUnitOfWork _unitOfWork;
     private readonly IVillaNumberService _villaNumberService;
     private readonly IVillaService _villaService;
-    public HomeController(IUnitOfWork unitOfWork, IVillaNumberService villaNumberService, IVillaService villaService)
+    private readonly IBookingService _bookingService;
+    public HomeController(IVillaNumberService villaNumberService, IVillaService villaService,
+        IBookingService bookingService)
     {
-        _unitOfWork = unitOfWork;
         _villaNumberService = villaNumberService;
         _villaService = villaService;
+        _bookingService = bookingService;
     }
 
     public IActionResult Index()
@@ -41,7 +42,7 @@ public class HomeController : Controller
     {
         
         var villaList = _villaService.GetAll("Amenities");
-        var villasBooked = _unitOfWork.Bookings.GetAll(u => u.Status == SD.StatusApproved 
+        var villasBooked = _bookingService.GetAll(u => u.Status == SD.StatusApproved 
                                                             || u.Status == SD.StatusCheckedIn).ToList();
         var villaNumbers = _villaNumberService.GetAll().ToList();
         foreach (var villa in villaList)
