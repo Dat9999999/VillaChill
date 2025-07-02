@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 using ReservationApp.ViewModels;
@@ -13,14 +14,19 @@ namespace ReservationApp.Controllers;
 public class VillaNumberController : Controller
 {
     private  readonly IUnitOfWork _unitOfWork;
-    public VillaNumberController(IUnitOfWork unitOfWork)
+    private readonly IVillaService _villaService;
+    private readonly IVillaNumberService _villaNumberService;
+    public VillaNumberController(IUnitOfWork unitOfWork, IVillaService villaService,
+        IVillaNumberService villaNumberService)
     {
         _unitOfWork = unitOfWork;
+        _villaService = villaService;
+        _villaNumberService = villaNumberService;
     }
     // GET
     public IActionResult Index()
     {
-        var villaNumbers = _unitOfWork.VillaNumbers.GetAll(null, "Villa");
+        var villaNumbers = _villaNumberService.GetAll();
         return View(villaNumbers);
     }
 
@@ -39,33 +45,35 @@ public class VillaNumberController : Controller
     [HttpPost]
     public IActionResult Create(VillaNumbersVM obj)
     {
-        var isExists = _unitOfWork.VillaNumbers.Any(u => u.Villa_Number == obj.villaNumber.Villa_Number);
-        if (ModelState.IsValid && !isExists)
+        if (ModelState.IsValid)
         {
-            _unitOfWork.VillaNumbers.Add(obj.villaNumber);
-            _unitOfWork.Save();
-            TempData["Success"] = "Villa number is created successfully";
-            return RedirectToAction(nameof(Index));
+            var res = _villaNumberService.Add(obj.villaNumber, out string errorMessage);
+            if (res)
+            {
+                TempData["Success"] = "Villa number is created successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["Error"] = errorMessage;
         }
-        TempData["Error"] = "Villa number is exists";
-        obj.villas = _unitOfWork.Villas.GetAll().Select(u => new SelectListItem
+        obj.villas = _villaService.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             }
         );
         return View(obj);
+        
     }
-    public IActionResult Update(int VillaNumberId)
+    public IActionResult Update(int VillaNumber)
     {
         VillaNumbersVM obj = new VillaNumbersVM()
         {
-            villas = _unitOfWork.Villas.GetAll().Select(u => new SelectListItem
+            villas = _villaService.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             }),
-            villaNumber = _unitOfWork.VillaNumbers.Get(x => x.Villa_Number == VillaNumberId)
+            villaNumber = _villaNumberService.GetById(VillaNumber)
         };
         return View(obj);
     }
@@ -74,13 +82,12 @@ public class VillaNumberController : Controller
     {
         if (ModelState.IsValid)
         {
-            _unitOfWork.VillaNumbers.Update(obj.villaNumber);
-            _unitOfWork.Save();
+            _villaNumberService.Update(obj.villaNumber);
             TempData["Success"] = "Villa number is updated successfully";
             return RedirectToAction(nameof(Index));
         }
         TempData["Error"] = "Villa number updated failure";
-        obj.villas = _unitOfWork.Villas.GetAll().Select(u => new SelectListItem
+        obj.villas = _villaService.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
@@ -88,31 +95,28 @@ public class VillaNumberController : Controller
         );
         return View(obj);
     }
-    public IActionResult Delete(int VillaNumberId)
+    public IActionResult Delete(int VillaNumber)
     {
         VillaNumbersVM obj = new VillaNumbersVM()
         {
-            villas = _unitOfWork.Villas.GetAll().Select(u => new SelectListItem
+            villas = _villaService.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             }),
-            villaNumber = _unitOfWork.VillaNumbers.Get(x => x.Villa_Number == VillaNumberId)
+            villaNumber = _villaNumberService.GetById(VillaNumber)
         };
         return View(obj);
     }
     [HttpPost]
     public IActionResult Delete(VillaNumbersVM obj)
     {
-        var objToDelete = _unitOfWork.VillaNumbers.Get(x => x.Villa_Number== obj.villaNumber.Villa_Number);
-        if (objToDelete is not null)
+        if (_villaNumberService.Delete(obj.villaNumber, out string errorMessage))
         {
-            _unitOfWork.VillaNumbers.Delete(objToDelete);
-            _unitOfWork.Save();
             TempData["Success"] = "Villa deleted successfully";
             return RedirectToAction(nameof(Index));
         } 
-        TempData["Error"] = "Villa not found";
+        TempData["Error"] = errorMessage;
         return RedirectToAction("Error", "Home");
     }
 }
