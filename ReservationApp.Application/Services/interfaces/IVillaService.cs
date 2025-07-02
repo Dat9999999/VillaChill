@@ -4,7 +4,7 @@ namespace ReservationApp.Application.Services.interfaces;
 
 public interface IVillaService
 {
-    public IEnumerable<Villa> GetAll();
+    public IEnumerable<Villa> GetAll(string includeProperties = "");
     public Villa GetById(int id);
     public void Update(Villa villa);
     public bool Delete(Villa villa, out string errorMessage);

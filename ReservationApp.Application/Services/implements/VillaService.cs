@@ -16,9 +16,9 @@ public class VillaService : IVillaService
         _env = env;       
         
     }
-    public IEnumerable<Villa> GetAll()
+    public IEnumerable<Villa> GetAll(string includeProperties)
     {
-        return _unitOfWork.Villas.GetAll();
+        return _unitOfWork.Villas.GetAll(includeProperties: includeProperties);;
     }
 
     public Villa GetById(int id)
