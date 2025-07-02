@@ -8,14 +8,10 @@ namespace ReservationApp.Controllers;
 [Authorize]
 public class VillaController : Controller
 {
-    private  readonly IUnitOfWork _unitOfWork;
-    private readonly IWebHostEnvironment _env;
     
     private readonly IVillaService _villaService;
-    public VillaController(IUnitOfWork unitOfWork, IWebHostEnvironment env, IVillaService villaService)
+    public VillaController(IVillaService villaService)
     {
-        _unitOfWork = unitOfWork;
-        _env = env;
         _villaService = villaService;
     }
     // GET
