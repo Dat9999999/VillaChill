@@ -4402,6 +4402,7 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "Microsoft.AspNetCore.Hosting.Abstractions >= 2.3.0",
+      "Microsoft.Extensions.DependencyInjection.Abstractions >= 9.0.6",
       "Microsoft.Extensions.Hosting.Abstractions >= 9.0.6",
       "ReservationApp.Domain >= 1.0.0"
     ]
@@ -4456,6 +4457,10 @@
           "Microsoft.AspNetCore.Hosting.Abstractions": {
             "target": "Package",
             "version": "[2.3.0, )"
+          },
+          "Microsoft.Extensions.DependencyInjection.Abstractions": {
+            "target": "Package",
+            "version": "[9.0.6, )"
           },
           "Microsoft.Extensions.Hosting.Abstractions": {
             "target": "Package",

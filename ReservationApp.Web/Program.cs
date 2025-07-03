@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ReservationApp.Application;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Services.implements;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
+using ReservationApp.Infrastructure;
 using ReservationApp.Infrastructure.Data;
 using ReservationApp.Infrastructure.Exporting;
 using ReservationApp.Infrastructure.Payments;
@@ -11,33 +13,13 @@ using ReservationApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// controller with view
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(option =>
-{
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
-// connect vnpay
-builder.Services.AddScoped<IVnPayService, VnPayService>();
-
-//export file 
-builder.Services.AddScoped<IExporter, Exporter>();
-
-
-//intialDB 
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-
-//services 
-builder.Services.AddScoped<IDashboardService, DashboardService>();
-builder.Services.AddScoped<IVillaService, VillaService>();
-builder.Services.AddScoped<IVillaNumberService, VillaNumberService>();
-builder.Services.AddScoped<IAmenityService, AmenityService>();
-builder.Services.AddScoped<IBookingService, BookingService>();
+//Dependency injection
+builder.Services.
+    AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -53,6 +35,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
 SeedData();
 app.MapStaticAssets();
 
