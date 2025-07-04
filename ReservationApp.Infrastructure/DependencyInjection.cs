@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
+using ReservationApp.Infrastructure.Email;
 using ReservationApp.Infrastructure.Exporting;
 using ReservationApp.Infrastructure.Payments;
 using ReservationApp.Infrastructure.Repositories;
@@ -34,6 +35,9 @@ public static class DependencyInjection
 
         //intialDB 
        services.AddScoped<IDbInitializer, DbInitializer>();
+       
+       //email 
+       services.AddScoped<IEmailService, EmailService>();
 
         return services;
     }

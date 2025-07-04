@@ -12,7 +12,6 @@ namespace ReservationApp.Controllers;
 [Authorize]
 public class BookingController : Controller
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IVnPayService _vnPayService;
     private readonly IExporter _exporter;
     private readonly IBookingService _bookingService;
@@ -20,12 +19,12 @@ public class BookingController : Controller
     private readonly IVillaService _villaService;
     private readonly IAmenityService _amenityService;
     private readonly UserManager<ApplicationUser> _userManager;
-    public BookingController(IUnitOfWork unitOfWork, IVnPayService vnPayService, IExporter exporter,
+    private readonly IEmailService _emailService;
+    public BookingController(IVnPayService vnPayService, IExporter exporter,
         IBookingService bookingService, IVillaNumberService villaNumberService, IVillaService villaService,
         IAmenityService amenityService,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager, IEmailService emailService)
     {
-        _unitOfWork = unitOfWork;
         _vnPayService = vnPayService;
         _exporter = exporter;
         _bookingService = bookingService;
@@ -33,6 +32,8 @@ public class BookingController : Controller
         _villaService = villaService;
         _amenityService = amenityService;
         _userManager = userManager;
+        _emailService = emailService;
+
     }
 
     public IActionResult Index()
@@ -118,13 +119,19 @@ public class BookingController : Controller
         if (response.VnPayResponseCode == "00")
         {
             var value   = response.OrderDescription.Split(" ");
-            var email = value[0];
+            var customerEmail = value[0];
             // get bookingID
             var bookingId = int.Parse(value[1]);
+            var booking = _bookingService.GetById(x => x.Id == bookingId);
+            var villa = _villaService.GetById(booking.VillaId);
             
             //update booking after payment successfully
             _bookingService.UpdateStatus(bookingId, SD.StatusApproved, 0);
             _bookingService.UpdatePaymentId(bookingId, response.PaymentId);
+            
+            //sending notification that booking successfully through email 
+            _emailService.configMailPaySuccess(customerEmail, villa.Name, 0);
+            
             
             return View(nameof(BookingConfirmation), bookingId);
         }

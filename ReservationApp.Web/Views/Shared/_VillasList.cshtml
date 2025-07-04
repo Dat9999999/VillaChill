@@ -29,7 +29,7 @@
                                 {
                                     <a asp-controller="Booking" asp-action = "FinalizeBooking" asp-route-VillaId="@villa.Id" 
                                        asp-route-checkInDate="@Model.CheckInDate.ToString("dd/MM/yyyy")" 
-                                       asp-route-Nights="@Model.Nights"
+                                       asp-route-Nights="@Model.Nights" 
                                        class="btn btn-success form-control btn-block">
                                         Book
                                     </a>
@@ -48,9 +48,9 @@
                         </div>
                         <div class="col-4">
                             <span class="text-warning float-end font-weight-bold pt-1" style="font-size:25px;">
-                                USD
+                                
                                 <span style="border-bottom:1px solid #ff6a00">
-                                    $@villa.Price
+                                    $@villa.Price.ToString("C")
                                 </span>
                             </span>
                         </div>

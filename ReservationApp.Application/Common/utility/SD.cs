@@ -18,44 +18,61 @@ public static class SD
     
     public const double UsdDiffVND = 25000;
     
+    // email 
+    public const string SenderName = "VillaChill";
+    public const string bookingSuccessEmailTitle  = "Your booking is successful";
+    public const string bookingSuccessEmailBody = "You got this email because you have just paid for booking Id: {0} and your room number is: {1} " +
+                                                  "if anything wrong please contact us at " + SenderName;
+    
+    
+    
     //invoice string
-    public const string ThanksMessage = "\nThank you for choosing our Villa Service!";
+    public const string ThanksMessage = "Thank you for choosing our Villa Service!";
     public const string LogoPath = "wwwroot/images/resort.png";
     public const string InvoiceTitle = "VILLA BOOKING INVOICE";
     
-    public static int VillaRoomsAvailable_Count(int villaId, 
-        List<VillaNumber> villaNumberList, DateOnly checkInDate, int nights,
-        List<Booking> bookings)
+    public static int VillaRoomsAvailable_Count(
+        int villaId, 
+        List<VillaNumber> villaNumberList, 
+        DateOnly checkInDate, 
+        int nights,
+        List<Booking> bookings, 
+        out IEnumerable<int> villaNumber)
     {
-        HashSet<int> bookingInDate = new();
-        int finalAvailableRoomForAllNights = int.MaxValue;
-        var roomsInVilla = villaNumberList.Where(x => x.VillaId == villaId).Count();
+        // Lấy toàn bộ danh sách phòng của villa này
+        var allRoomNumbers = villaNumberList
+            .Where(x => x.VillaId == villaId)
+            .Select(x => x.Villa_Number)
+            .ToList();
 
-        for(int i = 0; i < nights; i++)
+        List<HashSet<int>> availableEachNight = new();
+
+        for (int i = 0; i < nights; i++)
         {
-            var villasBooked = bookings.Where(u => u.CheckInDate <= checkInDate.AddDays(i)
-                                                   && u.CheckOutDate > checkInDate.AddDays(i) && u.VillaId == villaId);
+            var date = checkInDate.AddDays(i);
 
-            foreach(var booking in villasBooked)
-            {
-                if (!bookingInDate.Contains(booking.Id))
-                {
-                    bookingInDate.Add(booking.Id);
-                }
-            }
+            // Danh sách phòng đã đặt trong đêm này
+            var bookedRooms = bookings
+                .Where(b => b.VillaId == villaId &&
+                            b.CheckInDate <= date &&
+                            b.CheckOutDate > date)
+                .Select(b => b.VillaNumber)
+                .ToHashSet();
 
-            var totalAvailableRooms = roomsInVilla - bookingInDate.Count;
-            if(totalAvailableRooms == 0)
-            {
-                return 0;
-            }
-            if(finalAvailableRoomForAllNights > totalAvailableRooms)
-            {
-                finalAvailableRoomForAllNights = totalAvailableRooms;
-            }
-            
+            // Lấy phòng còn trống trong đêm này
+            var availableRoomsTonight = allRoomNumbers
+                .Where(room => !bookedRooms.Contains(room))
+                .ToHashSet();
+
+            availableEachNight.Add(availableRoomsTonight);
         }
 
-        return finalAvailableRoomForAllNights;
+        // Tìm phòng trống trong toàn bộ nights (giao nhau)
+        var finalAvailable = availableEachNight
+            .Aggregate((set1, set2) => set1.Intersect(set2).ToHashSet());
+
+        villaNumber = finalAvailable; // xuất ra ngoài
+
+        return finalAvailable.Count();
     }
 }
