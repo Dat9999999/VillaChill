@@ -77,7 +77,7 @@ public class BookingController : Controller
         var bookingFromDB = _bookingService.GetById(x => x.Id == bookingId, "User,Villa");
         bookingFromDB.Villa.Amenities = _amenityService.GetAll(x => x.VillaId == bookingFromDB.VillaId);
 
-        if (bookingFromDB.Status == SD.StatusApproved && bookingFromDB.VillaNumber == 0)
+        if (bookingFromDB.Status == SD.StatusApproved)
         {
             var availableVillaNumber = AssignVillaNumber(bookingFromDB.VillaId);
             bookingFromDB.VillaNumbers = availableVillaNumber;
