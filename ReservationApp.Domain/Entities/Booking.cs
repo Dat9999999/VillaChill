@@ -47,5 +47,5 @@ public class Booking
     public int VillaNumber { get; set; }
 
     [NotMapped]
-    public List<VillaNumber> VillaNumbers { get; set; }
+    public List<int> VillaNumbers { get; set; }
 }

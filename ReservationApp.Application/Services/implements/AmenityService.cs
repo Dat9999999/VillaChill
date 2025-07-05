@@ -15,7 +15,7 @@ public class AmenityService : IAmenityService
     }
     public IEnumerable<Amenity> GetAll(Expression<Func<Amenity, bool>> filter = null ,string includeProperties = "")
     {
-        return _unitOfWork.Amenities.GetAll(null, includeProperties);
+        return _unitOfWork.Amenities.GetAll(filter, includeProperties);
     }
 
     public Amenity GetById(int amenityId)

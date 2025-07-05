@@ -25,7 +25,7 @@ public class BookingService : IBookingService
 
     public void UpdateStatus(int bookingId, string status, int villaNumber)
     {
-        _unitOfWork.Bookings.UpdateStatus(bookingId, status, 0);
+        _unitOfWork.Bookings.UpdateStatus(bookingId, status, villaNumber);
         _unitOfWork.Save();
     }
 

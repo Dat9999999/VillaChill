@@ -11,9 +11,9 @@ public class VillaNumberService: IVillaNumberService
     {
         _unitOfWork = unitOfWork;
     }
-    public IEnumerable<VillaNumber> GetAll(Expression<Func<Booking, bool>>? filter = null, string includeProperties = "")
+    public IEnumerable<VillaNumber> GetAll(Expression<Func<VillaNumber, bool>>? filter = null, string includeProperties = "")
     {
-        return _unitOfWork.VillaNumbers.GetAll(null, "Villa");
+        return _unitOfWork.VillaNumbers.GetAll(filter, "Villa");
     }
 
     public VillaNumber GetById(int villaNumber)

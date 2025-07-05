@@ -47,9 +47,10 @@ public class HomeController : Controller
         var villaNumbers = _villaNumberService.GetAll().ToList();
         foreach (var villa in villaList)
         {
-            int roomAvailable = SD.VillaRoomsAvailable_Count(villa.Id, villaNumbers ,checkInDate, nights, villasBooked, out _);
-            villa.IsAvaliable = roomAvailable > 0;
+            HashSet<int> roomAvailable = SD.VillaRoomsAvailable_Count(villa.Id, villaNumbers ,checkInDate, nights, villasBooked);
+            villa.IsAvaliable = roomAvailable.Count > 0;
         }
+        
         HomeVM home = new HomeVM()
         {
             VillaList = villaList,

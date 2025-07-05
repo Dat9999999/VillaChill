@@ -31,13 +31,12 @@ public static class SD
     public const string LogoPath = "wwwroot/images/resort.png";
     public const string InvoiceTitle = "VILLA BOOKING INVOICE";
     
-    public static int VillaRoomsAvailable_Count(
+    public static HashSet<int> VillaRoomsAvailable_Count(
         int villaId, 
         List<VillaNumber> villaNumberList, 
         DateOnly checkInDate, 
         int nights,
-        List<Booking> bookings, 
-        out IEnumerable<int> villaNumber)
+        List<Booking> bookings)
     {
         // Lấy toàn bộ danh sách phòng của villa này
         var allRoomNumbers = villaNumberList
@@ -71,8 +70,6 @@ public static class SD
         var finalAvailable = availableEachNight
             .Aggregate((set1, set2) => set1.Intersect(set2).ToHashSet());
 
-        villaNumber = finalAvailable; // xuất ra ngoài
-
-        return finalAvailable.Count();
+        return finalAvailable;
     }
 }

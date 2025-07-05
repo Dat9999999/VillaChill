@@ -53,6 +53,7 @@ public class BookingController : Controller
         
         ApplicationUser user = _userManager.FindByIdAsync(userId).Result;
         var villa = _villaService.GetById(VillaId, "Amenities");
+        var roomAvailable = AssignVillaNumber(VillaId);
         Booking booking = new Booking()
         {
             VillaId = VillaId,
@@ -65,6 +66,8 @@ public class BookingController : Controller
             Name = user.Name,
             Email = user.Email,
             Phone = user.PhoneNumber,
+            VillaNumbers = roomAvailable
+            
         };
         return View(booking);
     }
@@ -77,8 +80,7 @@ public class BookingController : Controller
         if (bookingFromDB.Status == SD.StatusApproved && bookingFromDB.VillaNumber == 0)
         {
             var availableVillaNumber = AssignVillaNumber(bookingFromDB.VillaId);
-            bookingFromDB.VillaNumbers = _villaNumberService.GetAll(u => u.Villa.Id == bookingFromDB.VillaId
-                && availableVillaNumber.Contains(u.VillaNumber)).ToList();
+            bookingFromDB.VillaNumbers = availableVillaNumber;
         } 
         return View(bookingFromDB);   
     }
@@ -126,11 +128,11 @@ public class BookingController : Controller
             var villa = _villaService.GetById(booking.VillaId);
             
             //update booking after payment successfully
-            _bookingService.UpdateStatus(bookingId, SD.StatusApproved, 0);
+            _bookingService.UpdateStatus(bookingId, SD.StatusApproved, booking.VillaNumber);
             _bookingService.UpdatePaymentId(bookingId, response.PaymentId);
             
             //sending notification that booking successfully through email 
-            _emailService.configMailPaySuccess(customerEmail, villa.Name, 0);
+            _emailService.configMailPaySuccess(customerEmail, villa.Name, booking.VillaNumber);
             
             
             return View(nameof(BookingConfirmation), bookingId);
