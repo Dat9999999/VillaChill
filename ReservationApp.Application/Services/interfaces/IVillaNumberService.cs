@@ -5,7 +5,7 @@ namespace ReservationApp.Application.Common.Interfaces;
 
 public interface IVillaNumberService
 {
-    public IEnumerable<VillaNumber> GetAll(Expression<Func<Booking, bool>>? filter = null, string includeProperties = "");
+    public IEnumerable<VillaNumber> GetAll(Expression<Func<VillaNumber, bool>>? filter = null, string includeProperties = "");
     public VillaNumber GetById(int villaNumber);
     public bool IsExist(int villaNumber);
     public void Update(VillaNumber villaNumber);
