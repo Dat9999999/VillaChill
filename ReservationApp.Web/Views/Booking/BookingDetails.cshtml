@@ -9,6 +9,12 @@
                 </div>
                 <div class="col-6 text-end">
                     <a asp-controller = "Booking" asp-action="Index" asp-route-status="@SD.StatusApproved" class="btn btn-secondary my-2"><i class="bi bi-arrow-left-circle"></i> Back to Bookings</a>
+                    @if (Model.Status == SD.StatusCompleted)
+                    {
+                        <a asp-controller="Rating" asp-action="CreateRating" asp-route-bookingId="@Model.Id" class="btn btn-success my-2 ms-2">
+                            <i class="bi bi-star"></i> Rating villa
+                        </a>
+                    }
                 </div>
                 <hr />
                 <partial name="_VillaDetails" model="@Model.Villa"/>
@@ -70,7 +76,7 @@
                     </div>
                     <div class="form-group pt-2 col-6">
                         <label asp-for="VillaNumber" class="text-warning"></label>
-                        @if (Model.Status == SD.StatusPending || User.IsInRole(SD.Role_Admin))
+                        @if (Model.Status == SD.StatusPending && User.IsInRole(SD.Role_Admin))
                         {
                             <select asp-for="@Model.VillaNumber" class="form-select">
                                 @foreach (var item in Model.VillaNumbers)

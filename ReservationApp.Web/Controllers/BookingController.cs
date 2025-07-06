@@ -77,7 +77,7 @@ public class BookingController : Controller
         var bookingFromDB = _bookingService.GetById(x => x.Id == bookingId, "User,Villa");
         bookingFromDB.Villa.Amenities = _amenityService.GetAll(x => x.VillaId == bookingFromDB.VillaId);
 
-        if (bookingFromDB.Status == SD.StatusApproved)
+        if (bookingFromDB.Status == SD.StatusApproved || bookingFromDB.Status == SD.StatusCompleted || bookingFromDB.Status == SD.StatusCheckedIn)
         {
             var availableVillaNumber = AssignVillaNumber(bookingFromDB.VillaId);
             bookingFromDB.VillaNumbers = availableVillaNumber;
@@ -194,7 +194,7 @@ public class BookingController : Controller
         //check if user download their invoice 
         var claimIdentity = (ClaimsIdentity)User.Identity;
         var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-        if (booking.UserId != userId) return Unauthorized();
+        if (!(User.IsInRole(SD.Role_Admin)) && booking.UserId != userId) return Unauthorized();
 
         var stream = _exporter.ExportBookingInvoice(booking);
         var fileName = $"Invoice_{booking.Id}.docx";
