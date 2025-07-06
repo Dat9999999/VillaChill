@@ -7,5 +7,6 @@ public interface IUnitOfWork
     public IAmenityRepository Amenities { get; }
     public IBookingRepository Bookings { get; }
     public IApplicationUserRepository ApplicationUsers { get; }
+    public IRatingRepository Ratings { get; }
     void Save();
 }

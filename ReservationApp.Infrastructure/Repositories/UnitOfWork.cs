@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     public IAmenityRepository Amenities { get; }
     public IBookingRepository Bookings { get; }
     public IApplicationUserRepository ApplicationUsers { get; }
+    public IRatingRepository Ratings { get; }
 
     public void Save()
     {
@@ -26,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
         Amenities = new AmenityRepository(context);
         Bookings = new BookingRepository(context);
         ApplicationUsers = new ApplicationUserRepository(context);
+        Ratings = new RatingRepository(context);
         
     }
 }
