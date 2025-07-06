@@ -14,6 +14,7 @@ public static class DependencyInjection
        services.AddScoped<IVillaNumberService, VillaNumberService>();
        services.AddScoped<IAmenityService, AmenityService>();
        services.AddScoped<IBookingService, BookingService>();
+       services.AddScoped<IRatingService, RatingService>();
         return services;
     }
 }
