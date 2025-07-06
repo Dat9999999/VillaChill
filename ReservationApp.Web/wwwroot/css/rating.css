@@ -1,0 +1,22 @@
+.star-rating {
+    font-size: 1.5rem;
+    direction: rtl;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    color: #ccc;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.star-rating input[type="radio"]:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: gold;
+}

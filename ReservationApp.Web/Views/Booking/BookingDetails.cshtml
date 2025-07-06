@@ -11,9 +11,45 @@
                     <a asp-controller = "Booking" asp-action="Index" asp-route-status="@SD.StatusApproved" class="btn btn-secondary my-2"><i class="bi bi-arrow-left-circle"></i> Back to Bookings</a>
                     @if (Model.Status == SD.StatusCompleted)
                     {
-                        <a asp-controller="Rating" asp-action="CreateRating" asp-route-bookingId="@Model.Id" class="btn btn-success my-2 ms-2">
-                            <i class="bi bi-star"></i> Rating villa
-                        </a>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ratingModal">
+                            10/10 Rating Villa
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content shadow">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="ratingModalLabel">Rating Villa</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="text-center mb-3">
+                                            <p class="fw-bold">Villa Name</p>
+                                            <img src="~/images/slide1.jpg" class="img-thumbnail" alt="villa" style="max-width: 150px;">
+                                        </div>
+
+                                        <form id="reviewForm">
+                                            <input type="hidden" asp-for="@Model.Id" id="bookingId"/>
+                                            <div class="mb-3 d-flex align-items-center">
+                                                <label for="score" class="form-label me-2 mb-0">Score (0–10):</label>
+                                                <input type="number" class="form-control form-control-sm" id="score" name="score"
+                                                       min="0" max="10" step="1" required style="width: 80px;">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="comment" class="form-label">Your thought:</label>
+                                                <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Enter your thought..."></textarea>
+                                            </div>
+
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 </div>
                 <hr />
