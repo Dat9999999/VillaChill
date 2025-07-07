@@ -15,6 +15,11 @@ public class RatingController : Controller
     [HttpPost]
     public IActionResult Create([FromBody] RatingRequestDTO ratingRequest)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);       
+        }
+        _ratingService.Add(ratingRequest);       
         return Ok(new { message = "Rating received successfully!" });
     }
 }
