@@ -30,5 +30,33 @@
                 </p>
             </span>
         </div>
+        <!-- Rating Section -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; background-color: #f8f9fa;">
+                    <h5 class="text-primary">User Rating</h5>
+                    @* @if (Model.Comments != null && Model.Comments.Any()) *@
+                    @* { *@
+                    @*     @foreach (var comment in Model.Comments) *@
+                    @*     { *@
+                    <div class="mb-3 p-2 d-flex justify-content-between align-items-start" style="border-bottom: 1px solid #ddd;">
+                        <div>
+                            <strong class="text-dark">Tony Le</strong>
+                            <span class="text-muted" style="font-size: small;"> - 27/09/2006</span>
+                            <p class="mt-1 mb-0">Great of all the time</p>
+                        </div>
+                        <div>
+                            <span class="badge bg-success fs-6">Score: 10 / 10</span>
+                        </div>
+                    </div>
+                    @*     } *@
+                    @* } *@
+                    @* else *@
+                    @* { *@
+                        @* <p class="text-muted">No comments yet. Be the first to review this villa!</p> *@
+                    @* } *@
+                </div>
+            </div>
+        </div>
     </div>
 </div>
