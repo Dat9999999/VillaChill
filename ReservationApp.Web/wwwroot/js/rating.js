@@ -1,41 +1,52 @@
-document.getElementById("reviewForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
+const container = document.querySelector(".ratings-box");
 
-    const score = parseInt(document.getElementById("score").value);
-    const comment = document.getElementById("comment").value;
-    const bookingId = parseInt(document.getElementById("bookingId").value);
-    const VillaId = parseInt(document.getElementById("villaId").value);
-    const Name = document.getElementById("Name").value;
+const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const el = entry.target;
+            const villaId = el.getAttribute("data-villa-id");
+            const alreadyLoaded = el.getAttribute("data-loaded");
 
+            if (alreadyLoaded === "true") return;
 
-    if (isNaN(score) || score < 0 || score > 10) {
-        alert("Please enter a valid score between 0 and 10.");
+            // Gọi API
+            fetch(`/Rating/GetRatingsByVillaId?villaId=${villaId}`)
+                .then(res => res.json())
+                .then(data => {
+                    renderRatings(el, data);
+                    el.setAttribute("data-loaded", "true"); // Đánh dấu đã load
+                    obs.unobserve(el); // Không theo dõi nữa
+                })
+                .catch(err => {
+                    console.error(err);
+                    el.innerHTML = "<p class='text-danger p-2'>Failed to load ratings.</p>";
+                });
+        }
+    });
+}, { threshold: 0.3 });
+
+observer.observe(container);
+
+function renderRatings(container, ratings) {
+    if (!ratings || ratings.length === 0) {
+        container.innerHTML += `<p class='text-body-secondary p-2'>No comments yet. Be the first to review this villa!</p>`;
         return;
     }
-    console.log(Name);
 
-    try {
-        const response = await fetch("/rating/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ bookingId, score, comment, VillaId, Name })
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            alert(data.message);
-        } else {
-            const err = await response.text();
-            alert("Error: " + err);
-        }
-
-        const modal = bootstrap.Modal.getInstance(document.getElementById("ratingModal"));
-        modal.hide();
-        this.reset();
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Sends rating failed. Please try again later.");
-    }
-});
+    const items = ratings.map(r => `
+            <div class="d-flex mb-3">
+                <img src="/images/placeholder.png" class="rounded-circle me-3" style="width: 40px; height: 40px;" alt="avatar" />
+                <div class="w-100" style="background-color: #f0f2f5; border-radius: 16px; padding: 10px 15px;">
+                    <div class="fw-semibold text-dark mb-1" style="font-size: 14px;">
+                        ${r.customerName}
+                        <span class="text-body-secondary" style="font-size: 12px;"> · ${new Date(r.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="text-dark mb-1" style="font-size: 15px;">
+                        ${r.comment || "No comment"}
+                    </div>
+                    <span class="badge bg-success">Score: ${r.score} / 10</span>
+                </div>
+            </div>
+        `);
+    container.innerHTML = container.querySelector(".sticky-top").outerHTML + items.join("");
+}
