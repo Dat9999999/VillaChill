@@ -32,6 +32,6 @@ public class Villa
     [NotMapped]
     public bool IsAvaliable { get; set; } = true;
     
-    [NotMapped]
-    public List<Rating> Ratings { get; set; }
+    [ValidateNever]
+    public IEnumerable<Rating> Ratings { get; set; }
 }

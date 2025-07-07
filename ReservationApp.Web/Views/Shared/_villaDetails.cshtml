@@ -1,6 +1,6 @@
 @model Villa
 <div class="row">
-     <div class="col-12 col-md-5">
+    <div class="col-12 col-md-5">
         <img src="@Model.ImageUrl" style="border-radius:10px;" width="100%" />
     </div>
     <div class="col-12 col-md-7">
@@ -13,9 +13,9 @@
                 <p class="h5 text-white">Villa Amenities</p>
                 @foreach (var amenity in Model.Amenities)
                 {
-                <ul>
-                    <li>@amenity.Name</li>
-                </ul>
+                    <ul>
+                        <li>@amenity.Name</li>
+                    </ul>
                 }
             </div>
         </div>
@@ -30,33 +30,62 @@
                 </p>
             </span>
         </div>
-        <!-- Rating Section -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <div style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; background-color: #f8f9fa;">
-                    <h5 class="text-primary">User Rating</h5>
-                    @* @if (Model.Comments != null && Model.Comments.Any()) *@
-                    @* { *@
-                    @*     @foreach (var comment in Model.Comments) *@
-                    @*     { *@
-                    <div class="mb-3 p-2 d-flex justify-content-between align-items-start" style="border-bottom: 1px solid #ddd;">
-                        <div>
-                            <strong class="text-dark">Tony Le</strong>
-                            <span class="text-muted" style="font-size: small;"> - 27/09/2006</span>
-                            <p class="mt-1 mb-0">Great of all the time</p>
-                        </div>
-                        <div>
-                            <span class="badge bg-success fs-6">Score: 10 / 10</span>
-                        </div>
-                    </div>
-                    @*     } *@
-                    @* } *@
-                    @* else *@
-                    @* { *@
-                        @* <p class="text-muted">No comments yet. Be the first to review this villa!</p> *@
-                    @* } *@
-                </div>
-            </div>
-        </div>
+    </div>
+    <div id="ratings-container-@Model.Id"
+         class="ratings-box"
+         data-villa-id="@Model.Id"
+         style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; border-radius: 10px; padding: 15px; background-color: #f8f9fa;">
+        <h5 class="text-primary mb-3"><i class="bi bi-hand-thumbs-up"></i> Ratings</h5>
+        <p class="text-muted">Loading...</p> <!-- placeholder while loading -->
     </div>
 </div>
+<script>
+    // Gọi khi modal mở
+    document.addEventListener("shown.bs.modal", function (event) {
+        const modal = event.target;
+        const ratingsBox = modal.querySelector(".ratings-box");
+
+        if (!ratingsBox) return;
+
+        const villaId = ratingsBox.getAttribute("data-villa-id");
+
+        fetch(`/Rating/GetRatingsByVillaId?villaId=${villaId}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to load ratings");
+                return response.json();
+            })
+            .then(data => {
+                renderRatings(ratingsBox, data);
+            })
+            .catch(error => {
+                console.error(error);
+                ratingsBox.innerHTML = "<p class='text-danger'>Failed to load ratings.</p>";
+            });
+    });
+
+    // Render danh sách đánh giá
+    function renderRatings(container, ratings) {
+        if (!ratings || ratings.length === 0) {
+            container.innerHTML = "<p class='text-muted'>No comments yet. Be the first to review this villa!</p>";
+            return;
+        }
+
+        const items = ratings.map(r => `
+            <div class="d-flex mb-3">
+                <img src="/images/placeholder.png" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;" alt="avatar" />
+                <div class="w-100" style="background-color: #f0f2f5; border-radius: 16px; padding: 10px 15px;">
+                    <div class="fw-semibold text-dark mb-1" style="font-size: 14px;">
+                        ${r.customerName}
+                        <span class="text-muted" style="font-size: 12px;"> · ${new Date(r.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="text-dark mb-1" style="font-size: 15px;">
+                        ${r.comment || "No comment"}
+                    </div>
+                    <span class="badge bg-success">Score: ${r.score} / 10</span>
+                </div>
+            </div>
+        `);
+
+        container.innerHTML = items.join("");
+    }
+</script>

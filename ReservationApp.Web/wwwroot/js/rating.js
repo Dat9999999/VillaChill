@@ -4,11 +4,15 @@ document.getElementById("reviewForm").addEventListener("submit", async function 
     const score = parseInt(document.getElementById("score").value);
     const comment = document.getElementById("comment").value;
     const bookingId = parseInt(document.getElementById("bookingId").value);
+    const VillaId = parseInt(document.getElementById("villaId").value);
+    const Name = document.getElementById("Name").value;
+
 
     if (isNaN(score) || score < 0 || score > 10) {
         alert("Please enter a valid score between 0 and 10.");
         return;
     }
+    console.log(Name);
 
     try {
         const response = await fetch("/rating/create", {
@@ -16,7 +20,7 @@ document.getElementById("reviewForm").addEventListener("submit", async function 
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ bookingId, score, comment })
+            body: JSON.stringify({ bookingId, score, comment, VillaId, Name })
         });
 
         if (response.ok) {

@@ -15,7 +15,8 @@ public class RatingService : IRatingService
     }
     public IEnumerable<Rating> GetAll(Expression<Func<Rating, bool>>? filter = null, string includeProperties = "")
     {
-        throw new NotImplementedException();
+        var ratings = _unitOfWork.Ratings.GetAll(filter, includeProperties);
+        return ratings;       
     }
 
     public Rating GetById(Expression<Func<Rating, bool>>? filter = null, string includeProperties = "")
@@ -41,6 +42,8 @@ public class RatingService : IRatingService
             BookingId = RatingDto.BookingId,
             Comment = RatingDto.Comment,
             Date = DateTime.Now,
+            CustomerName = RatingDto.Name,
+            VillaId = RatingDto.VillaId,
             Score = RatingDto.Score
         };
         _unitOfWork.Ratings.Add(rating);

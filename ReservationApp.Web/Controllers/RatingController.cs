@@ -22,4 +22,10 @@ public class RatingController : Controller
         _ratingService.Add(ratingRequest);       
         return Ok(new { message = "Rating received successfully!" });
     }
+    [HttpGet]
+    public IActionResult GetRatingsByVillaId([FromQuery]int villaId)
+    {
+        var ratings = _ratingService.GetAll(u => u.VillaId == villaId);
+        return Ok(ratings);       
+    }
 }

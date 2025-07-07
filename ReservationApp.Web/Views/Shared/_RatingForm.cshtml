@@ -1,0 +1,88 @@
+@model Booking
+<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ratingModal">
+    10/10 Rating Villa
+</button>
+<!-- Modal -->
+<div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ratingModalLabel">Rating Villa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <p class="fw-bold">Villa Name</p>
+                    <img src="~/images/slide1.jpg" class="img-thumbnail" alt="villa" style="max-width: 150px;">
+                </div>
+
+                <form id="reviewForm">
+                    <input  type = "hidden" id="bookingId"  asp-for="Id" />
+                    <input   type = "hidden" id="villaId"  asp-for="VillaId" />
+                    <input  type = "hidden" id="Name" asp-for="Name" />
+
+                    
+                    <div class="mb-3 d-flex align-items-center">
+                        <label for="score" class="form-label me-2 mb-0">Score (0–10):</label>
+                        <input type="number" class="form-control form-control-sm" id="score" name="score"
+                               min="0" max="10" step="1" required style="width: 80px;">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Your thought:</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Enter your thought..."></textarea>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("reviewForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const score = parseInt(document.getElementById("score").value);
+        const comment = document.getElementById("comment").value;
+        const bookingId = parseInt(document.getElementById("bookingId").value);
+        const VillaId = parseInt(document.getElementById("villaId").value);
+        const Name = document.getElementById("Name").value;
+
+
+        if (isNaN(score) || score < 0 || score > 10) {
+            alert("Please enter a valid score between 0 and 10.");
+            return;
+        }
+        console.log(Name);
+
+        try {
+            const response = await fetch("/rating/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ bookingId, score, comment, VillaId, Name })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert(data.message);
+            } else {
+                const err = await response.text();
+                alert("Error: " + err);
+            }
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById("ratingModal"));
+            modal.hide();
+            this.reset();
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Sends rating failed. Please try again later.");
+        }
+    });
+
+</script>
