@@ -24,6 +24,8 @@
                 <th>Sqft</th>
                 <th>Price</th>
                 <th>Occupancy</th>
+                <th>Address</th>
+                
                 <th></th>
             </tr>
             </thead>
@@ -35,6 +37,7 @@
                     <td>@villa.Sqft</td>
                     <td>@villa.Price</td>
                     <td>@villa.Occupancy</td>
+                    <td>@villa.Address</td>
                     <td>
                         <div class="w-75 btn-group" role="group">
                             <a asp-controller="Villa" asp-action="Update" asp-route-VillaId="@villa.Id" class="btn btn-warning mx-2">
