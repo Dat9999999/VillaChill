@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Common.mappers;
 using ReservationApp.Application.Services.implements;
 using ReservationApp.Application.Services.interfaces;
 
@@ -15,6 +16,7 @@ public static class DependencyInjection
        services.AddScoped<IAmenityService, AmenityService>();
        services.AddScoped<IBookingService, BookingService>();
        services.AddScoped<IRatingService, RatingService>();
+       services.AddAutoMapper(typeof(MappingProfile));
         return services;
     }
 }

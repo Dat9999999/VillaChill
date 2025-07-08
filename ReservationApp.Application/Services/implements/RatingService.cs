@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using AutoMapper;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
@@ -9,9 +10,11 @@ namespace ReservationApp.Application.Services.implements;
 public class RatingService : IRatingService
 {
     private readonly IUnitOfWork _unitOfWork;
-    public RatingService(IUnitOfWork unitOfWork)
+    private readonly IMapper _mapper;
+    public RatingService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;       
     }
     public IEnumerable<Rating> GetAll(Expression<Func<Rating, bool>>? filter = null, string includeProperties = "")
     {
@@ -36,16 +39,7 @@ public class RatingService : IRatingService
 
     public void Add(RatingRequestDTO RatingDto)
     {
-        // mappper 
-        Rating rating = new Rating()
-        {
-            BookingId = RatingDto.BookingId,
-            Comment = RatingDto.Comment,
-            Date = DateTime.Now,
-            CustomerName = RatingDto.Name,
-            VillaId = RatingDto.VillaId,
-            Score = RatingDto.Score
-        };
+        var rating = _mapper.Map<Rating>(RatingDto);
         _unitOfWork.Ratings.Add(rating);
         _unitOfWork.Save();   
     }
