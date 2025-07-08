@@ -39,13 +39,13 @@
 
             <!-- Check In Date -->
             <div class="col-12 col-md-3">
-                <label for="CheckInDate" class="form-label">Check In Date</label>
+                <label for="CheckInDate" class="form-label"><i class="bi bi-calendar2-date"></i>Check In Date</label>
                 <input asp-for="CheckInDate" type="date" class="form-control" />
             </div>
 
             <!-- Nights -->
             <div class="col-6 col-md-2">
-                <label for="Nights" class="form-label">No. of nights</label>
+                <label for="Nights" class="form-label"><i class="bi bi-moon"></i>No. of nights</label>
                 <select class="form-select" asp-for="Nights">
                     @for (int i = 1; i <= 10; i++)
                     {
