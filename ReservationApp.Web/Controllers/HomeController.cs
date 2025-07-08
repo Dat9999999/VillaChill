@@ -38,7 +38,7 @@ public class HomeController : Controller
         return View(homevm);
     }
     [HttpPost]
-    public IActionResult CheckAvailability(int nights, DateOnly checkInDate)
+    public IActionResult CheckAvailability(int nights, DateOnly checkInDate, string city)
     {
         
         var villaList = _villaService.GetAll("Amenities");

@@ -21,7 +21,6 @@
 
     <ItemGroup>
       <Folder Include="Views\Rating\" />
-      <Folder Include="wwwroot\images\VillaImage\" />
     </ItemGroup>
 
     <ItemGroup>

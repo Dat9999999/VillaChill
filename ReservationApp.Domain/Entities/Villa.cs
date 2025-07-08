@@ -23,6 +23,8 @@ public class Villa
     public IFormFile? Image { get; set; }
     [DisplayName( "Image Url")]
     public string? ImageUrl { get; set; }
+    
+    public string? Address { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     
