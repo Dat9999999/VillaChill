@@ -10,7 +10,7 @@ const observer = new IntersectionObserver((entries, obs) => {
             if (alreadyLoaded === "true") return;
 
             // Gọi API
-            fetch(`/Rating/GetRatingsByVillaId?villaId=${villaId}`)
+            fetch(`${GetRatingById}+${villaId}`)
                 .then(res => res.json())
                 .then(data => {
                     renderRatings(el, data);

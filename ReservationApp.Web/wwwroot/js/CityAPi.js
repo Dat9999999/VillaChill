@@ -1,4 +1,4 @@
-fetch('https://provinces.open-api.vn/api/p/')
+fetch(apiCity)
     .then(response => response.json())
     .then(data => {
         const select = document.getElementById('province');
