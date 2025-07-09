@@ -41,6 +41,7 @@
                     <label asp-for="Address" class="ms-2"></label>
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
+                <partial name="_CityDropDown" model="@Model"/>
                 <div class="form-floating py-1 col-12">
                     <input asp-for="ImageUrl" hidden class="form-control border shadow" />
                     <input asp-for="Image" class="form-control border shadow" />
@@ -68,6 +69,7 @@
         </form>
     </div>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -33,8 +33,10 @@
 
             <!-- City -->
             <div class="col-12 col-md-4">
-                <label for="City" class="form-label"><i class="bi bi-geo-alt"></i>City</label>
-                <input type="text" asp-for="City" class="form-control" placeholder="e.g. Da Nang or Ho Chi Minh">
+                <label asp-for="City" class="form-label ms-2">Select a province/city:</label>
+                <select asp-for="City" id="province" class="form-control border shadow">
+                    <option>Đang tải...</option>
+                </select>
             </div>
 
             <!-- Check In Date -->

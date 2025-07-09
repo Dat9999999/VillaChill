@@ -1,0 +1,8 @@
+@model Villa  
+<div class="py-1 col-12">
+    <label asp-for="City" class="form-label ms-2">Select a province/city:</label>
+    <select asp-for="City" id="province" class="form-control border shadow">
+        <option>Đang tải...</option>
+    </select>
+    <span asp-validation-for="City" class="text-danger"></span>
+</div>
