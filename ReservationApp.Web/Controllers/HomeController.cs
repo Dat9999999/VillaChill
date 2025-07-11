@@ -41,7 +41,7 @@ public class HomeController : Controller
     public IActionResult CheckAvailability(int nights, DateOnly checkInDate, string city)
     {
         
-        var villaList = _villaService.GetAll("Amenities");
+        var villaList = _villaService.GetAll("Amenities").Where(u => u.City == city).ToList();
         var villasBooked = _bookingService.GetAll(u => u.Status == SD.StatusApproved 
                                                             || u.Status == SD.StatusCheckedIn).ToList();
         var villaNumbers = _villaNumberService.GetAll().ToList();

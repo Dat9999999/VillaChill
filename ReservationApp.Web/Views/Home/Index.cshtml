@@ -35,7 +35,7 @@
             <div class="col-12 col-md-4">
                 <label asp-for="City" class="form-label ms-2">Select a province/city:</label>
                 <select asp-for="City" id="province" class="form-control border shadow">
-                    <option>Đang tải...</option>
+                    <option >Đang tải...</option>
                 </select>
             </div>
 
@@ -78,13 +78,15 @@ $(document).ready(function() {
         $(".spinner").show();
         var checkInDate = $("#CheckInDate").val();
         var nights = $(".form-select").val();
+        var city = $("#province").val();
 
         $.ajax({
             url: '/Home/CheckAvailability',
             type: 'POST',
             data: {
                 checkInDate: checkInDate,
-                nights: nights
+                nights: nights,
+                city : city,
             },
             success: function(response) {
 

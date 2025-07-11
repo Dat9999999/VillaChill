@@ -50,3 +50,37 @@ function renderRatings(container, ratings) {
         `);
     container.innerHTML = container.querySelector(".sticky-top").outerHTML + items.join("");
 }
+
+const currentUserId = @User.FindFirst("sub")?.Value?? "null"; // hoặc gán tạm để test
+
+function toggleUserRatingFilter(villaId) {
+    const container = document.getElementById(`ratings-container-${villaId}`);
+    const filterBtn = document.getElementById(`filter-own-btn-${villaId}`);
+
+    // Toggle trạng thái
+    const filtering = filterBtn.dataset.filtering === "true";
+    filterBtn.dataset.filtering = (!filtering).toString();
+
+    // Nếu chưa load thì không làm gì cả
+    if (container.dataset.loaded !== "true") {
+        alert("Please wait for ratings to load.");
+        return;
+    }
+
+    // Lấy toàn bộ rating (giả sử ta đã render thành HTML với class hoặc attribute chứa userId)
+    const allRatings = container.querySelectorAll('.rating-item');
+
+    allRatings.forEach(rating => {
+        const userId = rating.dataset.userId;
+        if (!filtering && userId !== currentUserId) {
+            rating.style.display = "none";
+        } else {
+            rating.style.display = "";
+        }
+    });
+
+    // Đổi nút
+    filterBtn.innerHTML = filtering
+        ? `<i class="bi bi-person-circle"></i> My Ratings`
+        : `<i class="bi bi-x-circle"></i> All Ratings`;
+}
