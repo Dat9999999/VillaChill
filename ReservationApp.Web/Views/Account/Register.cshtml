@@ -39,7 +39,10 @@
                                 <option disabled selected>-Select Role-</option>
                                 @foreach (var role in Model.Roles)
                                 {
-                                    <option value="@role.Value">@role.Value</option>
+                                    if (role.Value != SD.Role_Admin)
+                                    {
+                                        <option value="@role.Value">@role.Value</option>
+                                    }
                                 }
                             </select>
                             <label asp-for="@Model.Roles" class="ms-2 text-muted"></label>
