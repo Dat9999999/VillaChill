@@ -41,7 +41,8 @@ public class AccountController : Controller
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(loginVm.Email);
-                if (await _userManager.IsInRoleAsync(user, SD.Role_Admin))
+                if (await _userManager.IsInRoleAsync(user, SD.Role_Admin) ||
+                    await _userManager.IsInRoleAsync(user, SD.Role_Owner))
                 {
                     return RedirectToAction("Index", "Dashboard");   
                 }

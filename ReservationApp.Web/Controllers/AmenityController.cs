@@ -10,7 +10,7 @@ using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,Owner")]
 public class AmenityController : Controller
 {
     private readonly IVillaService _villaService;
