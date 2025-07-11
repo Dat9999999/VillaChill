@@ -29,6 +29,7 @@ public class DbInitializer : IDbInitializer
             if (!_roleManager.RoleExistsAsync(SD.Role_Admin).Result)
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).Wait();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Owner)).Wait();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).Wait();
             }
 
