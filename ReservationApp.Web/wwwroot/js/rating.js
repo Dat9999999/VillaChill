@@ -51,8 +51,8 @@ function renderRatings(container, ratings) {
     container.innerHTML = container.querySelector(".sticky-top").outerHTML + items.join("");
 }
 
-const currentUserId = @User.FindFirst("sub")?.Value?? "null"; // hoặc gán tạm để test
-
+// Razor in ra giá trị dạng chuỗi JS
+const currentUserId = "test-user-id";
 function toggleUserRatingFilter(villaId) {
     const container = document.getElementById(`ratings-container-${villaId}`);
     const filterBtn = document.getElementById(`filter-own-btn-${villaId}`);
