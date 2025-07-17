@@ -50,12 +50,11 @@
                 </div> 
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-success w-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                            </svg> Create
+                        <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#profitShareModal">
+                            <!-- icon -->
+                            Create
                         </button>
+
                     </div>
                     <div class="col-6 col-md-3">
                         <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary w-100">
@@ -67,8 +66,49 @@
                 </div>
             </div>
         </form>
+        <!-- Profit Sharing Agreement Modal -->
+        <div class="modal fade" id="profitShareModal" tabindex="-1" aria-labelledby="profitShareModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg rounded-4">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="profitShareModalLabel">Profit Sharing Agreement</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p class="mb-4">
+                            By clicking the checkbox below, the <strong>Owner</strong> agrees to share <strong>x%</strong> of the profit per transaction with the <strong>Website</strong>.
+                        </p>
+                        <div class="form-check d-flex justify-content-center">
+                            <input class="form-check-input me-2" type="checkbox" id="agreeCheckbox" />
+                            <label class="form-check-label" for="agreeCheckbox">
+                                I agree to the profit sharing terms
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" id="confirmAgreementBtn" disabled>Confirm & Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkbox = document.getElementById("agreeCheckbox");
+    const confirmBtn = document.getElementById("confirmAgreementBtn");
+
+    checkbox.addEventListener("change", function () {
+      confirmBtn.disabled = !checkbox.checked;
+    });
+
+    confirmBtn.addEventListener("click", function () {
+      // Tìm và submit form
+      document.querySelector("form").submit();
+    });
+  });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
