@@ -29,6 +29,9 @@ public class Villa
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     
+    [Required]
+    public int OwnerId { get; set; }
+    
     [ValidateNever]
     public IEnumerable<Amenity> Amenities { get; set; }
     
