@@ -34,14 +34,14 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Index(HomeVM homevm)
     {
-        homevm.VillaList = _villaService.GetAll("Amenities");
+        homevm.VillaList = _villaService.GetAll(null,"Amenities");
         return View(homevm);
     }
     [HttpPost]
     public IActionResult CheckAvailability(int nights, DateOnly checkInDate, string city)
     {
         
-        var villaList = _villaService.GetAll("Amenities").Where(u => u.City == city).ToList();
+        var villaList = _villaService.GetAll(null,"Amenities").Where(u => u.City == city).ToList();
         var villasBooked = _bookingService.GetAll(u => u.Status == SD.StatusApproved 
                                                             || u.Status == SD.StatusCheckedIn).ToList();
         var villaNumbers = _villaNumberService.GetAll().ToList();

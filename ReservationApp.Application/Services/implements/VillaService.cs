@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
@@ -16,9 +17,9 @@ public class VillaService : IVillaService
         _env = env;       
         
     }
-    public IEnumerable<Villa> GetAll(string includeProperties)
+    public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter,string includeProperties)
     {
-        return _unitOfWork.Villas.GetAll(includeProperties: includeProperties);;
+        return _unitOfWork.Villas.GetAll(filter,includeProperties: includeProperties);;
     }
 
     public Villa GetById(int id, string includeProperties = "")

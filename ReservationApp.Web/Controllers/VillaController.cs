@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 namespace ReservationApp.Controllers;
@@ -18,6 +19,13 @@ public class VillaController : Controller
     // GET
     public IActionResult Index()
     {
+        var claimIdentity = (ClaimsIdentity)User.Identity;
+        var role = claimIdentity.FindFirst(ClaimTypes.Role).Value;
+        var email = claimIdentity.FindFirst(ClaimTypes.Name).Value;
+        if (role == SD.Role_Owner)
+        {
+            return View(_villaService.GetAll(x=> x.OwnerEmail == email));
+        }
         return View(_villaService.GetAll());
     }
 
