@@ -30,7 +30,7 @@ public class Villa
     public DateTime UpdatedAt { get; set; }
     
     [Required]
-    public int OwnerId { get; set; }
+    public string OwnerEmail { get; set; }
     
     [ValidateNever]
     public IEnumerable<Amenity> Amenities { get; set; }

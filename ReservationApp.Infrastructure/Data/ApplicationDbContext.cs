@@ -30,7 +30,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Price = 500,
                 ImageUrl = "/images/villa1.jpg",
                 Address = "123 Đường Trần Phú",
-                City = "Thành phố Hà Nội"
+                City = "Thành phố Hà Nội",
+                OwnerEmail = "admin@gmail.com"
             },
             new Villa
             {
@@ -42,7 +43,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Price = 350,
                 ImageUrl = "/images/villa2.jpg",
                 Address = "456 Võ Nguyên Giáp",
-                City = "Thành phố Đà Nẵng"
+                City = "Thành phố Đà Nẵng",
+                OwnerEmail = "admin@gmail.com"
             },
             new Villa
             {
@@ -54,7 +56,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Price = 400,
                 ImageUrl = "/images/villa3.jpg",
                 Address = "789 Hoàng Liên",
-                City = "Thành phố Hồ Chí Minh"
+                City = "Thành phố Hồ Chí Minh",
+                OwnerEmail = "admin@gmail.com"
             }
         );
         modelBuilder.Entity<VillaNumber>().HasData(
