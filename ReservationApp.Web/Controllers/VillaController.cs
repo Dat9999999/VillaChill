@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Services.interfaces;
@@ -27,7 +28,9 @@ public class VillaController : Controller
     [HttpPost]
     public IActionResult Create(Villa obj)
     {
-
+        var claimIdentity = (ClaimsIdentity)User.Identity;
+        var email = claimIdentity.FindFirst(ClaimTypes.Email).Value;
+        obj.OwnerEmail = email;
         if (!_villaService.Add(obj, out string errorMessage))
         {
             if(errorMessage == "Name and Description cannot be the same")
