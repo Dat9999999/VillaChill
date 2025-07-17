@@ -28,6 +28,8 @@
                 </div>
             </div>
         </div>
+        @if (User.IsInRole(SD.Role_Admin))
+        {
         <div class="col-md-6 col-xl-4 mt-2">
             <div class="card">
                 <div class="card-body">
@@ -51,6 +53,7 @@
                 </div>
             </div>
         </div>
+        }
         <div class="col-md-6 col-xl-4 mt-2">
             <div class="card">
                 <div class="card-body">
@@ -74,6 +77,8 @@
                 </div>
             </div>
         </div>
+        @if (User.IsInRole(SD.Role_Admin))
+        {
          <div class="col-md-12 col-xl-8 mt-2">
             <div class="card">
                 <div class="card-body">
@@ -91,6 +96,7 @@
                 </div>
             </div>
         </div>
+        }
         <div class="col-md-12 col-xl-4 mt-2">
             <div class="card">
                 <div class="card-body">
@@ -109,6 +115,17 @@
                 </div>
             </div>
         </div>
+        @if (User.IsInRole(SD.Role_Owner))
+        {
+            <label for="timeRange" style="width: 150px;">Select time:</label>
+            <select class="form-select form-select-sm w-auto" id="timeRange">
+                <option value="1m">1 month</option>
+                <option value="3m">3 months</option>
+                <option value="6m">6 months</option>
+                <option value="12m">1 year</option>
+            </select>
+            <div id="chart"></div>
+        }
     </div>
 </div>
 
@@ -119,4 +136,5 @@
     <script src="~/js/dashboard/getTotalUserRadial.js"></script>
     <script src="~/js/dashboard/getCustomerBookingPieChart.js"></script>
     <script src="~/js/dashboard/getCustomerAndBookingLineChart.js"></script>
+    <script src ="~/js/dashboard/columnChart.js"></script>
 }
