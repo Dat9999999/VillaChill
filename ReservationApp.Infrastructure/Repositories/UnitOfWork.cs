@@ -13,6 +13,7 @@ public class UnitOfWork : IUnitOfWork
     public IBookingRepository Bookings { get; }
     public IApplicationUserRepository ApplicationUsers { get; }
     public IRatingRepository Ratings { get; }
+    public ICommissionRateRepository CommissionRates { get; }
 
     public void Save()
     {
@@ -28,6 +29,7 @@ public class UnitOfWork : IUnitOfWork
         Bookings = new BookingRepository(context);
         ApplicationUsers = new ApplicationUserRepository(context);
         Ratings = new RatingRepository(context);
-        
+        CommissionRates = new CommissionRateRepository(context);
+
     }
 }

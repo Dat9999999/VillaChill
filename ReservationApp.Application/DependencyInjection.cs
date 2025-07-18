@@ -16,6 +16,7 @@ public static class DependencyInjection
        services.AddScoped<IAmenityService, AmenityService>();
        services.AddScoped<IBookingService, BookingService>();
        services.AddScoped<IRatingService, RatingService>();
+       services.AddScoped<IComissionService, ComissionService>();
        services.AddAutoMapper(typeof(MappingProfile));
         return services;
     }

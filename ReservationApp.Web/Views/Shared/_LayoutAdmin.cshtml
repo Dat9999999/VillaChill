@@ -72,6 +72,15 @@
                                 <span>Booking</span>
                             </a>
                         </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="CommissionRate" asp-action="Index">
+                                    <span class="me-2"><i class="bi bi-percent"></i></span>
+                                    <span>Commission rate</span>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </nav>
@@ -91,7 +100,6 @@
             </svg>
         </div>
     </footer>
-    @* jquery-ajax-unobtrusive@3.2.6 *@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="/js/JSGlobalConst.js"></script>
