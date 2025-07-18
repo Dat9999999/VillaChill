@@ -32,6 +32,9 @@ public static class SD
     public const string LogoPath = "wwwroot/images/resort.png";
     public const string InvoiceTitle = "VILLA BOOKING INVOICE";
     
+    
+    //commission rate name 
+    public const string CommissionRate_platform = "Platform fee";
     public static HashSet<int> VillaRoomsAvailable_Count(
         int villaId, 
         List<VillaNumber> villaNumberList, 

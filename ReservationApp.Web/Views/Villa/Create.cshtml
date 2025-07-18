@@ -1,4 +1,7 @@
 ﻿@model Villa
+@{
+    var commissionName = SD.CommissionRate_platform;
+}
 <div class="w-100 card border-0 p-4">
     <div class="card-header bg-success bg-gradient ml-0 py-3">
         <div class="row">
@@ -75,11 +78,11 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
-                        <p class="mb-4">
-                            By clicking the checkbox below, the <strong>Owner</strong> agrees to share <strong>x%</strong> of the profit per transaction with the <strong>Website</strong>.
+                        <p class="mb-4" id="profitShareText">
+                            Loading profit sharing info...
                         </p>
                         <div class="form-check d-flex justify-content-center">
-                            <input class="form-check-input me-2" type="checkbox" id="agreeCheckbox" />
+                            <input class="form-check-input me-2" type="checkbox" id="agreeCheckbox"/>
                             <label class="form-check-label" for="agreeCheckbox">
                                 I agree to the profit sharing terms
                             </label>
@@ -92,22 +95,36 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const checkbox = document.getElementById("agreeCheckbox");
-    const confirmBtn = document.getElementById("confirmAgreementBtn");
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkbox = document.getElementById("agreeCheckbox");
+        const confirmBtn = document.getElementById("confirmAgreementBtn");
+        const profitShareText = document.getElementById("profitShareText");
+        const commissionRateName = "@commissionName";
 
-    checkbox.addEventListener("change", function () {
-      confirmBtn.disabled = !checkbox.checked;
+        checkbox.addEventListener("change", function () {
+            confirmBtn.disabled = !checkbox.checked;
+        });
+
+        confirmBtn.addEventListener("click", function () {
+            document.querySelector("form").submit();
+        });
+
+        // Fetch commission rate from API
+        fetch(`/CommissionRate/GetByName?name=${commissionRateName}`)
+            .then(response => response.json())
+            .then(rate => {
+                profitShareText.innerHTML = `By clicking the checkbox below, the <strong>Owner</strong> agrees to share <strong>${rate}%</strong> of the profit per transaction with the <strong>Website</strong>.`;
+            })
+            .catch(err => {
+                profitShareText.innerText = "Unable to load commission rate.";
+                console.error(err);
+            });
     });
 
-    confirmBtn.addEventListener("click", function () {
-      // Tìm và submit form
-      document.querySelector("form").submit();
-    });
-  });
 </script>
 
 @section Scripts {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
@@ -7,7 +8,6 @@ using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
-[Authorize(Roles = SD.Role_Admin)]
 public class CommissionRateController : Controller
 {
     private readonly IComissionService _comissionService;
@@ -23,11 +23,12 @@ public class CommissionRateController : Controller
         return View(commissionRates);
     }
 
+    [Authorize(Roles = SD.Role_Admin)]
     public IActionResult Create()
     {
         return View();
     }
-
+    [Authorize(Roles = SD.Role_Admin)]
     [HttpPost]
     public IActionResult Create(CommissionRateRequestDTO obj)
     {
@@ -39,13 +40,13 @@ public class CommissionRateController : Controller
         }
         return View(obj);
     }
-
+    [Authorize(Roles = SD.Role_Admin)]
     public IActionResult Update(int Id)
     {
         var commissionRate = _comissionService.Get(x=> x.Id == Id);
         return View(commissionRate);
     }
-    
+    [Authorize(Roles = SD.Role_Admin)]
     [HttpPost]
     public IActionResult Update(CommissionRate obj)
     {
@@ -64,7 +65,7 @@ public class CommissionRateController : Controller
         var commissionRate = _comissionService.Get(x=> x.Id == Id);
         return View(commissionRate);
     }
-
+    [Authorize(Roles = SD.Role_Admin)]
     [HttpPost]
     public IActionResult Delete(CommissionRate obj)
     {
@@ -77,4 +78,13 @@ public class CommissionRateController : Controller
         TempData["Error"] = "Delete failure";
         return View(obj);
     }
+    #region API
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult GetByName(string name)
+    {
+        var ratePlatformFee = _comissionService.Get(x => x.Name.ToLower() == name.ToLower());
+        return Json(ratePlatformFee?.Rate ?? 0);
+    }
+    #endregion
 }
