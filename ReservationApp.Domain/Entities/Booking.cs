@@ -35,6 +35,8 @@ public class Booking
     public DateOnly CheckInDate { get; set; }
     [Required]
     public DateOnly CheckOutDate { get; set; }
+    
+    public bool IsPaidAtCheckIn { get; set; } = false;
 
     public bool IsPaymentSuccessful { get; set; } = false;
     public DateTime PaymentDate { get; set; }

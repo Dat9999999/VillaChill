@@ -20,12 +20,12 @@ public class BookingController : Controller
     private readonly IAmenityService _amenityService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailService _emailService;
-    // private readonly IOwnerBalanceService _ownerBalanceService;
+    private readonly IOwnerBalanceService _ownerBalanceService;
     public BookingController(IVnPayService vnPayService, IExporter exporter,
         IBookingService bookingService, IVillaNumberService villaNumberService, IVillaService villaService,
         IAmenityService amenityService,
-        UserManager<ApplicationUser> userManager, IEmailService emailService
-        // IOwnerBalanceService ownerBalanceService
+        UserManager<ApplicationUser> userManager, IEmailService emailService,
+        IOwnerBalanceService ownerBalanceService
         )
     {
         _vnPayService = vnPayService;
@@ -36,7 +36,7 @@ public class BookingController : Controller
         _amenityService = amenityService;
         _userManager = userManager;
         _emailService = emailService;
-        // _ownerBalanceService = ownerBalanceService;
+        _ownerBalanceService = ownerBalanceService;
 
     }
 
@@ -138,10 +138,6 @@ public class BookingController : Controller
             
             //sending notification that booking successfully through email 
             _emailService.configMailPaySuccess(customerEmail, villa.Name, booking.VillaNumber);
-            
-            //Update ownerbalance 
-            // _ownerBalanceService.UpdateBalance(booking.Villa.OwnerEmail, totalPayment);
-            
             
             return View(nameof(BookingConfirmation), bookingId);
         }
