@@ -69,7 +69,7 @@ public class VillaController : Controller
             TempData["Success"] = "Villa updated successfully";
             return RedirectToAction(nameof(Index));
         } 
-        TempData["Error"] = "Villa not found";
+        TempData["Error"] = "Villa updated failure";
         return View(obj);
     }
     public IActionResult Delete(int villaId)

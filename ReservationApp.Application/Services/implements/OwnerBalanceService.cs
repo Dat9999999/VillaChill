@@ -20,11 +20,12 @@ public class OwnerBalanceService: IOwnerBalanceService
         return obj;       
     }
 
-    public void UpdateBalance(int bookingId, double bookingTotalCost)
+    public void UpdateBalance(int bookingId)
     {
         var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "Villa");;
         var ownerEmail = booking.Villa.OwnerEmail;
         var ownerBalance = _unitOfWork.OwnerBalances.Get(x => x.OwnerEmail == ownerEmail);
+        var bookingTotalCost = booking.TotalCost;
         if (ownerBalance is not null)
         {
             ownerBalance.CurrentBalance += bookingTotalCost;

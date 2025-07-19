@@ -161,13 +161,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 TotalEarned = 0
             });
         
+        //commission rate
         modelBuilder.Entity<CommissionRate>().HasData(
             new CommissionRate()
             {
                 Id = 1,
                 Name = SD.CommissionRate_platform,
                 Description = "Commission rate for platform",
-                Rate = 0.1
+                Rate = 1
             });
+        
+        
     }
 }

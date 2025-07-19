@@ -50,6 +50,7 @@ public class DbInitializer : IDbInitializer
                     _userManager.AddToRoleAsync(adminUser, SD.Role_Admin).Wait();
                 }
             }
+            
         }
         catch (Exception e)
         {

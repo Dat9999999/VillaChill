@@ -108,7 +108,7 @@ public class BookingController : Controller
 
         var model = new PaymentInformationModel
         {
-            Amount = booking.TotalCost * SD.UsdDiffVND,
+            Amount = booking.TotalCost,
             Name = booking.Email,
             OrderDescription = $"{booking.Id}",
             OrderType = "booking",
@@ -180,7 +180,7 @@ public class BookingController : Controller
         if (!booking.IsPaidAtCheckIn)
         {
             // update ownerbalance when customer using payment online method 
-            _ownerBalanceService.UpdateBalance(booking.Id, booking.TotalCost);
+            _ownerBalanceService.UpdateBalance(booking.Id);
         }
         TempData["Success"] = "Booking is checked out successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });

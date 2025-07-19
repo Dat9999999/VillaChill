@@ -17,7 +17,7 @@ public class Villa
     [Range(1, 10, ErrorMessage = "Occupancy must be between 1 and 10")]
     public int Occupancy { get; set; }
     [DisplayName( "Price per night")]
-    [Range(0, 1000000, ErrorMessage = "Price must be between 0 and 1000000")]
+    [Range(100000, 1000000000, ErrorMessage = "Price must be between 100,000 and 1,000,000,000")]
     public double Price { get; set; }
     [NotMapped]
     public IFormFile? Image { get; set; }
