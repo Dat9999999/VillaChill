@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<CommissionRate> CommissionRates { get; set; }
+    public DbSet<OwnerBalance> OwnerBalances { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

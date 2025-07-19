@@ -9,5 +9,6 @@ public interface IUnitOfWork
     public IApplicationUserRepository ApplicationUsers { get; }
     public IRatingRepository Ratings { get; }
     public ICommissionRateRepository CommissionRates { get; }
+    public IOwnerBalanceRepository OwnerBalances { get; }
     void Save();
 }

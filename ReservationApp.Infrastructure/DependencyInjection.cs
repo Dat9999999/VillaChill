@@ -23,6 +23,8 @@ public static class DependencyInjection
 
        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+       
+       //repository 
        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 

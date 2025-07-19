@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
+using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.ViewModels;
 
@@ -13,13 +14,16 @@ public class AccountController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IOwnerBalanceService _ownerBalanceService;
     
     
-    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager,
+        IOwnerBalanceService ownerBalanceService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
+        _ownerBalanceService = ownerBalanceService;
     }
     // GET
     public IActionResult Login(string returnUrl = null)
@@ -93,6 +97,11 @@ public class AccountController : Controller
             {
                 if (!string.IsNullOrEmpty(registerVm.Role))
                 {
+                    if (registerVm.Role == SD.Role_Owner)
+                    {
+                        //create owner balance
+                       var res =  _ownerBalanceService.Create(user.Email);   
+                    }
                     await _userManager.AddToRoleAsync(user, registerVm.Role);
                 }
                 else
