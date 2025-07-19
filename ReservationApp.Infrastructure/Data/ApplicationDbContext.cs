@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ReservationApp.Application.Common.utility;
 using ReservationApp.Domain.Entities;
 
 namespace ReservationApp.Infrastructure.Data;
@@ -150,6 +151,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Id = 11,
                 VillaId = 3,
                 Name = "Private Balcony"
+            });
+        modelBuilder.Entity<OwnerBalance>().HasData(
+            new OwnerBalance()
+            {
+                CurrentBalance = 0,
+                Id = 1,
+                OwnerEmail = SD.adminMail,
+                TotalEarned = 0
             });
     }
 }

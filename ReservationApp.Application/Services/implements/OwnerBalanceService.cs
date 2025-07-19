@@ -19,4 +19,18 @@ public class OwnerBalanceService: IOwnerBalanceService
         _unitOfWork.Save();
         return obj;       
     }
+
+    public void UpdateBalance(int bookingId, double bookingTotalCost)
+    {
+        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "Villa");;
+        var ownerEmail = booking.Villa.OwnerEmail;
+        var ownerBalance = _unitOfWork.OwnerBalances.Get(x => x.OwnerEmail == ownerEmail);
+        if (ownerBalance is not null)
+        {
+            ownerBalance.CurrentBalance += bookingTotalCost;
+            ownerBalance.TotalEarned += bookingTotalCost;
+            _unitOfWork.OwnerBalances.Update(ownerBalance);
+            _unitOfWork.Save();       
+        }
+    }
 }

@@ -126,7 +126,6 @@ public class BookingController : Controller
         {
             var value   = response.OrderDescription.Split(" ");
             var customerEmail = value[0];
-            var totalPayment = value[2];
             // get bookingID
             var bookingId = int.Parse(value[1]);
             var booking = _bookingService.GetById(x => x.Id == bookingId);
@@ -178,6 +177,11 @@ public class BookingController : Controller
     public IActionResult CheckOut(Booking booking)
     {
         _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
+        if (!booking.IsPaidAtCheckIn)
+        {
+            // update ownerbalance when customer using payment online method 
+            _ownerBalanceService.UpdateBalance(booking.Id, booking.TotalCost);
+        }
         TempData["Success"] = "Booking is checked out successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
