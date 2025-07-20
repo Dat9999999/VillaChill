@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
+using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
@@ -64,4 +65,32 @@ public class DashboardController : Controller
     {
         return Json(new {count = _dashboardService.GetGetNumberOfVilla(ownerEmail)});
     }
+    [HttpGet]
+    public IActionResult GetRevenueChartData(string range)
+    {
+        var result = new ColumnChartDTO();
+
+        // Ví dụ mẫu – bạn có thể tính từ DB theo `range`
+        switch (range)
+        {
+            case "1m":
+                result.categories = new List<string> { "Week 1", "Week 2", "Week 3", "Week 4" };
+                result.data = new List<decimal> { 120000, 150000, 170000, 900000 };
+                break;
+            case "3m":
+                result.categories = new List<string> { "Jan", "Feb", "Mar" };
+                result.data = new List<decimal> { 400000, 500000, 600000 };
+                break;
+            case "6m":
+                result.categories = new List<string> { "Week 1", "Week 2", "Week 3", "Week 4" };
+                result.data = new List<decimal> { 120000, 150000, 170000, 200000 };
+                break;
+            case "12m":
+                result.categories = new List<string> { "Jan", "Feb", "Mar" };
+                result.data = new List<decimal> { 400000, 500000, 600000 };
+                break;
+        }
+        return Json(result);
+    }
+
 }

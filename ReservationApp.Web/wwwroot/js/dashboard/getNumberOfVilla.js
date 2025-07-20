@@ -15,7 +15,6 @@ function loadNumberOfVilla() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             document.querySelector("#spanTotalVillaCount").innerHTML = data.count;
 
             $(".chart-spinner").hide();
