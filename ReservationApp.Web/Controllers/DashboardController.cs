@@ -1,19 +1,18 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
-using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
+[Authorize(Roles = $"{SD.Role_Owner},{SD.Role_Admin}")]
 public class DashboardController : Controller
 {
     private readonly IDashboardService _dashboardService;
-    private readonly IOwnerBalanceService _ownerBalanceService;
-    public DashboardController( IDashboardService dashboardService, IOwnerBalanceService ownerBalanceService)
+    public DashboardController( IDashboardService dashboardService)
     {
         _dashboardService = dashboardService;
-        _ownerBalanceService = ownerBalanceService;
     }
     // GET
     public IActionResult Index()
@@ -23,6 +22,11 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> GetTotalBookingRadialChartData()
     {
+        if (!User.IsInRole(SD.Role_Admin))
+        {
+            var userEmail = User.FindFirst(ClaimTypes.Name).Value;
+            return Json(_dashboardService.GetTotalBookingRadialChartData(userEmail));
+        }
         return Json(_dashboardService.GetTotalBookingRadialChartData());
     }
     public async Task<IActionResult> GetUserRegisteredRadialChartData()
@@ -46,7 +50,7 @@ public class DashboardController : Controller
 
     public IActionResult GetCurrentBalanceRadialChartData([FromQuery] string ownerEmail)
     {
-        return Json(new {currentBalance =_ownerBalanceService.GetBalance(ownerEmail)});
+        return Json(new {currentBalance =_dashboardService.GetBalance(ownerEmail)});
     }
 
     [HttpGet]

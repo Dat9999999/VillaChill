@@ -161,4 +161,19 @@ public class DashboardService: IDashboardService
         var data = _unitOfWork.Villas.GetAll(u => u.OwnerEmail == ownerEmail).Count();
         return data;       
     }
+
+    public RadialBarChartDTO GetTotalBookingRadialChartData(string ownerEmail)
+    {
+        var totalBookings = _unitOfWork.Bookings.GetAll(u => u.Status != SD.StatusCancelled
+                                                             && u.Status != SD.StatusPending 
+                                                             && u.Villa.OwnerEmail == ownerEmail);
+        var totalBookingsByCurrMonth = totalBookings.Count(x => x.BookingDate >= currentStartMonthDate && x.BookingDate <= DateTime.Now);
+        var totalBookingsByPrevMonth = totalBookings.Count(x => x.BookingDate >= previousStartMonthDate && x.BookingDate < currentStartMonthDate);
+        return GetRadialCartDataModel(totalBookings.Count(), totalBookingsByCurrMonth, totalBookingsByPrevMonth);
+    }
+    public double GetBalance(string ownerEmail)
+    {
+        var ownerBalance = _unitOfWork.OwnerBalances.Get(x => x.OwnerEmail == ownerEmail);
+        return ownerBalance.CurrentBalance;       
+    }
 }
