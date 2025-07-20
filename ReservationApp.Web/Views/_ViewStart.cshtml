@@ -1,5 +1,10 @@
 ﻿@if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Owner) ){
     Layout = "_LayoutAdmin";
-}else{
+}
+else if (User.IsInRole(SD.Role_Owner))
+{
+    Layout = "_LayoutOwner";
+}
+else{
     Layout = "_Layout";
 }

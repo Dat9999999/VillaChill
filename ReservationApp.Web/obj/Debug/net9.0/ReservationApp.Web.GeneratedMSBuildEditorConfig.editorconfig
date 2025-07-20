@@ -191,3 +191,7 @@ build_metadata.AdditionalFiles.CssScope = b-wu9jj6773n
 [/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/Views/Shared/_LayoutAdmin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXRBZG1pbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = b-5xa46hea3u
+
+[/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/Views/Shared/_LayoutOwner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXRPd25lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = b-fp7vrc6tp0

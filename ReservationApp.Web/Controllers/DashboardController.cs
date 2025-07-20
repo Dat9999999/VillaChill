@@ -48,4 +48,10 @@ public class DashboardController : Controller
     {
         return Json(new {currentBalance =_ownerBalanceService.GetBalance(ownerEmail)});
     }
+
+    [HttpGet]
+    public IActionResult GetVillaBookingPieChart([FromQuery] string ownerEmail)
+    {
+        return Json("Oke");
+    }
 }

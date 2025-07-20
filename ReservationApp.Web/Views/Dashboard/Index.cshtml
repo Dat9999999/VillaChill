@@ -130,44 +130,63 @@
                     </div>
                 </div>
             </div>
-        }
-        <div class="col-md-12 col-xl-4 mt-2">
-            <div class="card">
-                <div class="card-body">
-                    <div class="">
-                        <p class="text-muted mb-0">Customer Bookings</p>
-                    </div>
-                    <div id="customerBookingsPieChart" data-colors='["--bs-warning","--bs-primary"]'>
-                    </div>
-
-                    <div class="justify-content-center text-center chart-spinner" style="display:none">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        @if (User.IsInRole(SD.Role_Owner))
-        {
-            <div class="col-md-12 col-xl-8 mt-2">
+            <div class="col-md-12 col-xl-4 mt-2">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted mb-0">Revenue in Selected Time Range</p>
-                            <select class="form-select form-select-sm w-auto" id="timeRange">
-                                <option value="1m">1 month</option>
-                                <option value="3m">3 months</option>
-                                <option value="6m">6 months</option>
-                                <option value="12m">1 year</option>
-                            </select>
+                        <div class="">
+                            <p class="text-muted mb-0">Customer Bookings</p>
                         </div>
-                        <div id="chart" class="mt-3"></div>
+                        <div id="customerBookingsPieChart" data-colors='["--bs-warning","--bs-primary"]'></div>
 
                         <div class="justify-content-center text-center chart-spinner" style="display:none">
                             <div class="spinner-border" role="status">
                                 <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+        @if (User.IsInRole(SD.Role_Owner))
+        {
+            <div class="row mt-2">
+                
+
+                <!-- Column Chart -->
+                <div class="col-md-12 col-xl-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="text-muted mb-0">Revenue in Selected Time Range</p>
+                                <select class="form-select form-select-sm w-auto" id="timeRange">
+                                    <option value="1m">1 month</option>
+                                    <option value="3m">3 months</option>
+                                    <option value="6m">6 months</option>
+                                    <option value="12m">1 year</option>
+                                </select>
+                            </div>
+                            <div id="chart" class="mt-3"></div>
+
+                            <div class="justify-content-center text-center chart-spinner" style="display:none">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pie Chart -->
+                <div class="col-md-12 col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-muted mb-0">Villa Booking Distribution for 1 year</p>
+                            <div id="loadVillaBookingPieChart" data-colors='["--bs-warning","--bs-primary"]'></div>
+
+                            <div class="justify-content-center text-center chart-spinner" style="display:none">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,6 +203,8 @@
     <script src="~/js/dashboard/getCurrentBalanceRadial.js"></script>
     <script src="~/js/dashboard/getTotalUserRadial.js"></script>
     <script src="~/js/dashboard/getCustomerBookingPieChart.js"></script>
+    <script src="~/js/dashboard/getVillaBookingPieChart.js"></script>
+    
     <script src="~/js/dashboard/getCustomerAndBookingLineChart.js"></script>
     <script src ="~/js/dashboard/columnChart.js"></script>
 }
