@@ -58,6 +58,6 @@ public class DashboardController : Controller
     [HttpGet]
     public IActionResult GetNumberOfVilla([FromQuery] string ownerEmail)
     {
-        return Json(_dashboardService.GetGetNumberOfVilla(ownerEmail));
+        return Json(new {count = _dashboardService.GetGetNumberOfVilla(ownerEmail)});
     }
 }
