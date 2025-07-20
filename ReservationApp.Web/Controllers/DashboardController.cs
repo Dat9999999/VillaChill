@@ -9,9 +9,11 @@ namespace ReservationApp.Controllers;
 public class DashboardController : Controller
 {
     private readonly IDashboardService _dashboardService;
-    public DashboardController( IDashboardService dashboardService)
+    private readonly IOwnerBalanceService _ownerBalanceService;
+    public DashboardController( IDashboardService dashboardService, IOwnerBalanceService ownerBalanceService)
     {
         _dashboardService = dashboardService;
+        _ownerBalanceService = ownerBalanceService;
     }
     // GET
     public IActionResult Index()
@@ -40,5 +42,10 @@ public class DashboardController : Controller
     {
         
         return Json(_dashboardService.getCustomerAndBookingLineChart());
+    }
+
+    public IActionResult GetCurrentBalanceRadialChartData([FromQuery] string ownerEmail)
+    {
+        return Json(new {currentBalance =_ownerBalanceService.GetBalance(ownerEmail)});
     }
 }

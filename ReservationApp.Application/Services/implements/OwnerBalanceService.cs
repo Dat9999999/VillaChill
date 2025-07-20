@@ -34,4 +34,10 @@ public class OwnerBalanceService: IOwnerBalanceService
             _unitOfWork.Save();       
         }
     }
+
+    public double GetBalance(string ownerEmail)
+    {
+        var ownerBalance = _unitOfWork.OwnerBalances.Get(x => x.OwnerEmail == ownerEmail);
+        return ownerBalance.CurrentBalance;       
+    }
 }

@@ -14,7 +14,7 @@ function loadTotalBookingRadialChart() {
             document.querySelector("#spanTotalBookingCount").innerHTML = data.totalCount;
 
             var sectionCurrentCount = document.createElement("span");
-            if (data.hasRatioIncreased) {
+            if (!data.hasRatioIncreased) {
                 sectionCurrentCount.className = "text-success me-1";
                 sectionCurrentCount.innerHTML = '<i class="bi bi-arrow-up-right-circle me-1"></i> <span> ' + data.countInCurrentMonth + '</span>';
             }
