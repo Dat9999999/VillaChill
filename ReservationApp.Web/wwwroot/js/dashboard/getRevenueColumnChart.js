@@ -5,10 +5,10 @@ const chart = new ApexCharts(document.querySelector("#chart"), {
     },
     series: [{
         name: 'Revenue',
-        data: [] // sẽ được cập nhật sau
+        data: [] 
     }],
     xaxis: {
-        categories: [] // sẽ được cập nhật sau
+        categories: [] 
     },
     yaxis: {
         labels: {

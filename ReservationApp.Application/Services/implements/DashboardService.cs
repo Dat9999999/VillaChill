@@ -176,4 +176,78 @@ public class DashboardService: IDashboardService
         var ownerBalance = _unitOfWork.OwnerBalances.Get(x => x.OwnerEmail == ownerEmail);
         return ownerBalance.CurrentBalance;       
     }
+    public ColumnChartDTO GetRevenueChartData(string range, string ownerEmail)
+    {
+        var result = new ColumnChartDTO();
+
+        // Ví dụ mẫu – bạn có thể tính từ DB theo `range`
+        switch (range)
+        {
+            case "1m":
+                var prevMonth = DateTime.Now.AddMonths(-1);
+                var revenueByMonth = _unitOfWork.Bookings.GetAll(
+                    u => u.BookingDate >= prevMonth && (u.Status == SD.StatusCheckedIn
+                    ||u.Status == SD.StatusCompleted) && u.Villa.OwnerEmail == ownerEmail, "Villa")
+                    .GroupBy(u => u.BookingDate.Date)
+                    .OrderBy(u => u.Key)
+                    .Select(g => new
+                    {
+                        key = g.Key,
+                        Total = g.Sum(x => x.TotalCost)
+                    }).ToList();
+                
+                result.categories = revenueByMonth.Select(x => x.key.ToString("MM/dd/yyyy")).ToList();;
+                result.data = revenueByMonth.Select(x => (decimal)x.Total).ToList();
+                break;
+            case "3m":
+                var threeMonthsAgo = DateTime.Now.AddMonths(-3);
+                var revenueBy3Months = _unitOfWork.Bookings.GetAll(
+                        u => u.BookingDate >= threeMonthsAgo && (u.Status == SD.StatusCheckedIn
+                                                                 ||u.Status == SD.StatusCompleted) && u.Villa.OwnerEmail == ownerEmail, "Villa")
+                    .GroupBy(u => new {u.BookingDate.Year, u.BookingDate.Month})
+                    .OrderBy(u => u.Key.Year).ThenBy(u => u.Key.Month)
+                    .Select(g => new
+                    {
+                        key = new DateTime(g.Key.Year, g.Key.Month, 1),
+                        Total = g.Sum(x => x.TotalCost)
+                    }).ToList();
+                
+                result.categories = revenueBy3Months.Select(x => x.key.ToString("MM/yyyy")).ToList();
+                result.data = revenueBy3Months.Select(x => (decimal)x.Total).ToList();
+                break;
+            case "6m":
+                var sixMonthsAgo = DateTime.Now.AddMonths(-6);
+                var revenueBy6Months = _unitOfWork.Bookings.GetAll(
+                        u => u.BookingDate >= sixMonthsAgo && (u.Status == SD.StatusCheckedIn
+                                                               ||u.Status == SD.StatusCompleted) && u.Villa.OwnerEmail == ownerEmail, "Villa")
+                    .GroupBy(u => new {u.BookingDate.Year, u.BookingDate.Month})
+                    .OrderBy(u => u.Key.Year).ThenBy(u => u.Key.Month)
+                    .Select(g => new
+                    {
+                        key = new DateTime(g.Key.Year, g.Key.Month, 1),
+                        Total = g.Sum(x => x.TotalCost)
+                    }).ToList();
+                
+                result.categories = revenueBy6Months.Select(x => x.key.ToString("MM/yyyy")).ToList();
+                result.data = revenueBy6Months.Select(x => (decimal)x.Total).ToList();
+                break;
+            case "12m":
+                var twelveMonthsAgo = DateTime.Now.AddYears(-1);
+                var revenueBy12Months = _unitOfWork.Bookings.GetAll(
+                        u => u.BookingDate >= twelveMonthsAgo && (u.Status == SD.StatusCheckedIn
+                                                               ||u.Status == SD.StatusCompleted) && u.Villa.OwnerEmail == ownerEmail, "Villa")
+                    .GroupBy(u => new {u.BookingDate.Year, u.BookingDate.Month})
+                    .OrderBy(u => u.Key.Year).ThenBy(u => u.Key.Month)
+                    .Select(g => new
+                    {
+                        key = new DateTime(g.Key.Year, g.Key.Month, 1),
+                        Total = g.Sum(x => x.TotalCost)
+                    }).ToList();
+                
+                result.categories = revenueBy12Months.Select(x => x.key.ToString("MM/yyyy")).ToList();
+                result.data = revenueBy12Months.Select(x => (decimal)x.Total).ToList();
+                break;
+        }
+        return result;       
+    }
 }

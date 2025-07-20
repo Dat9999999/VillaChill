@@ -15,5 +15,6 @@ public interface IDashboardService
     public int GetGetNumberOfVilla(string ownerEmail);
     public RadialBarChartDTO GetTotalBookingRadialChartData(string ownerEmail);
 
-    double GetBalance(string ownerEmail);
+    public double GetBalance(string ownerEmail);
+    public ColumnChartDTO GetRevenueChartData(string range, string ownerEmail);
 }
