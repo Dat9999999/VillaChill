@@ -5,6 +5,7 @@ using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Services.implements;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
+using ReservationApp.Hubs;
 using ReservationApp.Infrastructure;
 using ReservationApp.Infrastructure.Data;
 using ReservationApp.Infrastructure.Exporting;
@@ -15,6 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // controller with view
 builder.Services.AddControllersWithViews();
+
+//SignalR
+builder.Services.AddSignalR();
 
 //Dependency injection
 builder.Services.
@@ -43,6 +47,8 @@ app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+app.MapHub<DashBoardHub>("/dashboardHub");
 
 
 app.Run();

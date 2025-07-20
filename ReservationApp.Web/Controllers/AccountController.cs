@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
+using ReservationApp.Hubs;
 using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
@@ -15,15 +17,17 @@ public class AccountController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IOwnerBalanceService _ownerBalanceService;
+    private readonly IHubContext<DashBoardHub> _hubContext;
     
     
     public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager,
-        IOwnerBalanceService ownerBalanceService)
+        IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
         _ownerBalanceService = ownerBalanceService;
+        _hubContext = hubContext;
     }
     // GET
     public IActionResult Login(string returnUrl = null)
@@ -93,6 +97,7 @@ public class AccountController : Controller
                 CreatedAt = DateTime.Now,
             };
             var result = await _userManager.CreateAsync(user, registerVm.Password);
+            await _hubContext.Clients.All.SendAsync("UserRegistered", user.Name, user.Email, user.Id);
             if (result.Succeeded)
             {
                 if (!string.IsNullOrEmpty(registerVm.Role))
