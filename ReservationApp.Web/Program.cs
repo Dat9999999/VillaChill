@@ -17,6 +17,18 @@ var builder = WebApplication.CreateBuilder(args);
 // controller with view
 builder.Services.AddControllersWithViews();
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials() // quan trọng
+            .SetIsOriginAllowed(_ => true); // hoặc chỉ định Origin cụ thể
+    });
+});
 //SignalR
 builder.Services.AddSignalR();
 
@@ -43,12 +55,17 @@ app.UseAuthorization();
 SeedData();
 app.MapStaticAssets();
 
+// CORS
+
+app.UseCors();
+
+//SignalR
+app.MapHub<DashBoardHub>("/dashboardHub");
 app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-app.MapHub<DashBoardHub>("/dashboardHub");
 
 
 app.Run();
