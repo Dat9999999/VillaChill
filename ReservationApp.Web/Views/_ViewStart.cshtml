@@ -1,4 +1,4 @@
-﻿@if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Owner) ){
+﻿@if(User.IsInRole(SD.Role_Admin) ){
     Layout = "_LayoutAdmin";
 }
 else if (User.IsInRole(SD.Role_Owner))

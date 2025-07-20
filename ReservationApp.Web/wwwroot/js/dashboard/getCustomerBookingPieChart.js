@@ -5,7 +5,6 @@ $(document).ready(function () {
 
 function loadCustomerBookingPieChart() {
     $(".chart-spinner").show();
-
     $.ajax({
         url: "/Dashboard/GetBookingPieChartData",
         type: 'GET',

@@ -10,5 +10,7 @@ public interface IDashboardService
     public RadialBarChartDTO GetUserRegisteredRadialChartData();
     public LineChartDTO getCustomerAndBookingLineChart();
     public PieChartDTO GetBookingPieChartData();
-    
+
+    public PieChartDTO GetVillaBookingPieChart(string ownerEmail);
+    public int GetGetNumberOfVilla(string ownerEmail);
 }

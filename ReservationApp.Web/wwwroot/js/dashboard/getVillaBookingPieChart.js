@@ -3,30 +3,26 @@
 });
 
 function loadVillaBookingPieChart() {
+    const card = document.querySelector('[data-owner-id]');
+    if (!card) return;
+
+    const ownerId = card.getAttribute('data-owner-id');
     $(".chart-spinner").show();
 
     $.ajax({
-        url: '/Dashboard/GetVillaBookingPieChart',
+        url: `/Dashboard/GetVillaBookingPieChart/?ownerEmail=${ownerId}`,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            data = [
-                { "villaName": "Villa A", "bookingCount": 10 },
-                { "villaName": "Villa B", "bookingCount": 20 },
-                { "villaName": "Villa C", "bookingCount": 5 }
-            ]
-            const labels = data.map(x => x.villaName);
-            const values = data.map(x => x.bookingCount);
+            
 
             var options = {
                 chart: {
                     type: 'pie',
                     height: 350
                 },
-                labels: labels,
-                series: values,
-                // fixed color
-                colors: ['#F0006B', '#00E396', '#FEB019', '#775DD0', '#008FFB'],
+                labels: data.labels,
+                series: data.series,
                 responsive: [{
                     breakpoint: 480,
                     options: {

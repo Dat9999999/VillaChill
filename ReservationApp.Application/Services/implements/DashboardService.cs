@@ -138,4 +138,27 @@ public class DashboardService: IDashboardService
         };
         return pieChart;
     }
+
+    public PieChartDTO GetVillaBookingPieChart(string ownerEmail)
+    {
+        var data = _unitOfWork.Bookings
+            .GetAll(u => u.Villa.OwnerEmail == ownerEmail && u.Status == SD.StatusCompleted, "Villa")
+            .GroupBy(b => b.Villa.Name)
+            .Select(x => new {
+                villaName = x.Key,
+                bookingCount = x.Count()
+            });;
+        PieChartDTO pieChart = new PieChartDTO()
+        {
+            labels = data.Select(x => x.villaName).ToArray(),
+            series = data.Select(x => x.bookingCount).ToArray()
+        };
+        return pieChart;
+    }
+
+    public int GetGetNumberOfVilla(string ownerEmail)
+    {
+        var data = _unitOfWork.Villas.GetAll(u => u.OwnerEmail == ownerEmail).Count();
+        return data;       
+    }
 }

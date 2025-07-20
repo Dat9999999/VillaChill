@@ -52,6 +52,12 @@ public class DashboardController : Controller
     [HttpGet]
     public IActionResult GetVillaBookingPieChart([FromQuery] string ownerEmail)
     {
-        return Json("Oke");
+        return Json(_dashboardService.GetVillaBookingPieChart(ownerEmail));
+    }
+
+    [HttpGet]
+    public IActionResult GetNumberOfVilla([FromQuery] string ownerEmail)
+    {
+        return Json(_dashboardService.GetGetNumberOfVilla(ownerEmail));
     }
 }
