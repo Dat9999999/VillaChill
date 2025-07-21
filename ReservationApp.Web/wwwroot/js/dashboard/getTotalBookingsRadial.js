@@ -11,7 +11,7 @@ function loadTotalBookingRadialChart() {
         dataType: 'json',
         success: function (data) {
             document.querySelector("#spanTotalBookingCount").innerHTML = data.totalCount;
-
+            document.querySelector("#sectionBookingCount").innerHTML = "";
             var sectionCurrentCount = document.createElement("span");
             if (!data.hasRatioIncreased) {
                 sectionCurrentCount.className = "text-success me-1";

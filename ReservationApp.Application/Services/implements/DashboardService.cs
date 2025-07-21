@@ -16,7 +16,7 @@ public class DashboardService: IDashboardService
     {
         _unitOfWork = unitOfWork;
     }
-    public RadialBarChartDTO GetRadialCartDataModel(int total, double currentMonth, double prevMonth)
+    public RadialBarChartDTO GetRadialCartDataModel(double total, double currentMonth, double prevMonth)
     {
         RadialBarChartDTO chart = new RadialBarChartDTO();
         int ratio = 100;
@@ -25,7 +25,7 @@ public class DashboardService: IDashboardService
             ratio = Convert.ToInt32(currentMonth - prevMonth / prevMonth * 100);
         }
         chart.CountInCurrentMonth = Convert.ToInt32(currentMonth);
-        chart.TotalCount = total;
+        chart.TotalCount = (decimal)total;
         chart.IsIncrease = currentMonth > prevMonth;
         chart.series = new []{ratio};
         return chart;
@@ -40,7 +40,7 @@ public class DashboardService: IDashboardService
             .Sum(x => x.TotalCost);
         var totalRevenueByPrevMonth= totalBookings.Where(x => x.BookingDate >= previousStartMonthDate && x.BookingDate < currentStartMonthDate)
             .Sum(x => x.TotalCost);
-        return GetRadialCartDataModel(totalBookings.Count(), Convert.ToInt32(totalRevenueByCurrMonth),
+        return GetRadialCartDataModel(totalRevenue, Convert.ToInt32(totalRevenueByCurrMonth),
             Convert.ToInt32(totalRevenueByPrevMonth));
     }
 
@@ -164,8 +164,7 @@ public class DashboardService: IDashboardService
 
     public RadialBarChartDTO GetTotalBookingRadialChartData(string ownerEmail)
     {
-        var totalBookings = _unitOfWork.Bookings.GetAll(u => u.Status != SD.StatusCancelled
-                                                             && u.Status != SD.StatusPending 
+        var totalBookings = _unitOfWork.Bookings.GetAll(u => u.Status == SD.StatusCompleted 
                                                              && u.Villa.OwnerEmail == ownerEmail);
         var totalBookingsByCurrMonth = totalBookings.Count(x => x.BookingDate >= currentStartMonthDate && x.BookingDate <= DateTime.Now);
         var totalBookingsByPrevMonth = totalBookings.Count(x => x.BookingDate >= previousStartMonthDate && x.BookingDate < currentStartMonthDate);

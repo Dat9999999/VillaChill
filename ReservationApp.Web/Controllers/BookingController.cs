@@ -169,7 +169,7 @@ public class BookingController : Controller
 
     }
     [HttpPost]
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Owner}")]
     public IActionResult CheckIn(Booking booking)
     {
         _bookingService.UpdateStatus(booking.Id, SD.StatusCheckedIn, booking.VillaNumber);
@@ -180,12 +180,6 @@ public class BookingController : Controller
     [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Owner}")]
     public IActionResult CheckOut(Booking booking)
     {
-        // if (!User.IsInRole(SD.Role_Admin))
-        // {
-        //     var claimIdentity = (ClaimsIdentity)User.Identity;
-        //     var ownerEmail = claimIdentity.FindFirst(ClaimTypes.Name).Value;
-        //     if (booking.Villa.OwnerEmail != ownerEmail) return Unauthorized();
-        // }
         _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
         if (!booking.IsPaidAtCheckIn)
         {
