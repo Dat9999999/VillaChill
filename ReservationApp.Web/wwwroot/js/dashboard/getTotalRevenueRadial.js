@@ -5,6 +5,11 @@ $(document).ready(function () {
 
 function loadRevenueRadialChart() {
     $(".chart-spinner").show();
+    const card = document.querySelector('[data-owner-id]');
+    if (!card) return;
+
+    const ownerId = card.getAttribute('data-owner-id');
+    console.log(ownerId);
 
     $.ajax({
         url: "/Dashboard/GetRevenueRadialChartData",

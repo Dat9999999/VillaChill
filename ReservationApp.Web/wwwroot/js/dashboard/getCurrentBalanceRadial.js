@@ -16,8 +16,7 @@ function loadBalanaceRadialChart() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            document.querySelector("#spanCurrentBalanceCount").innerHTML =
-                new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.currentBalance);
+            document.querySelector("#spanCurrentBalanceCount").innerHTML = formatNumberShort(data.currentBalance)
 
             $(".chart-spinner").hide();
         }
