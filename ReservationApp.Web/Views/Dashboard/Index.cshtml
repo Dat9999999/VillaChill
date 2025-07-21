@@ -9,32 +9,29 @@
         </div>
     </div>
     <div class="row">
-        @if (User.IsInRole(SD.Role_Owner))
-        {
-            <div class="col-md-6 col-xl-4 mt-2">
-                <div class="card">
-                    <div class="card-body" data-owner-id="@ownerId">
-                        <div class="float-end mt-2">
-                            <div id="currentBalanceRadialChart" data-colors='["#F0006B"]'></div>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-0">Current Balance</p>
-                            <h4 class="my-1">
-                                <span id="spanCurrentBalanceCount">XX</span>
-                            </h4>
-                        </div>
-                        <p class="text-muted mt-3 mb-0" id="sectionBalanceCount"></p>
-
-                        <div class="justify-content-center text-center chart-spinner" style="display:none">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-
+        <div class="col-md-6 col-xl-4 mt-2">
+            <div class="card">
+                <div class="card-body" data-owner-id="@ownerId">
+                    <div class="float-end mt-2">
+                        <div id="totalRevenueRadialChart" data-colors='["#F0006B"]'></div>
                     </div>
+                    <div>
+                        <p class="text-muted mb-0">Total Revenue</p>
+                        <h4 class="my-1">
+                            <span id="spanTotalRevenueCount">XX</span>
+                        </h4>
+                    </div>
+                    <p class="text-muted mt-3 mb-0" id="sectionRevenueCount"></p>
+
+                    <div class="justify-content-center text-center chart-spinner" style="display:none">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        }
+        </div>
         <div class="col-md-6 col-xl-4 mt-2">
             <div class="card">
                 <div class="card-body">
@@ -42,7 +39,14 @@
                         <div id="totalBookingsRadialChart" data-colors='["--bs-success"]'></div>
                     </div>
                     <div>
-                        <p class="text-muted mb-0">Total Bookings</p>
+                        @if (User.IsInRole(SD.Role_Owner))
+                        { 
+                            <p class="text-muted mb-0">Total Bookings completely</p>                          
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">Total Bookings</p>
+                        }
                         <h4 class="my-1">
                             <span id="spanTotalBookingCount">XX</span>
                         </h4>
@@ -83,29 +87,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-4 mt-2">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="float-end mt-2">
-                            <div id="totalRevenueRadialChart" data-colors='["#F0006B"]'></div>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-0">Total Revenue</p>
-                            <h4 class="my-1">
-                                <span id="spanTotalRevenueCount">XX</span>
-                            </h4>
-                        </div>
-                        <p class="text-muted mt-3 mb-0" id="sectionRevenueCount"></p>
-
-                        <div class="justify-content-center text-center chart-spinner" style="display:none">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            
         }
         else if (User.IsInRole(SD.Role_Owner))
         {
