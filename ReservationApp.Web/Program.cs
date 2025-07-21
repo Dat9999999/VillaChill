@@ -25,8 +25,8 @@ builder.Services.AddCors(options =>
         policy
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials() // quan trọng
-            .SetIsOriginAllowed(_ => true); // hoặc chỉ định Origin cụ thể
+            .AllowCredentials() 
+            .SetIsOriginAllowed(_ => true); 
     });
 });
 //SignalR
@@ -49,15 +49,14 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
+// CORS
+app.UseCors();
 
 app.UseAuthorization();
 
 SeedData();
 app.MapStaticAssets();
 
-// CORS
-
-app.UseCors();
 
 //SignalR
 app.MapHub<DashBoardHub>("/dashboardHub");

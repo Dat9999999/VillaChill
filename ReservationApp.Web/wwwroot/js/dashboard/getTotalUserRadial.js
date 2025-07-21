@@ -12,7 +12,8 @@ function loadUserRadialChart() {
         dataType: 'json',
         success: function (data) {
             document.querySelector("#spanTotalUserCount").innerHTML = data.totalCount;
-
+            document.querySelector("#sectionUserCount").innerHTML = "";
+            
             var sectionCurrentCount = document.createElement("span");
             if (data.hasRatioIncreased) {
                 sectionCurrentCount.className = "text-success me-1";
@@ -24,7 +25,7 @@ function loadUserRadialChart() {
             }
 
             document.querySelector("#sectionUserCount").append(sectionCurrentCount);
-            document.querySelector("#sectionUserCount").append("since last month");
+            document.querySelector("#sectionUserCount").append(" since last month");
 
             loadRadialBarChart("totalUserRadialChart", data);
 

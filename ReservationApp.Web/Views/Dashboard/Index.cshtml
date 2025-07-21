@@ -220,20 +220,7 @@
 </div>
 
 @section scripts{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
-    <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/dashboardHub")
-            .build();
-
-        connection.on("UserRegistered", function (data) {
-            console.log("Dữ liệu realtime:", data);
-        });
-
-        connection.start().catch(function (err) {
-            return console.error(err.toString());
-        });
-    </script>
+   
     <script src="~/js/dashboard/radailChart.js"></script>
     <script src="~/js/dashboard/getTotalBookingsRadial.js"></script>
     <script src="~/js/dashboard/getTotalRevenueRadial.js"></script>
@@ -246,5 +233,26 @@
     <script src="~/js/dashboard/getNumberOfVilla.js"></script>
     <script src="~/js/dashboard/getRevenueColumnChart.js"></script>
     <script src="~/js/dashboard/realtime/realtimeTotalUser.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/dashboardHub")
+            .build();
+
+        connection.on("UserRegistered", function (data) {
+            console.log("📡 UserRegistered received:", data);
+            loadUserRadialChart();
+        });
+
+        connection.start().then(function () {
+            console.log("✅ SignalR Connected.");
+        }).catch(function (err) {
+            console.error("❌ SignalR Connection Failed:", err.toString());
+        });
+
+        connection.onclose(function (err) {
+            console.error("⚠️ SignalR Connection closed:", err);
+        });
+
+    </script>
     
 }

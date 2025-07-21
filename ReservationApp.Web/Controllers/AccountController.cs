@@ -97,7 +97,7 @@ public class AccountController : Controller
                 CreatedAt = DateTime.Now,
             };
             var result = await _userManager.CreateAsync(user, registerVm.Password);
-            await _hubContext.Clients.All.SendAsync("UserRegistered", user.Name, user.Email, user.Id);
+            await _hubContext.Clients.All.SendAsync("UserRegistered", new {user.Name, user.Email, user.Id});
             if (result.Succeeded)
             {
                 if (!string.IsNullOrEmpty(registerVm.Role))
