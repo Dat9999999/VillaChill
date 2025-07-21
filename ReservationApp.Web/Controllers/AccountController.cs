@@ -86,6 +86,7 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
+            //mapper
             ApplicationUser user = new()
             {
                 Name = registerVm.Name,
@@ -97,7 +98,10 @@ public class AccountController : Controller
                 CreatedAt = DateTime.Now,
             };
             var result = await _userManager.CreateAsync(user, registerVm.Password);
-            await _hubContext.Clients.All.SendAsync("UserRegistered", new {user.Name, user.Email, user.Id});
+            
+            //send notification to admin groups
+            await _hubContext.Clients.Groups(SD.Role_Admin).SendAsync("UserRegistered", new {user.Name, user.Email, user.Id});
+            
             if (result.Succeeded)
             {
                 if (!string.IsNullOrEmpty(registerVm.Role))
