@@ -35,11 +35,15 @@ public class DashboardService: IDashboardService
     {
         var totalBookings = _unitOfWork.Bookings.GetAll(u => u.Status != SD.StatusCancelled
                                                              && u.Status != SD.StatusPending);
-        var totalRevenue = totalBookings.Sum(x => x.TotalCost);
+        var platformFee = _unitOfWork.CommissionRates.Get(x=>x.Name == SD.CommissionRate_platform).Rate;
+        
+        // what admin actually gets
+        var totalRevenue = totalBookings.Sum(x => x.TotalCost) *   platformFee/100;
+        
         var totalRevenueByCurrMonth = totalBookings.Where(x => x.BookingDate >= currentStartMonthDate && x.BookingDate <= DateTime.Now)
-            .Sum(x => x.TotalCost);
+            .Sum(x => x.TotalCost) *  platformFee/100;
         var totalRevenueByPrevMonth= totalBookings.Where(x => x.BookingDate >= previousStartMonthDate && x.BookingDate < currentStartMonthDate)
-            .Sum(x => x.TotalCost);
+            .Sum(x => x.TotalCost)*   platformFee/100;
         return GetRadialCartDataModel(totalRevenue, Convert.ToInt32(totalRevenueByCurrMonth),
             Convert.ToInt32(totalRevenueByPrevMonth));
     }
