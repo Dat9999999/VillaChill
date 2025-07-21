@@ -130,7 +130,7 @@
                         <input asp-for="PaymentDate" disabled class="form-control" />
                     </div>
                 </div>
-                @if (User.IsInRole(SD.Role_Admin))
+                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Owner))
                 {
                     <div class="form-group pt-2 pt-md-4">
                         @if (Model.Status == SD.StatusApproved)

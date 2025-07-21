@@ -2,10 +2,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
+using ReservationApp.Hubs;
 
 namespace ReservationApp.Controllers;
 
@@ -21,11 +23,12 @@ public class BookingController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailService _emailService;
     private readonly IOwnerBalanceService _ownerBalanceService;
+    private readonly IHubContext<DashBoardHub> _hubContext;
     public BookingController(IVnPayService vnPayService, IExporter exporter,
         IBookingService bookingService, IVillaNumberService villaNumberService, IVillaService villaService,
         IAmenityService amenityService,
         UserManager<ApplicationUser> userManager, IEmailService emailService,
-        IOwnerBalanceService ownerBalanceService
+        IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext
         )
     {
         _vnPayService = vnPayService;
@@ -37,6 +40,7 @@ public class BookingController : Controller
         _userManager = userManager;
         _emailService = emailService;
         _ownerBalanceService = ownerBalanceService;
+        _hubContext = hubContext;
 
     }
 
@@ -136,7 +140,7 @@ public class BookingController : Controller
             _bookingService.UpdatePaymentId(bookingId, response.PaymentId);
             
             //sending notification that booking successfully through email 
-            _emailService.configMailPaySuccess(customerEmail, villa.Name, booking.VillaNumber);
+            // _emailService.configMailPaySuccess(customerEmail, villa.Name, booking.VillaNumber);
             
             return View(nameof(BookingConfirmation), bookingId);
         }
@@ -173,14 +177,23 @@ public class BookingController : Controller
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
     [HttpPost]
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Owner}")]
     public IActionResult CheckOut(Booking booking)
     {
+        // if (!User.IsInRole(SD.Role_Admin))
+        // {
+        //     var claimIdentity = (ClaimsIdentity)User.Identity;
+        //     var ownerEmail = claimIdentity.FindFirst(ClaimTypes.Name).Value;
+        //     if (booking.Villa.OwnerEmail != ownerEmail) return Unauthorized();
+        // }
         _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
         if (!booking.IsPaidAtCheckIn)
         {
             // update ownerbalance when customer using payment online method 
             _ownerBalanceService.UpdateBalance(booking.Id);
+            
+            //send notification booking complete
+            _hubContext.Clients.Group(SD.Role_Owner).SendAsync("BookingComplete", new { booking.Id, booking.VillaNumber });
         }
         TempData["Success"] = "Booking is checked out successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
@@ -222,8 +235,21 @@ public class BookingController : Controller
             {
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                objBookings = _bookingService.GetAll(x=> x.UserId == userId);
+                //owner
+                if (User.IsInRole(SD.Role_Owner))
+                {
+                    var ownerEmail = claimsIdentity.FindFirst(ClaimTypes.Name).Value;
+                    objBookings = _bookingService.GetAll(x=> x.Villa.OwnerEmail == ownerEmail);
+                }
+                
+                //customer
+                else
+                {
+                    objBookings = _bookingService.GetAll(x=> x.UserId == userId);
+                }
+                
             }
+            //admin
             else objBookings = _bookingService.GetAll();
 
             if (!string.IsNullOrEmpty(status))
