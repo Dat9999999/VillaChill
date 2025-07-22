@@ -42,8 +42,8 @@ public class HomeController : Controller
     {
         
         var villaList = _villaService.GetAll(null,"Amenities").Where(u => u.City == city).ToList();
-        var villasBooked = _bookingService.GetAll(u => u.Status == SD.StatusApproved 
-                                                            || u.Status == SD.StatusCheckedIn).ToList();
+        var villasBooked = _bookingService.GetAll(u => u.Status != SD.StatusCancelled 
+        && u.Status != SD.StatusRefunded).ToList();
         var villaNumbers = _villaNumberService.GetAll().ToList();
         foreach (var villa in villaList)
         {

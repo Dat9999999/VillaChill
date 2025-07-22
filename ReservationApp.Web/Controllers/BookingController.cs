@@ -61,7 +61,10 @@ public class BookingController : Controller
         
         ApplicationUser user = _userManager.FindByIdAsync(userId).Result;
         var villa = _villaService.GetById(VillaId, "Amenities");
-        var roomAvailable = AssignVillaNumber(VillaId);
+        var bookings = _bookingService.GetAll(x => x.VillaId == VillaId).ToList();
+        var villaNumbers = _villaNumberService.GetAll(x => x.Villa.Id == VillaId).ToList();
+        // var roomAvailable = AssignVillaNumber(VillaId);
+        var roomAvailable = SD.VillaRoomsAvailable_Count(VillaId,villaNumbers, DateOnly.Parse(  checkInDate), Nights, bookings);
         Booking booking = new Booking()
         {
             VillaId = VillaId,
@@ -74,7 +77,7 @@ public class BookingController : Controller
             Name = user.Name,
             Email = user.Email,
             Phone = user.PhoneNumber,
-            VillaNumbers = roomAvailable
+            VillaNumbers = roomAvailable.ToList(),
             
         };
         return View(booking);

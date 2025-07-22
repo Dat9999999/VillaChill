@@ -30,7 +30,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Description = "A luxurious villa with stunning ocean views",
                 Sqft = 2000,
                 Occupancy = 4,
-                Price = 500,
+                Price = 500000,
                 ImageUrl = "/images/villa1.jpg",
                 Address = "123 Đường Trần Phú",
                 City = "Thành phố Hà Nội",
@@ -41,7 +41,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Id = 2,
                 Name = "Sunset Villa",
                 Description = "Cozy villa with a breathtaking sunset view",
-                Sqft = 1500,
+                Sqft = 1500000,
                 Occupancy = 3,
                 Price = 350,
                 ImageUrl = "/images/villa2.jpg",
@@ -54,7 +54,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Id = 3,
                 Name = "Mountain Retreat",
                 Description = "Secluded villa nestled in the mountains",
-                Sqft = 1800,
+                Sqft = 1800000,
                 Occupancy = 4,
                 Price = 400,
                 ImageUrl = "/images/villa3.jpg",
@@ -152,12 +152,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 VillaId = 3,
                 Name = "Private Balcony"
             });
+        //owner balance
         modelBuilder.Entity<OwnerBalance>().HasData(
             new OwnerBalance()
             {
                 CurrentBalance = 0,
                 Id = 1,
-                OwnerEmail = SD.adminMail,
+                OwnerEmail = SD.Role_Owner,
                 TotalEarned = 0
             });
         
