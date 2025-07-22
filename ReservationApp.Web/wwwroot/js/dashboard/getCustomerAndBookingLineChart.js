@@ -1,12 +1,14 @@
-﻿var lineChart; // bên ngoài hàm
-
+﻿var lineChart;
 $(document).ready(function () {
     loadCustomerAndBookingLineChart();
 });
 
 function loadCustomerAndBookingLineChart() {
     $(".chart-spinner").show();
-    console.log("loadCustomerAndBookingLineChart");
+    if (lineChart) {
+        lineChart.destroy();
+    }
+
     $.ajax({
         url: "/Dashboard/getCustomerAndBookingLineChart",
         type: 'GET',
@@ -22,16 +24,11 @@ function loadCustomerAndBookingLineChart() {
 
 function loadLineChart(id, data) {
     var chartColors = getChartColorsArray(id);
-
-    // Nếu đã có biểu đồ cũ thì destroy trước
-    if (window.lineChart) {
-        window.lineChart.destroy();
-    }
-
     var options = {
         colors: chartColors,
         chart: {
             height: 350,
+            //show area later
             type: 'line',
             zoom: {
                 type: 'x',
@@ -64,6 +61,9 @@ function loadLineChart(id, data) {
         },
         yaxis: {
             labels: {
+                //formatter: function (val) {
+                //    return val.toFixed(0);
+                //},
                 style: {
                     colors: "#fff",
                 },
@@ -78,8 +78,6 @@ function loadLineChart(id, data) {
             theme: 'dark'
         }
     };
-
-    // Gán vào biến toàn cục để lần sau destroy
-    window.lineChart = new ApexCharts(document.querySelector("#" + id), options);
-    window.lineChart.render();
+    lineChart = new ApexCharts(document.querySelector("#" + id), options);
+    lineChart.render();
 }
