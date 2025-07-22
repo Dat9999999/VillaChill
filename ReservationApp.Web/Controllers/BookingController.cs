@@ -177,6 +177,10 @@ public class BookingController : Controller
         // update ownerbalance when customer using payment online method 
         _ownerBalanceService.UpdateBalance(booking.Id);
         
+        //notify that revenue change 
+        _hubContext.Clients.All.SendAsync("RevenueChange", new { booking.Id, booking.VillaNumber });
+        
+        
         TempData["Success"] = "Booking is checked in successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }

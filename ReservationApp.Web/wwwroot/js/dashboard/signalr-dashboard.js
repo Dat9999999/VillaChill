@@ -10,10 +10,11 @@ connection.on("UserRegistered", function (data) {
 connection.on("BookingComplete", function (data) {
     console.log("📡 BookingComplete received:", data);
     loadTotalBookingRadialChart();
-    loadCustomerBookingPieChart();
-    loadCustomerAndBookingLineChart();
+});
+
+connection.on("RevenueChange", function (data) {
+    console.log("📡 RevenueChange received:", data);
     loadRevenueRadialChart();
-    loadVillaBookingPieChart();
 });
 
 

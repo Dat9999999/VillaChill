@@ -11,7 +11,6 @@ function loadRevenueRadialChart() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log(data.totalCount);
             const formattedTotal = formatNumberShort(data.totalCount);
             const formattedMonth = formatNumberShort(data.countInCurrentMonth);
 
@@ -26,7 +25,7 @@ function loadRevenueRadialChart() {
                 sectionCurrentCount.className = "text-danger me-1";
                 sectionCurrentCount.innerHTML = '<i class="bi bi-arrow-down-right-circle me-1"></i> <span> ' + formattedMonth + '</span>';
             }
-
+            document.querySelector("#sectionRevenueCount").innerHTML = "";
             document.querySelector("#sectionRevenueCount").append(sectionCurrentCount);
             document.querySelector("#sectionRevenueCount").append(" since last month");
 
