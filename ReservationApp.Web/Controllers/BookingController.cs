@@ -140,8 +140,10 @@ public class BookingController : Controller
             _bookingService.UpdatePaymentId(bookingId, response.PaymentId);
             
             //sending notification that booking successfully through email 
+            // QR Checkin attatch
             // _emailService.configMailPaySuccess(customerEmail, villa.Name, booking.VillaNumber);
             
+            _hubContext.Clients.All.SendAsync("NewBooking", new { booking.Id});
             return View(nameof(BookingConfirmation), bookingId);
         }
         return RedirectToAction("Error","Home");
@@ -189,12 +191,7 @@ public class BookingController : Controller
     public IActionResult CheckOut(Booking booking)
     {
         _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted);
-        if (!booking.IsPaidAtCheckIn) 
-        {
-            
-            //send notification booking complete
-            _hubContext.Clients.Group(SD.Role_Owner).SendAsync("BookingComplete", new { booking.Id, booking.VillaNumber });
-        }
+        //send notification booking complete
         TempData["Success"] = "Booking is checked out successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }

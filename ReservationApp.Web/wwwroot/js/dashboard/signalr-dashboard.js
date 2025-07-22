@@ -5,12 +5,13 @@ const connection = new signalR.HubConnectionBuilder()
 connection.on("UserRegistered", function (data) {
     console.log("📡 UserRegistered received:", data);
     loadUserRadialChart();
+    loadCustomerAndBookingLineChart();
 });
-
-connection.on("BookingComplete", function (data) {
-    console.log("📡 BookingComplete received:", data);
+connection.on("NewBooking", function (data) {
+    console.log("📡 newBooking received:", data);
     loadTotalBookingRadialChart();
 });
+
 
 connection.on("RevenueChange", function (data) {
     console.log("📡 RevenueChange received:", data);
