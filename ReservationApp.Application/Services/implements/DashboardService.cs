@@ -182,7 +182,7 @@ public class DashboardService: IDashboardService
     public ColumnChartDTO GetRevenueChartData(string range, string ownerEmail)
     {
         var result = new ColumnChartDTO();
-
+        var platformFee = _unitOfWork.CommissionRates.Get(x=>x.Name == SD.CommissionRate_platform).Rate;
         // Ví dụ mẫu – bạn có thể tính từ DB theo `range`
         switch (range)
         {
@@ -196,7 +196,7 @@ public class DashboardService: IDashboardService
                     .Select(g => new
                     {
                         key = g.Key,
-                        Total = g.Sum(x => x.TotalCost)
+                        Total = g.Sum(x => x.TotalCost - (x.TotalCost* platformFee/100)) 
                     }).ToList();
                 
                 result.categories = revenueByMonth.Select(x => x.key.ToString("MM/dd/yyyy")).ToList();;
@@ -212,7 +212,7 @@ public class DashboardService: IDashboardService
                     .Select(g => new
                     {
                         key = new DateTime(g.Key.Year, g.Key.Month, 1),
-                        Total = g.Sum(x => x.TotalCost)
+                        Total = g.Sum(x => x.TotalCost - (x.TotalCost* platformFee/100))
                     }).ToList();
                 
                 result.categories = revenueBy3Months.Select(x => x.key.ToString("MM/yyyy")).ToList();
@@ -228,7 +228,7 @@ public class DashboardService: IDashboardService
                     .Select(g => new
                     {
                         key = new DateTime(g.Key.Year, g.Key.Month, 1),
-                        Total = g.Sum(x => x.TotalCost)
+                        Total = g.Sum(x => x.TotalCost - (x.TotalCost* platformFee/100))
                     }).ToList();
                 
                 result.categories = revenueBy6Months.Select(x => x.key.ToString("MM/yyyy")).ToList();
@@ -244,7 +244,7 @@ public class DashboardService: IDashboardService
                     .Select(g => new
                     {
                         key = new DateTime(g.Key.Year, g.Key.Month, 1),
-                        Total = g.Sum(x => x.TotalCost)
+                        Total = g.Sum(x => x.TotalCost - (x.TotalCost* platformFee/100))
                     }).ToList();
                 
                 result.categories = revenueBy12Months.Select(x => x.key.ToString("MM/yyyy")).ToList();
