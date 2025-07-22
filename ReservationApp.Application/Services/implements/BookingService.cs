@@ -23,9 +23,9 @@ public class BookingService : IBookingService
         return _unitOfWork.Bookings.Get(filter, includeProperties);       
     }
 
-    public void UpdateStatus(int bookingId, string status, int villaNumber)
+    public void UpdateStatus(int bookingId, string status)
     {
-        _unitOfWork.Bookings.UpdateStatus(bookingId, status, villaNumber);
+        _unitOfWork.Bookings.UpdateStatus(bookingId, status);
         _unitOfWork.Save();
     }
 

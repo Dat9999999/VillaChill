@@ -8,7 +8,7 @@ public interface IBookingService
     public IEnumerable<Booking> GetAll(Expression<Func<Booking, bool>>? filter = null, string includeProperties = "");
 
     public Booking GetById(Expression<Func<Booking, bool>>? filter = null, string includeProperties = "");
-    public void UpdateStatus(int bookingId, string status, int villaNumber);
+    public void UpdateStatus(int bookingId, string status);
     void UpdatePaymentId(int bookingId, string PaymentId);
     void Add(Booking booking);
 }

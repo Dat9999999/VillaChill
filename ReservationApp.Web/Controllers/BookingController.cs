@@ -136,7 +136,7 @@ public class BookingController : Controller
             var villa = _villaService.GetById(booking.VillaId);
             
             //update booking after payment successfully
-            _bookingService.UpdateStatus(bookingId, SD.StatusApproved, booking.VillaNumber);
+            _bookingService.UpdateStatus(bookingId, SD.StatusApproved);
             _bookingService.UpdatePaymentId(bookingId, response.PaymentId);
             
             //sending notification that booking successfully through email 
@@ -172,7 +172,7 @@ public class BookingController : Controller
     [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Owner}")]
     public IActionResult CheckIn(Booking booking)
     {
-        _bookingService.UpdateStatus(booking.Id, SD.StatusCheckedIn, booking.VillaNumber);
+        _bookingService.UpdateStatus(booking.Id, SD.StatusCheckedIn);
         
         // update ownerbalance when customer using payment online method 
         _ownerBalanceService.UpdateBalance(booking.Id);
@@ -188,8 +188,8 @@ public class BookingController : Controller
     [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Owner}")]
     public IActionResult CheckOut(Booking booking)
     {
-        _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
-        if (!booking.IsPaidAtCheckIn)
+        _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted);
+        if (!booking.IsPaidAtCheckIn) 
         {
             
             //send notification booking complete
@@ -202,7 +202,7 @@ public class BookingController : Controller
     [Authorize(Roles = SD.Role_Admin)]
     public IActionResult Cancel(Booking booking)
     {
-        _bookingService.UpdateStatus(booking.Id, SD.StatusCancelled, 0);
+        _bookingService.UpdateStatus(booking.Id, SD.StatusCancelled);
         TempData["Success"] = "Booking is Canceled successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
