@@ -1,4 +1,5 @@
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 
@@ -25,7 +26,8 @@ public class OwnerBalanceService: IOwnerBalanceService
         var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId, "Villa");;
         var ownerEmail = booking.Villa.OwnerEmail;
         var ownerBalance = _unitOfWork.OwnerBalances.Get(x => x.OwnerEmail == ownerEmail);
-        var bookingTotalCost = booking.TotalCost;
+        var currentPlatformfee = _unitOfWork.CommissionRates.Get(x => x.Name == SD.CommissionRate_platform).Rate;
+        var bookingTotalCost = booking.TotalCost - (booking.TotalCost * currentPlatformfee / 100);
         if (ownerBalance is not null)
         {
             ownerBalance.CurrentBalance += bookingTotalCost;

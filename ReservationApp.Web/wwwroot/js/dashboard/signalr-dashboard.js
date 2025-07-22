@@ -10,7 +10,12 @@ connection.on("UserRegistered", function (data) {
 connection.on("BookingComplete", function (data) {
     console.log("📡 BookingComplete received:", data);
     loadTotalBookingRadialChart();
+    loadCustomerBookingPieChart();
+    loadCustomerAndBookingLineChart();
+    loadRevenueRadialChart();
+    loadVillaBookingPieChart();
 });
+
 
 connection.start().then(function () {
     console.log("✅ SignalR Connected.");

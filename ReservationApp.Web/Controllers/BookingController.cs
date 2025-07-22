@@ -173,6 +173,10 @@ public class BookingController : Controller
     public IActionResult CheckIn(Booking booking)
     {
         _bookingService.UpdateStatus(booking.Id, SD.StatusCheckedIn, booking.VillaNumber);
+        
+        // update ownerbalance when customer using payment online method 
+        _ownerBalanceService.UpdateBalance(booking.Id);
+        
         TempData["Success"] = "Booking is checked in successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
@@ -183,8 +187,6 @@ public class BookingController : Controller
         _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
         if (!booking.IsPaidAtCheckIn)
         {
-            // update ownerbalance when customer using payment online method 
-            _ownerBalanceService.UpdateBalance(booking.Id);
             
             //send notification booking complete
             _hubContext.Clients.Group(SD.Role_Owner).SendAsync("BookingComplete", new { booking.Id, booking.VillaNumber });
