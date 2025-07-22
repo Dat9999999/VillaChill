@@ -19,43 +19,81 @@ public class DbInitializer : IDbInitializer
         _roleManager = roleManager;
     }
     public void Initialize()
+{
+    try
     {
-        try
+        if (_context.Database.GetPendingMigrations().Any())
         {
-            if (_context.Database.GetPendingMigrations().Count() > 0)
-            {
-                _context.Database.Migrate();
-            }
-            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).Result)
-            {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).Wait();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Owner)).Wait();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).Wait();
-            }
-
-            if (_userManager.FindByEmailAsync("admin@gmail.com").Result == null)
-            {
-                var adminUser = new ApplicationUser
-                {
-                    UserName = "admin@gmail.com",
-                    Email = "admin@gmail.com",
-                    EmailConfirmed = true,
-                    Name = "Admin"
-                };
-
-                var result = _userManager.CreateAsync(adminUser, "Admin123@").Result; //password 
-
-                if (result.Succeeded)
-                {
-                    _userManager.AddToRoleAsync(adminUser, SD.Role_Admin).Wait();
-                }
-            }
-            
+            _context.Database.Migrate();
         }
-        catch (Exception e)
+
+        // Tạo các role nếu chưa có
+        if (!_roleManager.RoleExistsAsync(SD.Role_Admin).Result)
         {
-            Console.WriteLine(e);
-            throw;
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).Wait();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Owner)).Wait();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).Wait();
+        }
+
+        // Tạo tài khoản Admin
+        if (_userManager.FindByEmailAsync(SD.adminMail).Result == null)
+        {
+            var adminUser = new ApplicationUser
+            {
+                UserName = SD.adminMail,
+                Email = SD.adminMail,
+                EmailConfirmed = true,
+                Name = "Admin"
+            };
+
+            var result = _userManager.CreateAsync(adminUser, "Admin123@").Result;
+            if (result.Succeeded)
+            {
+                _userManager.AddToRoleAsync(adminUser, SD.Role_Admin).Wait();
+            }
+        }
+
+        // Tạo tài khoản Owner
+        if (_userManager.FindByEmailAsync(SD.ownerMail).Result == null)
+        {
+            var ownerUser = new ApplicationUser
+            {
+                UserName = SD.ownerMail,
+                Email = SD.ownerMail,
+                EmailConfirmed = true,
+                Name = "Owner One"
+            };
+
+            var result = _userManager.CreateAsync(ownerUser, "Owner123@").Result;
+            if (result.Succeeded)
+            {
+                _userManager.AddToRoleAsync(ownerUser, SD.Role_Owner).Wait();
+            }
+        }
+
+        // Tạo tài khoản Customer
+        if (_userManager.FindByEmailAsync(SD.customerMail).Result == null)
+        {
+            var customerUser = new ApplicationUser
+            {
+                UserName = SD.customerMail,
+                Email = SD.customerMail,
+                EmailConfirmed = true,
+                Name = "Customer One"
+            };
+
+            var result = _userManager.CreateAsync(customerUser, "Customer123@").Result;
+            if (result.Succeeded)
+            {
+                _userManager.AddToRoleAsync(customerUser, SD.Role_Customer).Wait();
+            }
         }
     }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        throw;
+    }
+}
+
 }

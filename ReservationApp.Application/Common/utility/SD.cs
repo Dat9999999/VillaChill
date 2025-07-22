@@ -25,7 +25,10 @@ public static class SD
     public const string bookingSuccessEmailBody = "You got this email because you have just paid for booking Id: {0} and your room number is: {1} " +
                                                   "if anything wrong please contact us at " + SenderName;
     
-    public const string adminMail  = "admin@gmail.com";
+    public const string adminMail  = "huynhtandat184@gmail.com";
+    public const string ownerMail  = "dathuynhfinance@gmail.com";
+    public const string customerMail  = "datrootx@gmail.com";
+    
     
     //invoice string
     public const string ThanksMessage = "Thank you for choosing our Villa Service!";
