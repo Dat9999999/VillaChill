@@ -195,6 +195,7 @@ public class BookingController : Controller
     {
         _bookingService.UpdateStatus(booking.Id, SD.StatusCompleted);
         //send notification booking complete
+        _hubContext.Clients.Group(SD.Role_Owner).SendAsync("BookingComplete", new { booking.Id });
         TempData["Success"] = "Booking is checked out successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }

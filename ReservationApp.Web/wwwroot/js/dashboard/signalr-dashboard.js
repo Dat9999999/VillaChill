@@ -19,6 +19,11 @@ connection.on("RevenueChange", function (data) {
     loadRevenueRadialChart();
 });
 
+connection.on("BookingComplete", function (data) {
+    console.log("📡 BookingComplete received:", data);
+    loadTotalBookingRadialChart();
+});
+
 
 connection.start().then(function () {
     console.log("✅ SignalR Connected.");
