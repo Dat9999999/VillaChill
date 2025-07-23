@@ -7,6 +7,8 @@ connection.on("UserRegistered", function (data) {
     loadUserRadialChart();
     loadCustomerAndBookingLineChart();
 });
+
+//admin only
 connection.on("NewBooking", function (data) {
     console.log("📡 newBooking received:", data);
     loadTotalBookingRadialChart();
@@ -25,10 +27,11 @@ connection.on("RevenueChange", function (data) {
     loadRevenueColumnChart();
 });
 
+// owner only
 connection.on("BookingComplete", function (data) {
     console.log("📡 BookingComplete received:", data);
     loadTotalBookingRadialChart();
-    // loadVillaBookingPieChart();
+    loadVillaBookingPieChart();
 });
 
 
