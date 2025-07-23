@@ -11,6 +11,7 @@ connection.on("NewBooking", function (data) {
     console.log("📡 newBooking received:", data);
     loadTotalBookingRadialChart();
     loadCustomerAndBookingLineChart();
+    loadCustomerBookingPieChart();
 });
 
 
