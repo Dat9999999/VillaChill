@@ -17,12 +17,18 @@ connection.on("NewBooking", function (data) {
 
 connection.on("RevenueChange", function (data) {
     console.log("📡 RevenueChange received:", data);
+    //admin revenue
     loadRevenueRadialChart();
+    
+    //owner revenue
+    loadBalanaceRadialChart();
+    loadRevenueColumnChart();
 });
 
 connection.on("BookingComplete", function (data) {
     console.log("📡 BookingComplete received:", data);
     loadTotalBookingRadialChart();
+    // loadVillaBookingPieChart();
 });
 
 

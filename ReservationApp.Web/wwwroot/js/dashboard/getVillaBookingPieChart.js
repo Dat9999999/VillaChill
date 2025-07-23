@@ -7,6 +7,7 @@ function loadVillaBookingPieChart() {
     if (!card) return;
 
     const ownerId = card.getAttribute('data-owner-id');
+    console.log("call villa distribution pie chart");
     $(".chart-spinner").show();
 
     $.ajax({
