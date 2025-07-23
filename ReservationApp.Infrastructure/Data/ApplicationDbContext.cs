@@ -159,7 +159,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             {
                 CurrentBalance = 0,
                 Id = 1,
-                OwnerEmail = SD.Role_Owner,
+                OwnerEmail = SD.ownerMail,
                 TotalEarned = 0
             });
         

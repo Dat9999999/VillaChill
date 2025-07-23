@@ -4,6 +4,7 @@ $(document).ready(function () {
 });
 
 function loadRevenueRadialChart() {
+    console.log("call revenue radial chart");
     $(".chart-spinner").show();
 
     $.ajax({
@@ -14,7 +15,7 @@ function loadRevenueRadialChart() {
             const formattedTotal = formatNumberShort(data.totalCount);
             const formattedMonth = formatNumberShort(data.countInCurrentMonth);
 
-            document.querySelector("#spanTotalRevenueCount").innerHTML = formattedTotal;
+            document.querySelector("#spanTotalRevenueCount").innerHTML = data.totalCount;
 
             var sectionCurrentCount = document.createElement("span");
             if (!data.hasRatioIncreased) {

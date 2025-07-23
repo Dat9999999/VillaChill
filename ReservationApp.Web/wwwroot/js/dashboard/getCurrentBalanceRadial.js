@@ -16,7 +16,7 @@ function loadBalanaceRadialChart() {
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            document.querySelector("#spanCurrentBalanceCount").innerHTML = formatNumberShort(data.currentBalance)
+            document.querySelector("#spanCurrentBalanceCount").innerHTML = formatNumberShort(data.currentBalance);
 
             $(".chart-spinner").hide();
         }
