@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/spinner.css"/>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="~/css/apexcharts.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.1/css/tabulator.min.css" integrity="sha512-RYFH4FFdhD/FdA+OVEbFVqd5ifR+Dnx2M7eWcmkcMexlIoxNgm89ieeVyHYb8xChuYBtbrasMTlo02cLnidjtQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
@@ -72,6 +73,12 @@
                                 <span>Booking</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="OwnerSettlement" asp-action="Index">
+                                <span class="me-2"><i class="bi bi-cash-coin"></i></span>
+                                <span>Owner settlement</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -103,7 +110,7 @@
    <script src="~/js/apexcharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
    <script src="~/js/formatNumber.js"></script>
-   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.1/js/tabulator.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

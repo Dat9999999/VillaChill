@@ -1,0 +1,56 @@
+<div class="w-100 card  border-0 p-4">
+<div class="card-header bg-success bg-gradient ml-0 py-3">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h3 class="text-white py-2">Owner settlement</h3>
+        </div>
+    </div>
+</div>
+<div class="card-body border py-4">
+    <div class="mb-3">
+        <label for="status-filter" class="form-label fw-bold">Filter by payment status:</label>
+        <select id="status-filter" class="form-select w-auto d-inline-block">
+            <option value="">-- All --</option>
+            <option value="Paid">Paid</option>
+            <option value="Unpaid">Unpaid</option>
+            <option value="Overdue">Overdue</option>
+        </select>
+    </div>
+    <div id="myTable" class="w-100 h-100"></div>
+</div>
+</div>
+@section Scripts {
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tableData = [
+            { id: 1, name: "Nguyen Van A", age: 28, email: "a@gmail.com", status: "Paid" },
+            { id: 2, name: "Tran Thi B", age: 32, email: "b@gmail.com", status: "Unpaid" },
+            { id: 3, name: "Le Van C", age: 24, email: "c@gmail.com", status: "Overdue" },
+        ];
+
+        const table = new Tabulator("#myTable", {
+            data: tableData,
+            layout: "fitColumns",
+            height: "100%",
+            pagination: "local",
+            paginationSize: 5,
+            columns: [
+                { title: "ID", field: "id", sorter: "number", width: 70 },
+                { title: "Full Name", field: "name", sorter: "string" },
+                { title: "Age", field: "age", sorter: "number" },
+                { title: "Email", field: "email", sorter: "string" },
+                { title: "Payment Status", field: "status", sorter: "string" },
+            ],
+        });
+
+        document.getElementById("status-filter").addEventListener("change", function () {
+            const value = this.value;
+            if (value) {
+                table.setFilter("status", "=", value);
+            } else {
+                table.clearFilter();
+            }
+        });
+    });
+</script>
+}
