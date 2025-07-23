@@ -36,6 +36,11 @@ public static class SD
     public const string InvoiceTitle = "VILLA BOOKING INVOICE";
     
     
+    //payment Method 
+    public const string PaymentMethod_Online = "Online";
+    public const string PaymentMethod_Onsite = "Onsite";
+    
+    
     //commission rate name 
     public const string CommissionRate_platform = "Platform fee";
     public static HashSet<int> VillaRoomsAvailable_Count(

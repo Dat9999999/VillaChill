@@ -96,7 +96,7 @@ public class BookingController : Controller
         return View(bookingFromDB);   
     }
     [HttpPost]
-    public IActionResult FinalizeBooking(Booking booking)
+    public IActionResult FinalizeBooking(Booking booking, string paymentMethod)
     {
         var villa = _villaService.GetById(booking.VillaId);
         booking.TotalCost = villa.Price * booking.Nights;
@@ -104,9 +104,14 @@ public class BookingController : Controller
         booking.Status = SD.StatusPending;
         booking.BookingDate = DateTime.Now;
         
+        booking.IsPaidAtCheckIn = paymentMethod == SD.PaymentMethod_Onsite;
         _bookingService.Add(booking);
-
-        return RedirectToAction(nameof(CreatePaymentUrlVnpay), new { bookingId = booking.Id });
+        
+        if (!booking.IsPaidAtCheckIn)
+        {
+            return RedirectToAction(nameof(CreatePaymentUrlVnpay), new { bookingId = booking.Id });
+        }
+        return RedirectToAction(nameof(BookingConfirmation), new { bookingId = booking.Id });
 
     }
     public IActionResult CreatePaymentUrlVnpay(int bookingId)

@@ -78,9 +78,17 @@
                     <input hidden asp-for="Nights" class="form-control"/>
                     <span asp-validation-for="Nights"></span>
                 </div>
-                <div class="form-group pt-2 pt-md-4">
-                    @* <input class="btn btn-danger form-control" value="Sold Out" /> *@
-                    <button type="submit" class="btn btn-success form-control">Looks Good! Checkout Now</button>
+                <div class="form-group pt-2 pt-md-4 row">
+                    <div class="col-md-6 pt-2 pt-md-0">
+                        <button type="submit" name="paymentMethod" value= "Online" class="btn btn-success form-control">
+                            Checkout Now
+                        </button>
+                    </div>
+                    <div class="col-md-6 pt-2 pt-md-0">
+                        <button type="submit" name="paymentMethod" value="Onsite" class="btn btn-warning form-control">
+                            Pay at Villa
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
