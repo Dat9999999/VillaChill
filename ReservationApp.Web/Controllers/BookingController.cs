@@ -63,7 +63,6 @@ public class BookingController : Controller
         var villa = _villaService.GetById(VillaId, "Amenities");
         var bookings = _bookingService.GetAll(x => x.VillaId == VillaId).ToList();
         var villaNumbers = _villaNumberService.GetAll(x => x.Villa.Id == VillaId).ToList();
-        // var roomAvailable = AssignVillaNumber(VillaId);
         var roomAvailable = SD.VillaRoomsAvailable_Count(VillaId,villaNumbers, DateOnly.Parse(  checkInDate), Nights, bookings);
         Booking booking = new Booking()
         {
@@ -183,14 +182,14 @@ public class BookingController : Controller
     public IActionResult CheckIn(Booking booking)
     {
         _bookingService.UpdateStatus(booking.Id, SD.StatusCheckedIn);
-        
-        // update ownerbalance when customer using payment online method 
-        _ownerBalanceService.UpdateBalance(booking.Id);
-        
-        //notify that revenue change 
-        _hubContext.Clients.All.SendAsync("RevenueChange", new { booking.Id, booking.VillaNumber });
-        
-        
+        if (!booking.IsPaidAtCheckIn)
+        {
+            // update ownerbalance when customer using payment online method 
+            _ownerBalanceService.UpdateBalance(booking.Id);
+            
+            //notify that revenue change 
+            _hubContext.Clients.All.SendAsync("RevenueChange", new { booking.Id, booking.VillaNumber });
+        }
         TempData["Success"] = "Booking is checked in successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }

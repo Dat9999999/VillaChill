@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<CommissionRate> CommissionRates { get; set; }
     public DbSet<OwnerBalance> OwnerBalances { get; set; }
+    public DbSet<OwnerSettlement> OwnerSettlements { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -171,7 +172,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 Description = "Commission rate for platform",
                 Rate = 1
             });
-        
-        
+        modelBuilder.Entity<OwnerSettlement>()
+            .HasOne(x => x.Owner)
+            .WithMany()
+            .HasForeignKey(x => x.OwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<OwnerSettlement>()
+            .HasOne(x => x.Booking)
+            .WithMany()
+            .HasForeignKey(x => x.BookingId)
+            .OnDelete(DeleteBehavior.Restrict);
+
     }
 }
