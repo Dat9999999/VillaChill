@@ -267,5 +267,12 @@ public class BookingController : Controller
     
 
     #endregion
-
+    [HttpPost]
+    [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Owner}")]
+    public IActionResult ApprovedForPayOnsite(Booking booking)
+    {
+        _bookingService.UpdateStatus(booking.Id, SD.StatusApproved);
+        TempData["Success"] = "Booking is approved successfully";
+        return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
+    }
 }

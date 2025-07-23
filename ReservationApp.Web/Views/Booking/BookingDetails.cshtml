@@ -133,6 +133,10 @@
                 @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Owner))
                 {
                     <div class="form-group pt-2 pt-md-4">
+                        @if (Model.Status == SD.StatusPending && Model.IsPaidAtCheckIn)
+                        {
+                            <button asp-controller="Booking" asp-action="ApprovedForPayOnsite" type="submit" class="btn btn-warning form-control my-1"><i class="bi bi-check2-square"></i> &nbsp; Approved for pay onsite</button>
+                        }
                         @if (Model.Status == SD.StatusApproved)
                         {
                             <button asp-controller="Booking" asp-action="CheckIn" type="submit" class="btn btn-warning form-control my-1"><i class="bi bi-check2-square"></i> &nbsp; Check In</button>
