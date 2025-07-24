@@ -23,12 +23,14 @@ public class BookingController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailService _emailService;
     private readonly IOwnerBalanceService _ownerBalanceService;
+    private readonly IOwnerSettlementService _ownerSettlementService;
     private readonly IHubContext<DashBoardHub> _hubContext;
     public BookingController(IVnPayService vnPayService, IExporter exporter,
         IBookingService bookingService, IVillaNumberService villaNumberService, IVillaService villaService,
         IAmenityService amenityService,
         UserManager<ApplicationUser> userManager, IEmailService emailService,
-        IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext
+        IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext,
+        IOwnerSettlementService ownerSettlementService
         )
     {
         _vnPayService = vnPayService;
@@ -41,6 +43,7 @@ public class BookingController : Controller
         _emailService = emailService;
         _ownerBalanceService = ownerBalanceService;
         _hubContext = hubContext;
+        _ownerSettlementService = ownerSettlementService;
 
     }
 
@@ -182,13 +185,15 @@ public class BookingController : Controller
     public IActionResult CheckIn(Booking booking)
     {
         _bookingService.UpdateStatus(booking.Id, SD.StatusCheckedIn);
-        if (!booking.IsPaidAtCheckIn)
+        // update ownerbalance when customer using payment online method 
+        _ownerBalanceService.UpdateBalance(booking.Id);
+        _hubContext.Clients.All.SendAsync("RevenueChange", new { booking.Id, booking.VillaNumber });
+        
+        
+        // update owner settlement when booking is paid onsite
+        if (booking.IsPaidAtCheckIn)
         {
-            // update ownerbalance when customer using payment online method 
-            _ownerBalanceService.UpdateBalance(booking.Id);
-            
-            //notify that revenue change 
-            _hubContext.Clients.All.SendAsync("RevenueChange", new { booking.Id, booking.VillaNumber });
+            _ownerSettlementService.Create(booking);
         }
         TempData["Success"] = "Booking is checked in successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });

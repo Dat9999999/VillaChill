@@ -40,6 +40,15 @@ public static class SD
     public const string PaymentMethod_Online = "Online";
     public const string PaymentMethod_Onsite = "Onsite";
     
+    // status payment
+    
+    public const string StatusPayment_Unpaid = "Unpaid";
+    public const string StatusPayment_Paid = "Paid";
+    public const string StatusPayment_Overdue = "Overdue";
+    
+    // duedate = paid date + 30 days
+    public const int DueDate = 30;
+    
     
     //commission rate name 
     public const string CommissionRate_platform = "Platform fee";

@@ -11,5 +11,6 @@ public class MappingProfile : Profile
     {
         CreateMap<RatingRequestDTO, Rating>().ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Name));
         CreateMap<CommissionRateRequestDTO, CommissionRate>();
+        CreateMap<OwnerSettlementDTO, OwnerSettlement>();
     }
 }

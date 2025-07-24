@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork
     public IApplicationUserRepository ApplicationUsers { get; }
     public IRatingRepository Ratings { get; }
     public IOwnerBalanceRepository OwnerBalances { get; }
+    public IOwnerSettlementRepository OwnerSettlements { get; }
     public ICommissionRateRepository CommissionRates { get; }
 
     public void Save()
@@ -32,6 +33,7 @@ public class UnitOfWork : IUnitOfWork
         Ratings = new RatingRepository(context);
         CommissionRates = new CommissionRateRepository(context);
         OwnerBalances = new OwnerBalanceRepository(context);
+        OwnerSettlements = new OwnerSettlementRepository(context);
 
     }
 }
