@@ -12,7 +12,7 @@
             <select id="status-filter" class="form-select w-auto d-inline-block">
                 <option value="">-- All --</option>
                 <option value="Paid">Paid</option>
-                <option value="Unpaid">Unpaid</option>
+                <option value="Unpaid" selected>Unpaid</option>
                 <option value="Overdue">Overdue</option>
             </select>
         </div>
@@ -21,38 +21,47 @@
 </div>
 
 @section Scripts {
-<script>
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const tableData = [
-            { id: 1, name: "Nguyen Van A", age: 28, email: "a@gmail.com", status: "Paid", dueDate: "2025-07-01" },
-            { id: 2, name: "Tran Thi B", age: 32, email: "b@gmail.com", status: "Unpaid", dueDate: "2025-07-15" },
-            { id: 3, name: "Le Van C", age: 24, email: "c@gmail.com", status: "Overdue", dueDate: "2025-06-20" },
-        ];
-
-        const table = new Tabulator("#myTable", {
-            data: tableData,
-            layout: "fitColumns",
-            height: "100%",
-            pagination: "local",
-            paginationSize: 5,
-            columns: [
-                { title: "ID", field: "id", sorter: "number", width: 70 },
-                { title: "Full Name", field: "name", sorter: "string" },
-                { title: "Age", field: "age", sorter: "number" },
-                { title: "Email", field: "email", sorter: "string" },
-                { title: "Payment Status", field: "status", sorter: "string" },
-                { title: "Due Date", field: "dueDate", sorter: "date", hozAlign: "center" },
-            ],
-        });
-
-        document.getElementById("status-filter").addEventListener("change", function () {
-            const value = this.value;
-            if (value) {
-                table.setFilter("status", "=", value);
-            } else {
-                table.clearFilter();
-            }
-        });
+        fetch("/OwnerSettlement/GetAllSettlements")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const table = new Tabulator("#myTable", {
+                    data: data,
+                    layout: "fitColumns",
+                    height: "100%",
+                    pagination: "local",
+                    paginationSize: 5,
+                    columns: [
+                        { title: "Booking ID", field: "bookingId", sorter: "number", width: 100 },
+                        { title: "Owner ID", field: "ownerId", sorter: "string" },
+                        { title: "Amount", field: "amount", sorter: "number", formatter: "money", formatterParams: { symbol: "₫", thousand: ",", precision: 0 } },
+                        { title: "Commission (%)", field: "commissionRate", sorter: "number", formatter: "money", formatterParams: { symbol: "", precision: 2 } },
+                        { title: "Status", field: "status", sorter: "string" },
+                        {
+                            title: "Due Date",
+                            field: "dueDate",
+                            sorter: "datetime",
+                            hozAlign: "center",
+                            formatter: function(cell) {
+                                const value = cell.getValue();
+                                return value ? dayjs(value).format("DD/MM/YYYY") : "";
+                            }
+                        },
+                    ]
+                });
+                table.setFilter("status", "=", "Unpaid");
+                document.getElementById("status-filter").addEventListener("change", function () {
+                    const value = this.value;
+                    if (value) {
+                        table.setFilter("status", "=", value);
+                    } else {
+                        table.clearFilter();
+                    }
+                });
+            });
     });
 </script>
+
 }

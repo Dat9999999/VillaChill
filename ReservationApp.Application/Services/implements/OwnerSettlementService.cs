@@ -44,4 +44,18 @@ public class OwnerSettlementService : IOwnerSettlementService
     {
         throw new NotImplementedException();
     }
+
+    public IEnumerable<OwnerSettlementDTO?> GetAll(string? OwnerId, bool isAdmin)
+    {
+        IEnumerable<OwnerSettlement> ownerSettlements;
+        if (isAdmin)
+        {
+            ownerSettlements = _unitOfWork.OwnerSettlements.GetAll();
+        }
+        else
+        {
+            ownerSettlements = _unitOfWork.OwnerSettlements.GetAll(x => x.OwnerId == OwnerId);
+        }
+        return _mapper.Map<IEnumerable<OwnerSettlementDTO>>(ownerSettlements);       
+    }
 }

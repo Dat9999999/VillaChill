@@ -10,4 +10,5 @@ public interface IOwnerSettlementService
 
     // update when owner pay for admin or overdue
     void Update(int bookingId, string statusPayment);
+    public IEnumerable<OwnerSettlementDTO?> GetAll(string? UserId, bool isAdmin);
 }
