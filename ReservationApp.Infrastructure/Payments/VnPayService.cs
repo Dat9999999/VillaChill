@@ -21,7 +21,13 @@ public class VnPayService : IVnPayService
         var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneById);
         var tick = DateTime.Now.Ticks.ToString();
         var pay = new VnPayLibrary();
-        var urlCallBack = _configuration["Vnpay:PaymentBackReturnUrl"];
+        // Chọn ReturnUrl dựa trên OrderType
+        string urlCallBack = model.OrderType?.ToLower() switch
+        {
+            "booking" => _configuration["Vnpay:ReturnUrls:Booking"],
+            "ownersettlement" => _configuration["Vnpay:ReturnUrls:OwnerSettlement"],
+            _ => throw new ArgumentException("Invalid OrderType")
+        };
 
         pay.AddRequestData("vnp_Version", _configuration["Vnpay:Version"]);
         pay.AddRequestData("vnp_Command", _configuration["Vnpay:Command"]);

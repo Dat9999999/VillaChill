@@ -42,7 +42,13 @@ public class OwnerSettlementService : IOwnerSettlementService
 
     public void UpdatePaymentStatus(IEnumerable<int> bookingId, string statusPayment)
     {
-        throw new NotImplementedException();
+        foreach (var booking in bookingId)
+        {
+            var ownerSettlement = _unitOfWork.OwnerSettlements.Get(x => x.BookingId == booking);
+            ownerSettlement.Status = statusPayment;
+            _unitOfWork.OwnerSettlements.Update(ownerSettlement);       
+        }
+        _unitOfWork.Save();       
     }
 
 
@@ -79,8 +85,8 @@ public class OwnerSettlementService : IOwnerSettlementService
         {
             Amount = ownerSettlements.Sum(s => (double)(s.Amount *s.CommissionRate)/100),
             Name = "Owner",
-            OrderDescription = $"BookingIDs: {string.Join(", ", bookingIds)}",
-            OrderType = "other",
+            OrderDescription = $"{string.Join(",", bookingIds)}",
+            OrderType = "ownerSettlement",
         };
         return model;
     }

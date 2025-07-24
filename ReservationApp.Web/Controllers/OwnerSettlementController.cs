@@ -55,7 +55,14 @@ public class OwnerSettlementController : Controller
         var response = _vnPayService.PaymentExecute(Request.Query);
         if (response.VnPayResponseCode == "00")
         {
-            // _ownerSettlementService.UpdatePaymentStatus();
+            var listIdFromResponse = response.OrderDescription.Split(" ")[1].Split(",");
+
+            var bookingIdList = listIdFromResponse
+                .Where(id => int.TryParse(id, out _)) // lọc những cái convert được
+                .Select(int.Parse)
+                .ToList();
+
+            _ownerSettlementService.UpdatePaymentStatus(bookingIdList, SD.StatusPayment_Paid);
             
             return View(nameof(Index));
         }
