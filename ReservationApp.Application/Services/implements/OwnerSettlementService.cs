@@ -40,10 +40,11 @@ public class OwnerSettlementService : IOwnerSettlementService
 
     }
 
-    public void Update(int bookingId, string statusPayment)
+    public void UpdatePaymentStatus(IEnumerable<int> bookingId, string statusPayment)
     {
         throw new NotImplementedException();
     }
+
 
     public IEnumerable<OwnerSettlementDTO?> GetAll(string? OwnerId, bool isAdmin)
     {
@@ -57,5 +58,30 @@ public class OwnerSettlementService : IOwnerSettlementService
             ownerSettlements = _unitOfWork.OwnerSettlements.GetAll(x => x.OwnerId == OwnerId);
         }
         return _mapper.Map<IEnumerable<OwnerSettlementDTO>>(ownerSettlements);       
+    }
+
+    //call this after paid successfully
+    public PaymentInformationModel MarkAsPaidBulk(List<int> bookingIds)
+    {   
+        var ownerSettlements = _unitOfWork.OwnerSettlements.GetAll()
+            .Where(s =>bookingIds.Contains(s.BookingId) && s.Status != SD.StatusPayment_Paid);
+        // if(!ownerSettlements.Any()) return false;
+        // foreach (var ownerSettlement in ownerSettlements)
+        // {
+        //     ownerSettlement.Status = SD.StatusPayment_Paid;
+        //     _unitOfWork.OwnerSettlements.Update(ownerSettlement);       
+        // }
+        // _unitOfWork.Save();
+        // return true;   
+        
+        
+        var model = new PaymentInformationModel
+        {
+            Amount = ownerSettlements.Sum(s => (double)(s.Amount *s.CommissionRate)/100),
+            Name = "Owner",
+            OrderDescription = $"BookingIDs: {string.Join(", ", bookingIds)}",
+            OrderType = "other",
+        };
+        return model;
     }
 }

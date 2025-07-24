@@ -9,6 +9,7 @@ public interface IOwnerSettlementService
     public void Create(Booking booking);
 
     // update when owner pay for admin or overdue
-    void Update(int bookingId, string statusPayment);
+    void UpdatePaymentStatus(IEnumerable<int> bookingId,string statusPayment);
     public IEnumerable<OwnerSettlementDTO?> GetAll(string? UserId, bool isAdmin);
+    PaymentInformationModel MarkAsPaidBulk(List<int> bookingIds);
 }

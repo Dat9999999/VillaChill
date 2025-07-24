@@ -17,51 +17,12 @@
             </select>
         </div>
         <div id="myTable" class="w-100 h-100"></div>
+        <button id="bulkPayBtn" class="btn btn-success mb-3">Pay</button>
     </div>
 </div>
 
 @section Scripts {
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch("/OwnerSettlement/GetAllSettlements")
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                const table = new Tabulator("#myTable", {
-                    data: data,
-                    layout: "fitColumns",
-                    height: "100%",
-                    pagination: "local",
-                    paginationSize: 5,
-                    columns: [
-                        { title: "Booking ID", field: "bookingId", sorter: "number", width: 100 },
-                        { title: "Owner ID", field: "ownerId", sorter: "string" },
-                        { title: "Amount", field: "amount", sorter: "number", formatter: "money", formatterParams: { symbol: "₫", thousand: ",", precision: 0 } },
-                        { title: "Commission (%)", field: "commissionRate", sorter: "number", formatter: "money", formatterParams: { symbol: "", precision: 2 } },
-                        { title: "Status", field: "status", sorter: "string" },
-                        {
-                            title: "Due Date",
-                            field: "dueDate",
-                            sorter: "datetime",
-                            hozAlign: "center",
-                            formatter: function(cell) {
-                                const value = cell.getValue();
-                                return value ? dayjs(value).format("DD/MM/YYYY") : "";
-                            }
-                        },
-                    ]
-                });
-                table.setFilter("status", "=", "Unpaid");
-                document.getElementById("status-filter").addEventListener("change", function () {
-                    const value = this.value;
-                    if (value) {
-                        table.setFilter("status", "=", value);
-                    } else {
-                        table.clearFilter();
-                    }
-                });
-            });
-    });
+    <script src="~/js/OwnerSettlement.js">
 </script>
 
 }
