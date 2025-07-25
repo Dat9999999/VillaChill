@@ -11,4 +11,5 @@ public interface IVillaService
     public bool Delete(Villa villa, out string errorMessage);
     public bool Add(Villa villa, out string errorMessage);
 
+    public IEnumerable<Villa> GetVillaIsRestricted();
 }

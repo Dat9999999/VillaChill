@@ -17,12 +17,22 @@
             </select>
         </div>
         <div id="myTable" class="w-100 h-100"></div>
-        <button id="bulkPayBtn" class="btn btn-success mb-3">Pay</button>
+        @if (User.IsInRole(SD.Role_Owner))
+        {
+            <button id="bulkPayBtn" class="btn btn-success mb-3">Pay</button>
+        }
+        @if (User.IsInRole(SD.Role_Admin))
+        {
+            <button id="restrictOwnerBtn" class="btn btn-danger mb-3 ms-2">
+                Restrict overdue
+            </button>
+        }
     </div>
 </div>
 
 @section Scripts {
     <script src="~/js/OwnerSettlement.js">
 </script>
+    @* <script src="~/js/restrictOwner.js"></script> *@
 
 }

@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
+using ReservationApp.Domain.Entities;
 using ReservationApp.Models;
 using ReservationApp.ViewModels;
 
@@ -13,12 +15,14 @@ public class HomeController : Controller
     private readonly IVillaNumberService _villaNumberService;
     private readonly IVillaService _villaService;
     private readonly IBookingService _bookingService;
+    private readonly UserManager<ApplicationUser> _userManager;
     public HomeController(IVillaNumberService villaNumberService, IVillaService villaService,
-        IBookingService bookingService)
+        IBookingService bookingService, UserManager<ApplicationUser> userManager)
     {
         _villaNumberService = villaNumberService;
         _villaService = villaService;
         _bookingService = bookingService;
+        _userManager = userManager;
     }
 
     public IActionResult Index()
@@ -40,8 +44,9 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult CheckAvailability(int nights, DateOnly checkInDate, string city)
     {
-        
-        var villaList = _villaService.GetAll(null,"Amenities").Where(u => u.City == city).ToList();
+        var villaIsRestricted = _villaService.GetVillaIsRestricted().Select(x=>x.Id).ToHashSet();
+        var villaList = _villaService.GetAll(null,"Amenities").Where(u => u.City == city &&
+                                                                         !villaIsRestricted.Contains(u.Id)).ToList();
         var villasBooked = _bookingService.GetAll(u => u.Status != SD.StatusCancelled 
         && u.Status != SD.StatusRefunded).ToList();
         var villaNumbers = _villaNumberService.GetAll().ToList();

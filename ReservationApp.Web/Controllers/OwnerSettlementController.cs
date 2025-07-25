@@ -69,4 +69,12 @@ public class OwnerSettlementController : Controller
         return RedirectToAction("Error","Home");
     }
 
+    [HttpPost]
+    public IActionResult RestrictOverdueOwners([FromBody] List<string> ownerIds)
+    {
+        _ownerSettlementService.RestrictOverdue(ownerIds);
+        return Ok(new { success = true, count = ownerIds.Count });
+    }
+    
+
 }

@@ -37,34 +37,73 @@ document.addEventListener("DOMContentLoaded", function () {
                     table.clearFilter();
                 }
             });
-            document.getElementById("bulkPayBtn").addEventListener("click", function () {
-                const selectedRows = table.getSelectedData(); // lấy dữ liệu các dòng đã chọn
+            const bulkPayBtn = document.getElementById("bulkPayBtn");
+            if (bulkPayBtn) {
+                bulkPayBtn.addEventListener("click", function () {
+                    const selectedRows = table.getSelectedData();
 
-                if (selectedRows.length === 0) {
-                    alert("Vui lòng chọn ít nhất 1 dòng để thanh toán.");
-                    return;
-                }
+                    if (selectedRows.length === 0) {
+                        alert("Vui lòng chọn ít nhất 1 dòng để thanh toán.");
+                        return;
+                    }
 
-                const bookingIds = selectedRows.map(row => row.bookingId);
+                    const bookingIds = selectedRows.map(row => row.bookingId);
 
-                if (!confirm(`Xác nhận thanh toán ${bookingIds.length} booking?`)) return;
+                    if (!confirm(`Xác nhận thanh toán ${bookingIds.length} booking?`)) return;
 
-                fetch("/OwnerSettlement/BulkPay", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(bookingIds)
-                })
-                    .then(res => res.text()) // 👈 KHÔNG dùng .json()
-                    .then(url => {
-                        window.location.href = url; // ✅ chuyển hướng đúng
+                    fetch("/OwnerSettlement/BulkPay", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(bookingIds)
                     })
-                    .catch(err => {
-                        console.error("Lỗi redirect:", err);
-                        alert("Không tạo được link thanh toán!");
-                    });
-            });
+                        .then(res => res.text())
+                        .then(url => {
+                            window.location.href = url;
+                        })
+                        .catch(err => {
+                            console.error("Lỗi redirect:", err);
+                            alert("Không tạo được link thanh toán!");
+                        });
+                });
+            }
+            const restrictBtn = document.getElementById("restrictOwnerBtn");
+            if (restrictBtn) {
+                document.getElementById("restrictOwnerBtn").addEventListener("click", function () {
+                    // Lọc những dòng có status là "Overdue"
+                    const overdueRows = table.getData().filter(row => row.status === "Overdue");
 
+                    if (overdueRows.length === 0) {
+                        alert("Không có owner nào quá hạn để restrict.");
+                        return;
+                    }
+
+                    // Lấy danh sách ownerId (loại bỏ trùng)
+                    const ownerIds = [...new Set(overdueRows.map(row => row.ownerId))];
+
+                    if (!confirm(`Restrict ${ownerIds.length} owner(s)?`)) return;
+
+                    fetch("/OwnerSettlement/RestrictOverdueOwners", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(ownerIds)
+                    })
+                        .then(res => {
+                            if (!res.ok) throw new Error("Request failed");
+                            return res.json();
+                        })
+                        .then(result => {
+                            alert("Đã restrict thành công.");
+                            location.reload();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert("Có lỗi xảy ra khi restrict.");
+                        });
+                });
+            }
         });
 });

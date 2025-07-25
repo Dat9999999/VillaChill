@@ -100,4 +100,12 @@ public class VillaService : IVillaService
         _unitOfWork.Save();
         return true;
     }
+
+    public IEnumerable<Villa> GetVillaIsRestricted()
+    {
+        var ownerIsRestricted = _unitOfWork.ApplicationUsers.GetAll(x => x.isOverDue == true).Select(x => x.Email).ToList();
+        var villaIsRestricted = _unitOfWork.Villas.GetAll(x => ownerIsRestricted.Contains(x.OwnerEmail));
+        return villaIsRestricted;      
+        
+    }
 }
