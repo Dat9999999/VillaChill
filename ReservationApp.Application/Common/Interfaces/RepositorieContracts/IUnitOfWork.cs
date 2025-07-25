@@ -1,3 +1,6 @@
+using System.Data;
+using Microsoft.EntityFrameworkCore.Storage;
+
 namespace ReservationApp.Application.Common.Interfaces;
 
 public interface IUnitOfWork
@@ -11,5 +14,6 @@ public interface IUnitOfWork
     public ICommissionRateRepository CommissionRates { get; }
     public IOwnerBalanceRepository OwnerBalances { get; }
     public IOwnerSettlementRepository OwnerSettlements { get; }
+    IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel);
     void Save();
 }

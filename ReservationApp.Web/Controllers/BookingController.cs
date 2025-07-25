@@ -59,6 +59,8 @@ public class BookingController : Controller
             ModelState.AddModelError("CheckInDate", "Invalid date format. Please use dd/MM/yyyy.");
             return BadRequest("Invalid date format.");
         }
+        
+        
         var claimIdentity = (ClaimsIdentity)User.Identity;
         var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
         
@@ -100,20 +102,23 @@ public class BookingController : Controller
     [HttpPost]
     public IActionResult FinalizeBooking(Booking booking, string paymentMethod)
     {
-        var villa = _villaService.GetById(booking.VillaId);
-        booking.TotalCost = villa.Price * booking.Nights;
-        
-        booking.Status = SD.StatusPending;
-        booking.BookingDate = DateTime.Now;
-        
-        booking.IsPaidAtCheckIn = paymentMethod == SD.PaymentMethod_Onsite;
-        _bookingService.Add(booking);
-        
-        if (!booking.IsPaidAtCheckIn)
+        try
         {
-            return RedirectToAction(nameof(CreatePaymentUrlVnpay), new { bookingId = booking.Id });
+            _bookingService.Add(booking, paymentMethod);
+            if (!booking.IsPaidAtCheckIn)
+            {
+                return RedirectToAction(nameof(CreatePaymentUrlVnpay), new { bookingId = booking.Id });
+            }
+
+            return RedirectToAction(nameof(BookingConfirmation), new { bookingId = booking.Id });
         }
-        return RedirectToAction(nameof(BookingConfirmation), new { bookingId = booking.Id });
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+            return RedirectToAction("Index", "Home");
+        }
+        //lock resource and add booking 
+        
 
     }
     public IActionResult CreatePaymentUrlVnpay(int bookingId)

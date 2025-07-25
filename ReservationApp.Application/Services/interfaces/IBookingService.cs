@@ -1,3 +1,4 @@
+using System.Data;
 using System.Linq.Expressions;
 using ReservationApp.Domain.Entities;
 
@@ -10,5 +11,5 @@ public interface IBookingService
     public Booking GetById(Expression<Func<Booking, bool>>? filter = null, string includeProperties = "");
     public void UpdateStatus(int bookingId, string status);
     void UpdatePaymentId(int bookingId, string PaymentId);
-    void Add(Booking booking);
+    void Add(Booking booking,string paymentMethod);
 }

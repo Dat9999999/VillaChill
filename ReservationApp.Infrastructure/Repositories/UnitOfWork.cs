@@ -1,5 +1,7 @@
+using System.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using ReservationApp.Application.Common.Interfaces;
-using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 
 namespace ReservationApp.Infrastructure.Repositories;
@@ -16,6 +18,11 @@ public class UnitOfWork : IUnitOfWork
     public IOwnerBalanceRepository OwnerBalances { get; }
     public IOwnerSettlementRepository OwnerSettlements { get; }
     public ICommissionRateRepository CommissionRates { get; }
+
+    public IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+    {
+        return _context.Database.BeginTransaction(isolationLevel);
+    }
 
     public void Save()
     {
