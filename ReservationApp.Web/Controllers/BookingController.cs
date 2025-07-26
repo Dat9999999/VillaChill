@@ -104,6 +104,7 @@ public class BookingController : Controller
     {
         try
         {
+            //lock resource and add booking 
             _bookingService.Add(booking, paymentMethod);
             if (!booking.IsPaidAtCheckIn)
             {
@@ -117,7 +118,6 @@ public class BookingController : Controller
             TempData["Error"] = ex.Message;
             return RedirectToAction("Index", "Home");
         }
-        //lock resource and add booking 
         
 
     }

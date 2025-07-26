@@ -40,7 +40,9 @@ public static class DependencyInjection
        
        //email 
        services.AddScoped<IEmailService, EmailService>();
-
+       
+       //qrcode
+       services.AddScoped<IQRCoderService, QRCoderService>();
         return services;
     }
 }

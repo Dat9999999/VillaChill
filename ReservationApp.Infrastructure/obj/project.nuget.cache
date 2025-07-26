@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4TrhlX0tToM=",
+  "dgSpecHash": "l/IPT3/eCUY=",
   "success": true,
   "projectFilePath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -77,6 +77,7 @@
     "/Users/huynhtandat/.nuget/packages/microsoft.sqlserver.server/1.0.0/microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/qrcoder/1.6.0/qrcoder.1.6.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/skiasharp/2.88.8/skiasharp.2.88.8.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/skiasharp.nativeassets.macos/2.88.8/skiasharp.nativeassets.macos.2.88.8.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/skiasharp.nativeassets.win32/2.88.8/skiasharp.nativeassets.win32.2.88.8.nupkg.sha512",
