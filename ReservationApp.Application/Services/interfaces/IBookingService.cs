@@ -12,4 +12,5 @@ public interface IBookingService
     public void UpdateStatus(int bookingId, string status);
     void UpdatePaymentId(int bookingId, string PaymentId);
     void Add(Booking booking,string paymentMethod);
+    void CreateCheckInToken(int bookingId);
 }

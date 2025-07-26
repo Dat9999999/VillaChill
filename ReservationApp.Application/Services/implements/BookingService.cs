@@ -78,9 +78,10 @@ public class BookingService : IBookingService
         }
     }
 
-
-    public IDisposable BeginTransaction(IsolationLevel serializable)
+    public void CreateCheckInToken(int bookingId)
     {
-        throw new NotImplementedException();
+        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId);
+        booking.CheckInToken = Guid.NewGuid().ToString();
+        _unitOfWork.Save();       
     }
 }

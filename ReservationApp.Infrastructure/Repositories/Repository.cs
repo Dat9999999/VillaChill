@@ -42,7 +42,7 @@ public class Repository<T> : IRepository<T> where T : class
         IQueryable<T> query = _context.Set<T>();
         if (!isTracked)
         {
-            query = _dbSet.AsNoTracking();
+            query = _dbSet;
         }
         if (filter is not null)
         {

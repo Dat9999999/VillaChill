@@ -25,12 +25,13 @@ public class BookingController : Controller
     private readonly IOwnerBalanceService _ownerBalanceService;
     private readonly IOwnerSettlementService _ownerSettlementService;
     private readonly IHubContext<DashBoardHub> _hubContext;
+    private readonly IQRCoderService _qrCodeService;
     public BookingController(IVnPayService vnPayService, IExporter exporter,
         IBookingService bookingService, IVillaNumberService villaNumberService, IVillaService villaService,
         IAmenityService amenityService,
         UserManager<ApplicationUser> userManager, IEmailService emailService,
         IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext,
-        IOwnerSettlementService ownerSettlementService
+        IOwnerSettlementService ownerSettlementService, IQRCoderService qrCodeService
         )
     {
         _vnPayService = vnPayService;
@@ -44,6 +45,7 @@ public class BookingController : Controller
         _ownerBalanceService = ownerBalanceService;
         _hubContext = hubContext;
         _ownerSettlementService = ownerSettlementService;
+        _qrCodeService = qrCodeService;
 
     }
 
@@ -154,8 +156,11 @@ public class BookingController : Controller
             _bookingService.UpdateStatus(bookingId, SD.StatusApproved);
             _bookingService.UpdatePaymentId(bookingId, response.PaymentId);
             
+            // add checkinToken for scan QR 
+            _bookingService.CreateCheckInToken(bookingId);
+            
+            
             //sending notification that booking successfully through email 
-            // QR Checkin attatch
             // _emailService.configMailPaySuccess(customerEmail, villa.Name, booking.VillaNumber);
             
             _hubContext.Clients.All.SendAsync("NewBooking", new { booking.Id});
