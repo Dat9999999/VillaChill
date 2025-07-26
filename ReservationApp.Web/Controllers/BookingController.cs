@@ -168,6 +168,21 @@ public class BookingController : Controller
         }
         return RedirectToAction("Error","Home");
     }
+
+    [HttpGet]
+    [Route("qrcode")]
+    public IActionResult GetQRCode([FromQuery]string checkInToken)
+    {
+        var qrcode = _qrCodeService.GenerateQRCode(checkInToken);
+        return File(qrcode, "image/png");
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult ScanQR()
+    {
+        return View();   
+    }
     public IActionResult BookingConfirmation(int bookingid )
     {
         return View(bookingid);
