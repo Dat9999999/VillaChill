@@ -13,4 +13,5 @@ public interface IBookingService
     void UpdatePaymentId(int bookingId, string PaymentId);
     void Add(Booking booking,string paymentMethod);
     void CreateCheckInToken(int bookingId);
+   public  Booking CheckQRCodeVallid(int bookingId, string checkinToken);
 }

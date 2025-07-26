@@ -147,7 +147,12 @@
                             }
                             else
                             {
-                                <a asp-controller="Booking" asp-action="ScanQR"  class="btn btn-warning form-control my-1"><i class="bi bi-check2-square"></i> &nbsp; Check In by QRCode</a>
+                                <button type="button"
+                                        class="btn btn-warning form-control my-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#qrScanModal">
+                                    <i class="bi bi-upc-scan"></i> &nbsp; Check In by QR Code
+                                </button>
                             }
                         }
                         @if (Model.Status == SD.StatusCheckedIn)
@@ -176,3 +181,23 @@
         </div>
     </div>
 </div>
+
+@* model scan QR *@
+<div class="modal fade" id="qrScanModal" tabindex="-1" aria-labelledby="qrScanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="qrScanModalLabel">Scan QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="my-qr-reader"  data-booking-id="@Model.Id" style="max-width: 280px; margin: auto;"></div>
+                <p class="text-muted mt-2">Please scan the guest’s QR code to check them in.</p>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/ScanQRCode.js"></script>
+}

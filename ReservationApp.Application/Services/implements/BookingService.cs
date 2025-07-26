@@ -84,4 +84,10 @@ public class BookingService : IBookingService
         booking.CheckInToken = Guid.NewGuid().ToString();
         _unitOfWork.Save();       
     }
+
+    public Booking CheckQRCodeVallid(int bookingId, string checkinToken)
+    {
+        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId && x.CheckInToken == checkinToken);
+        return booking;       
+    }
 }

@@ -8,6 +8,7 @@ using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Hubs;
+using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
 
@@ -177,12 +178,33 @@ public class BookingController : Controller
         return File(qrcode, "image/png");
     }
 
-    [HttpGet]
-    [AllowAnonymous]
-    public IActionResult ScanQR()
+    // [HttpGet]
+    // [AllowAnonymous]
+    // public IActionResult ScanQR()
+    // {
+    //     return View();   
+    // }
+    [HttpPost]
+    [Authorize(Roles = $"{SD.Role_Admin},{SD.Role_Owner}")]
+    public IActionResult CheckinByQR([FromBody] QRCheckinDto dto)
     {
-        return View();   
+        var booking = _bookingService.CheckQRCodeVallid(dto.BookingId, dto.CheckinToken);
+        if (booking is not null)
+        {
+            _bookingService.UpdateStatus(dto.BookingId, SD.StatusCheckedIn);
+            _hubContext.Clients.All.SendAsync("RevenueChange", new { dto.BookingId, booking.VillaNumber });
+            _ownerBalanceService.UpdateBalance(dto.BookingId);
+
+            return Json(new
+            {
+                success = true,
+                redirectUrl = Url.Action(nameof(BookingDetails), new { bookingId = booking.Id })
+            });
+        }
+
+        return BadRequest(new { success = false, message = "Invalid QR code" });
     }
+
     public IActionResult BookingConfirmation(int bookingid )
     {
         return View(bookingid);
@@ -213,13 +235,8 @@ public class BookingController : Controller
         // update ownerbalance when customer using payment online method 
         _ownerBalanceService.UpdateBalance(booking.Id);
         _hubContext.Clients.All.SendAsync("RevenueChange", new { booking.Id, booking.VillaNumber });
-        
-        
         // update owner settlement when booking is paid onsite
-        if (booking.IsPaidAtCheckIn)
-        {
-            _ownerSettlementService.Create(booking);
-        }
+        _ownerSettlementService.Create(booking);
         TempData["Success"] = "Booking is checked in successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
