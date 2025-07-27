@@ -92,4 +92,29 @@ public class OwnerSettlementService : IOwnerSettlementService
         }
         _unitOfWork.Save();       
     }
+
+    public IEnumerable<string> GetOverdueOwnerIds()
+    {
+        var today = DateTime.Now;
+        var ownersOverdue = _unitOfWork.OwnerSettlements
+            .GetAll(x => x.DueDate < today && x.Status == SD.StatusPayment_Unpaid)
+            .GroupBy(x => x.OwnerId)
+            .Select(g => g.Key).ToList();
+        return ownersOverdue;       
+    }
+
+    public void RestrictOwnerAutomatically()
+    {
+        var ownersOverdue = GetOverdueOwnerIds();
+        if (ownersOverdue.Any())
+        {
+            foreach (var ownerId in ownersOverdue)
+            {
+                var owner = _unitOfWork.ApplicationUsers.Get(x => x.Id == ownerId);
+                owner.isOverDue = true;
+                _unitOfWork.ApplicationUsers.Update(owner);       
+            }
+            _unitOfWork.Save();       
+        }
+    }
 }

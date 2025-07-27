@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using ReservationApp.Infrastructure.Email;
 using ReservationApp.Infrastructure.Exporting;
 using ReservationApp.Infrastructure.Payments;
 using ReservationApp.Infrastructure.Repositories;
+using ReservationApp.Infrastructure.SystemJob;
 
 namespace ReservationApp.Infrastructure;
 
@@ -20,6 +22,12 @@ public static class DependencyInjection
         {
             option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
+        services.AddHangfire(config =>
+         {
+          config.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection"));
+         }
+         );
+        services.AddHangfireServer();
 
        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -43,6 +51,9 @@ public static class DependencyInjection
        
        //qrcode
        services.AddScoped<IQRCoderService, QRCoderService>();
+       
+       //systemTask
+       services.AddScoped<IJobScheduler, JobScheduler>();
         return services;
     }
 }

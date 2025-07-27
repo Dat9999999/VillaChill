@@ -1,16 +1,8 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Hangfire;
 using ReservationApp.Application;
 using ReservationApp.Application.Common.Interfaces;
-using ReservationApp.Application.Services.implements;
-using ReservationApp.Application.Services.interfaces;
-using ReservationApp.Domain.Entities;
 using ReservationApp.Hubs;
 using ReservationApp.Infrastructure;
-using ReservationApp.Infrastructure.Data;
-using ReservationApp.Infrastructure.Exporting;
-using ReservationApp.Infrastructure.Payments;
-using ReservationApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +52,12 @@ app.MapStaticAssets();
 
 //SignalR
 app.MapHub<DashBoardHub>("/dashboardHub");
+
+//hangfire 
+app.UseHangfireDashboard();
+ScheduleRecurringJob();
+
+
 app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}")
@@ -77,5 +75,14 @@ void SeedData()
     {
         var dbInit = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
         dbInit.Initialize();
+    }
+}
+
+void ScheduleRecurringJob()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var jobScheduler = scope.ServiceProvider.GetRequiredService<IJobScheduler>();
+        jobScheduler.ScheduleJob();       
     }
 }

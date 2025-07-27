@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "UBCjQDZdvek=",
+  "dgSpecHash": "V99HSOEsCiU=",
   "success": true,
   "projectFilePath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/ReservationApp.Web.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,10 @@
     "/Users/huynhtandat/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/docx/4.0.25105.5786/docx.4.0.25105.5786.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.aspnetcore/1.8.20/hangfire.aspnetcore.1.8.20.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.core/1.8.20/hangfire.core.1.8.20.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.netcore/1.8.20/hangfire.netcore.1.8.20.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.sqlserver/1.8.20/hangfire.sqlserver.1.8.20.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.3.0/microsoft.aspnetcore.authentication.abstractions.2.3.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.aspnetcore.authentication.core/2.3.0/microsoft.aspnetcore.authentication.core.2.3.0.nupkg.sha512",

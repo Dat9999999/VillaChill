@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "l/IPT3/eCUY=",
+  "dgSpecHash": "cjOVOjOQ1Sc=",
   "success": true,
   "projectFilePath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Infrastructure/ReservationApp.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,10 @@
     "/Users/huynhtandat/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/docx/4.0.25105.5786/docx.4.0.25105.5786.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.aspnetcore/1.8.20/hangfire.aspnetcore.1.8.20.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.core/1.8.20/hangfire.core.1.8.20.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.netcore/1.8.20/hangfire.netcore.1.8.20.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/hangfire.sqlserver/1.8.20/hangfire.sqlserver.1.8.20.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.3.0/microsoft.aspnetcore.authentication.abstractions.2.3.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.aspnetcore.authentication.core/2.3.0/microsoft.aspnetcore.authentication.core.2.3.0.nupkg.sha512",
@@ -77,6 +81,7 @@
     "/Users/huynhtandat/.nuget/packages/microsoft.sqlserver.server/1.0.0/microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/newtonsoft.json/11.0.1/newtonsoft.json.11.0.1.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/qrcoder/1.6.0/qrcoder.1.6.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/skiasharp/2.88.8/skiasharp.2.88.8.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/skiasharp.nativeassets.macos/2.88.8/skiasharp.nativeassets.macos.2.88.8.nupkg.sha512",
