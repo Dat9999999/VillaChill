@@ -11,10 +11,12 @@ public class OwnerSettlementService : IOwnerSettlementService
 {
     private IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public OwnerSettlementService(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IEmailService _emailService;
+    public OwnerSettlementService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;      
+        _emailService = emailService;      
     }
     public void Create(Booking booking)
     {
@@ -97,7 +99,7 @@ public class OwnerSettlementService : IOwnerSettlementService
     {
         var today = DateTime.Now;
         var ownersOverdue = _unitOfWork.OwnerSettlements
-            .GetAll(x => x.DueDate < today && x.Status == SD.StatusPayment_Unpaid)
+            .GetAll(x => x.DueDate < today && x.Status != SD.StatusPayment_Paid)
             .GroupBy(x => x.OwnerId)
             .Select(g => g.Key).ToList();
         return ownersOverdue;       
@@ -111,8 +113,18 @@ public class OwnerSettlementService : IOwnerSettlementService
             foreach (var ownerId in ownersOverdue)
             {
                 var owner = _unitOfWork.ApplicationUsers.Get(x => x.Id == ownerId);
-                owner.isOverDue = true;
-                _unitOfWork.ApplicationUsers.Update(owner);       
+                //check if owner is already restricted
+                if (owner.isOverDue != true)
+                {
+                    owner.isOverDue = true;
+                    _unitOfWork.ApplicationUsers.Update(owner);  
+                    
+                    //send notification to owner 
+                    _emailService.SendEmail(owner.Email,
+                        "You have overdue platform fees",
+                        $"Dear {owner.Name ?? owner.Email}," +
+                        $"\n\nYour account has been restricted due to unpaid fees. Please complete your payment to continue using the service.\n\nThank you.");
+                }
             }
             _unitOfWork.Save();       
         }

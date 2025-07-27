@@ -53,7 +53,11 @@ public static class DependencyInjection
        services.AddScoped<IQRCoderService, QRCoderService>();
        
        //systemTask
+       // Recurring task
        services.AddScoped<IJobScheduler, JobScheduler>();
+       //Conditional task
+       services.AddScoped<IBackgroundJobScheduler, BackgroundJobScheduler>();
+
         return services;
     }
 }

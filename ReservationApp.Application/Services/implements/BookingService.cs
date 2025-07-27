@@ -10,9 +10,11 @@ namespace ReservationApp.Application.Services.implements;
 public class BookingService : IBookingService
 {
     private readonly IUnitOfWork _unitOfWork;
-    public BookingService(IUnitOfWork unitOfWork)
+    private readonly IBackgroundJobScheduler _backgroundJobScheduler;
+    public BookingService(IUnitOfWork unitOfWork, IBackgroundJobScheduler backgroundJobScheduler)
     {
         _unitOfWork = unitOfWork;
+        _backgroundJobScheduler = backgroundJobScheduler;      
     }
     public IEnumerable<Booking> GetAll(Expression<Func<Booking, bool>>? filter = null,string includeProperties = "")
     {
@@ -67,6 +69,8 @@ public class BookingService : IBookingService
 
             _unitOfWork.Bookings.Add(booking);
 
+            
+
             // 3. Save and commit
             _unitOfWork.Save();
             transaction.Commit();       
@@ -75,6 +79,12 @@ public class BookingService : IBookingService
         {
             transaction.Rollback();
             throw;
+        }
+        //count down for 3 mins to complete payment 
+        if (paymentMethod == SD.PaymentMethod_Online)
+        {
+            var delay = TimeSpan.FromMinutes(3);
+            _backgroundJobScheduler.ScheduleCancelBooking(booking.Id, delay);
         }
     }
 
@@ -89,5 +99,13 @@ public class BookingService : IBookingService
     {
         var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId && x.CheckInToken == checkinToken);
         return booking;       
+    }
+
+    public void CancelBooking(int bookingId)
+    {
+        var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId);
+        booking.Status = SD.StatusCancelled;
+        _unitOfWork.Bookings.Update(booking);       
+        _unitOfWork.Save();       
     }
 }
