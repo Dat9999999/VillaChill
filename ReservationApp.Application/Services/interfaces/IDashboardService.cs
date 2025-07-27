@@ -17,4 +17,6 @@ public interface IDashboardService
 
     public double GetBalance(string ownerEmail);
     public ColumnChartDTO GetRevenueChartData(string range, string ownerEmail);
+
+    public Task exportRevenueReport();
 }

@@ -15,7 +15,7 @@ public class EmailService : IEmailService
     {
         _configuration = configuration;
     }
-    public void SendEmail(string receiverEmail, string subject, string body)
+    public void SendEmail(string receiverEmail, string subject, string body, byte[] attachment = null)
     {
         var senderEmail = _configuration["email:senderEmail"];
         var senderPassword = _configuration["email:password"];
@@ -36,12 +36,20 @@ public class EmailService : IEmailService
         using (var message = new MailMessage(fromAddress, toAddress)
                {
                    Subject = subject,
-                   Body = body
+                   Body = body ?? "Weekly Report"
                })
         {
+            if (attachment != null)
+            {
+                var stream = new MemoryStream(attachment);
+                var attach = new Attachment(stream, "Report.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                message.Attachments.Add(attach);
+            }
+            message.IsBodyHtml = true;
             smtp.Send(message);
         }
     }
+
 
     public void configMailPaySuccess(string receiverEmail, string villaName, int villaNumbers)
     {

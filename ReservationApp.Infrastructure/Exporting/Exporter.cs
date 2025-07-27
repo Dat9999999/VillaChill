@@ -1,6 +1,7 @@
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Domain.Entities;
+using ReservationApp.ViewModels;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
 
@@ -84,6 +85,33 @@ public class Exporter: IExporter
                 doc.Save();
             }
     
+            return stream.ToArray();
+        }
+    }
+
+    public byte[] ExportRevenueReport(RevenueReportDto revenueReportDto)
+    {
+        using (var stream = new MemoryStream())
+        {
+            using (var doc = DocX.Create(stream))
+            {
+                var logoPath = Path.Combine(Directory.GetCurrentDirectory(), SD.LogoPath);
+
+                if (File.Exists(logoPath))
+                {
+                    var img = doc.AddImage(logoPath);
+                    var picture = img.CreatePicture(60, 60);
+                    var paragraphWithImg = doc.InsertParagraph();
+                    paragraphWithImg.AppendPicture(picture);
+                    paragraphWithImg.Alignment = Alignment.left;
+                }
+                // main title
+                doc.InsertParagraph(SD.RevenueTitle)
+                    .Font("Arial")
+                    .FontSize(22)
+                    .Bold()
+                    .Alignment = Alignment.center;
+            }
             return stream.ToArray();
         }
     }

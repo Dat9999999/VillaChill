@@ -12,5 +12,8 @@ public class JobScheduler:IJobScheduler
             x => x.RestrictOwnerAutomatically(),
             Cron.Minutely
             );
+        RecurringJob.AddOrUpdate<IDashboardService>(
+            x => x.exportRevenueReport()
+            , Cron.Minutely);
     }
 }

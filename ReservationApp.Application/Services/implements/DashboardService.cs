@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
+using ReservationApp.Domain.Entities;
 using ReservationApp.ViewModels;
 
 namespace ReservationApp.Application.Services.implements;
@@ -8,13 +10,20 @@ namespace ReservationApp.Application.Services.implements;
 public class DashboardService: IDashboardService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IExporter _exporter;   
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IEmailService _emailService;
     static int previousMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
     private DateTime previousStartMonthDate = new DateTime(DateTime.Now.Year, previousMonth, 1);
     private DateTime currentStartMonthDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
-    public DashboardService(IUnitOfWork unitOfWork)
+    public DashboardService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager,
+     IExporter exporter, IEmailService emailService)
     {
         _unitOfWork = unitOfWork;
+        _userManager = userManager;      
+        _exporter = exporter;      
+        _emailService = emailService;      
     }
     public RadialBarChartDTO GetRadialCartDataModel(double total, double currentMonth, double prevMonth)
     {
@@ -252,5 +261,53 @@ public class DashboardService: IDashboardService
                 break;
         }
         return result;       
+    }
+
+    public async Task exportRevenueReport()
+    {
+        var receivers = await _userManager.GetUsersInRoleAsync(SD.Role_Owner);
+        var platformFee = _unitOfWork.CommissionRates.Get(x => x.Name == SD.CommissionRate_platform).Rate;
+        var date7DaysAgo = DateOnly.FromDateTime(DateTime.Now.AddDays(-7));
+
+        foreach (var receiver in receivers)
+        {
+            var bookings = _unitOfWork.Bookings.GetAll(u =>
+                (u.Status == SD.StatusCompleted || u.Status == SD.StatusCheckedIn)
+                && u.Villa.OwnerEmail == receiver.Email);
+
+            var totalRevenue = bookings.Sum(x => x.TotalCost * (100 - platformFee) / 100);
+
+            var totalRevenueByWeek = bookings
+                .Where(x => x.CheckInDate >= date7DaysAgo)
+                .GroupBy(x => x.CheckInDate)
+                .Select(b => new DailyRevenueDto()
+                {
+                    Date = b.Key,
+                    Revenue = b.Sum(x => x.TotalCost * (100 - platformFee) / 100)
+                })
+                .ToList();
+
+            var numberOfBookings = bookings
+                .Count(x => x.CheckInDate >= date7DaysAgo);
+
+            var revenueReportDto = new RevenueReportDto()
+            {
+                numberBookings = numberOfBookings,
+                revenueByWeek = totalRevenueByWeek,
+                totalRevenue = totalRevenue
+            };
+
+            var htmlBody = SD.reportHtml
+                .Replace("{OwnerName}", receiver.UserName)
+                .Replace("{TotalRevenue}", totalRevenue.ToString("C"))
+                .Replace("{NumberBookings}", numberOfBookings.ToString())
+                .Replace("{Year}", DateTime.Now.Year.ToString())
+                .Replace("{DailyRevenueRows}", string.Join("", totalRevenueByWeek.Select(r =>
+                    $"<tr><td>{r.Date:dd/MM/yyyy}</td><td>{r.Revenue:C}</td></tr>")));
+
+            var reportFile = _exporter.ExportRevenueReport(revenueReportDto);
+
+            _emailService.SendEmail(receiver.Email, "📊 Your Weekly Revenue Report", htmlBody, reportFile);
+        }
     }
 }

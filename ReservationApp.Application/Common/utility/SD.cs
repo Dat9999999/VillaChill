@@ -30,11 +30,98 @@ public static class SD
     public const string customerMail  = "datrootx@gmail.com";
     
     
-    //invoice string
+    //document string
     public const string ThanksMessage = "Thank you for choosing our Villa Service!";
     public const string LogoPath = "wwwroot/images/resort.png";
     public const string InvoiceTitle = "VILLA BOOKING INVOICE";
+    public const string RevenueTitle = "Revenue Report";
     
+    public const string reportHtml = @"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=""UTF-8"">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: #007bff;
+        }
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f3f5;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class=""container"">
+    <h2>📊 Weekly Revenue Report</h2>
+    <p>Hi <strong>{OwnerName}</strong>,</p>
+    <p>Here is your revenue report for the past week:</p>
+
+    <div class=""section-title"">Summary</div>
+    <table>
+        <tr>
+            <th>Total Revenue</th>
+            <td>{TotalRevenue}</td>
+        </tr>
+        <tr>
+            <th>Number of Bookings</th>
+            <td>{NumberBookings}</td>
+        </tr>
+    </table>
+
+    <div class=""section-title"">Daily Breakdown</div>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Revenue</th>
+        </tr>
+        {DailyRevenueRows}
+    </table>
+
+    <p>We've also attached a detailed invoice for your records.</p>
+
+    <p>Thank you for choosing our platform!</p>
+
+    <div class=""footer"">
+        &copy; {Year} VillaChill Platform. All rights reserved.
+    </div>
+</div>
+</body>
+</html>";
     
     //payment Method 
     public const string PaymentMethod_Online = "Online";
