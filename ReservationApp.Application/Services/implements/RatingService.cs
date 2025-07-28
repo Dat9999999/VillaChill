@@ -40,6 +40,7 @@ public class RatingService : IRatingService
     public void Add(RatingRequestDTO RatingDto)
     {
         var rating = _mapper.Map<Rating>(RatingDto);
+        rating.Date = DateTime.Now;
         _unitOfWork.Ratings.Add(rating);
         _unitOfWork.Save();   
     }
