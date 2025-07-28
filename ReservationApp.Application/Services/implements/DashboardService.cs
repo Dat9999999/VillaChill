@@ -268,6 +268,7 @@ public class DashboardService: IDashboardService
         var receivers = await _userManager.GetUsersInRoleAsync(SD.Role_Owner);
         var platformFee = _unitOfWork.CommissionRates.Get(x => x.Name == SD.CommissionRate_platform).Rate;
         var date7DaysAgo = DateOnly.FromDateTime(DateTime.Now.AddDays(-7));
+        var currentDay = DateOnly.FromDateTime(DateTime.Now);
 
         foreach (var receiver in receivers)
         {
@@ -278,7 +279,7 @@ public class DashboardService: IDashboardService
             var totalRevenue = bookings.Sum(x => x.TotalCost * (100 - platformFee) / 100);
 
             var totalRevenueByWeek = bookings
-                .Where(x => x.CheckInDate >= date7DaysAgo)
+                .Where(x => x.CheckInDate >= date7DaysAgo && x.CheckInDate <= currentDay)
                 .GroupBy(x => x.CheckInDate)
                 .Select(b => new DailyRevenueDto()
                 {
@@ -288,7 +289,7 @@ public class DashboardService: IDashboardService
                 .ToList();
 
             var numberOfBookings = bookings
-                .Count(x => x.CheckInDate >= date7DaysAgo);
+                .Count(x => x.CheckInDate >= date7DaysAgo && x.CheckInDate <= currentDay);
 
             var revenueReportDto = new RevenueReportDto()
             {

@@ -8,12 +8,16 @@ public class JobScheduler:IJobScheduler
 {
     public void ScheduleJob()
     {
+        // for testing use minutely
         RecurringJob.AddOrUpdate<IOwnerSettlementService>(
             x => x.RestrictOwnerAutomatically(),
             Cron.Minutely
+            // Cron.Daily
             );
         RecurringJob.AddOrUpdate<IDashboardService>(
             x => x.exportRevenueReport()
-            , Cron.Minutely);
+            , Cron.Minutely
+            // Cron.Weekly
+            );
     }
 }
