@@ -22,6 +22,19 @@ public static class DependencyInjection
         {
             option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
+       
+        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+         {
+          options.Password.RequireDigit = true;
+          options.Password.RequiredLength = 6;
+          options.Password.RequireNonAlphanumeric = false;
+          options.Password.RequireUppercase = true;
+          options.Password.RequireLowercase = true;
+         })
+         .AddEntityFrameworkStores<ApplicationDbContext>()
+         .AddDefaultTokenProviders();
+        
+        
         services.AddHangfire(config =>
          {
           config.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection"));
@@ -29,8 +42,6 @@ public static class DependencyInjection
          );
         services.AddHangfireServer();
 
-       services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
        
        //repository 
        services.AddScoped<IUnitOfWork, UnitOfWork>();

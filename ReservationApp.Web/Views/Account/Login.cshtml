@@ -36,7 +36,7 @@
                             </div>
                             <div class="d-flex justify-content-between pt-2">
                                 <p>
-                                    <a>Forgot your password?</a>
+                                    <a asp-controller="Account" asp-action="ForgotPassword" asp-route-returnUrl="@Model.ReturnUrl"> Forgot your password?</a>
                                 </p>
                                 <p>
                                     <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>

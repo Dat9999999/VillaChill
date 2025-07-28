@@ -15,9 +15,9 @@ public class JobScheduler:IJobScheduler
             // Cron.Daily
             );
         RecurringJob.AddOrUpdate<IDashboardService>(
-            x => x.exportRevenueReport()
-            , Cron.Minutely
-            // Cron.Weekly
+            x => x.exportRevenueReport(),
+            // Cron.Minutely
+            Cron.Weekly
             );
     }
 }

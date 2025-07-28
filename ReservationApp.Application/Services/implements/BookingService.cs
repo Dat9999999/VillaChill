@@ -104,6 +104,7 @@ public class BookingService : IBookingService
     public void CancelBooking(int bookingId)
     {
         var booking = _unitOfWork.Bookings.Get(x => x.Id == bookingId);
+        if(booking.IsPaymentSuccessful) return;
         booking.Status = SD.StatusCancelled;
         _unitOfWork.Bookings.Update(booking);       
         _unitOfWork.Save();       

@@ -18,16 +18,18 @@ public class AccountController : Controller
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IOwnerBalanceService _ownerBalanceService;
     private readonly IHubContext<DashBoardHub> _hubContext;
+    private readonly IEmailService _emailService;
     
     
     public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager,
-        IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext)
+        IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext, IEmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
         _ownerBalanceService = ownerBalanceService;
         _hubContext = hubContext;
+        _emailService = emailService;
     }
     // GET
     public IActionResult Login(string returnUrl = null)
@@ -150,6 +152,70 @@ public class AccountController : Controller
     public IActionResult AccessDenied()
     {
         return View();   
+    }
+
+    public IActionResult ForgotPassword(string returnUrl = null)
+    {
+        returnUrl??= Url.Content("~/");
+        
+        ForgotPasswordVM forgotPasswordVm = new()
+        {
+            Email = ""
+        };
+        forgotPasswordVm.ReturnUrl = returnUrl;
+        return View(forgotPasswordVm);  
+    }
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordVM model)
+    {
+        if (!ModelState.IsValid) return View(model);
+
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user != null)
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = Url.Action("ResetPassword", "Account", new { token, email = model.Email },
+                protocol: Request.Scheme);
+
+            // Gửi email tại đây (SMTP hoặc SendGrid)
+            _emailService.SendEmail(
+                model.Email,
+                "Reset Password - VillaChill",
+                $"Click here to reset your password: <a href='{callbackUrl}'>link</a>");
+        }
+        TempData["Success"] = "Please check your email to reset your password.";
+        return Redirect(model.ReturnUrl);
+    }
+    [HttpGet]
+    public IActionResult ResetPassword(string token, string email)
+    {
+        if (token == null || email == null)
+            return BadRequest("Invalid password reset request.");
+
+        return View(new ResetPasswordVM { Token = token, Email = email });
+    }
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordVM model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+            return RedirectToAction("ResetPasswordConfirmation");
+
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+        if (result.Succeeded)
+            return RedirectToAction("ResetPasswordConfirmation");
+
+        foreach (var error in result.Errors)
+            ModelState.AddModelError("", error.Description);
+
+        return View(model);
+    }
+    public IActionResult ResetPasswordConfirmation()
+    {
+        return View();
     }
     
 }
