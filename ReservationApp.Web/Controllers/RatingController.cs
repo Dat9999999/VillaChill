@@ -30,4 +30,9 @@ public class RatingController : Controller
         var ratings = _ratingService.GetAll(u => u.VillaId == villaId);
         return Ok(ratings);       
     }
+
+    public IActionResult GetSentiment([FromQuery] string input)
+    {
+        return Json(_onnxSentimentService.Predict(input));
+    }
 }

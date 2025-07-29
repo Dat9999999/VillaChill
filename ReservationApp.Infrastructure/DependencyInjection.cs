@@ -73,8 +73,8 @@ public static class DependencyInjection
        
        //Sentiment rating
        var root = Directory.GetCurrentDirectory();
-       var modelPath = Path.Combine(root, "AIServices", "SentimentModels","model.onnx");
-       var vocabPath = Path.Combine(root, "AIServices", "SentimentModels", "vocab.txt");
+       var modelPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "ReservationApp.Infrastructure", "AIServices", "SentimentModels", "model.onnx");
+       var vocabPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "ReservationApp.Infrastructure", "AIServices", "SentimentModels", "vocab.txt");
        services.AddSingleton<IOnnxSentimentService>(new OnnxSentimentService(modelPath, vocabPath));
 
         return services;

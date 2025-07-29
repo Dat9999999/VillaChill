@@ -18,16 +18,19 @@ public class OnnxSentimentService : IOnnxSentimentService
     {
         var tokens = Tokenize(text);
         var inputIds = new DenseTensor<long>(new[] { 1, tokens.Length });
+        var attentionMask = new DenseTensor<long>(new[] { 1, tokens.Length });
 
         for (int i = 0; i < tokens.Length; i++)
         {
             var token = tokens[i];
             inputIds[0, i] = _vocab.TryGetValue(token, out var id) ? id : _vocab["[UNK]"];
+            attentionMask[0, i] = 1; // Mark all tokens as valid
         }
 
         var inputs = new List<NamedOnnxValue>
         {
-            NamedOnnxValue.CreateFromTensor("input_ids", inputIds)
+            NamedOnnxValue.CreateFromTensor("input_ids", inputIds),
+            NamedOnnxValue.CreateFromTensor("attention_mask", attentionMask)
         };
 
         using var results = _session.Run(inputs);
@@ -35,6 +38,7 @@ public class OnnxSentimentService : IOnnxSentimentService
 
         return scores[1] > scores[0] ? "POSITIVE" : "NEGATIVE";
     }
+
 
     private Dictionary<string, int> LoadVocab(string path)
     {
