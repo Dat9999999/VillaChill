@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReservationApp.Application.Common.Interfaces;
+using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Infrastructure.Data;
 using ReservationApp.Infrastructure.Email;
@@ -68,6 +69,13 @@ public static class DependencyInjection
        services.AddScoped<IJobScheduler, JobScheduler>();
        //Conditional task
        services.AddScoped<IBackgroundJobScheduler, BackgroundJobScheduler>();
+       
+       
+       //Sentiment rating
+       var root = Directory.GetCurrentDirectory();
+       var modelPath = Path.Combine(root, "AIServices", "SentimentModels","model.onnx");
+       var vocabPath = Path.Combine(root, "AIServices", "SentimentModels", "vocab.txt");
+       services.AddSingleton<IOnnxSentimentService>(new OnnxSentimentService(modelPath, vocabPath));
 
         return services;
     }

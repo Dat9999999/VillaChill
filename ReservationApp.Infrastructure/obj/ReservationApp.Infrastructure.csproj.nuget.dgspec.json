@@ -256,6 +256,10 @@
               "target": "Package",
               "version": "[9.0.6, )"
             },
+            "Microsoft.ML.OnnxRuntime": {
+              "target": "Package",
+              "version": "[1.22.1, )"
+            },
             "QRCoder": {
               "target": "Package",
               "version": "[1.6.0, )"

@@ -7,10 +7,12 @@ namespace ReservationApp.Controllers;
 public class RatingController : Controller
 {
     private readonly IRatingService _ratingService;
+    private readonly IOnnxSentimentService _onnxSentimentService;
 
-    public RatingController(IRatingService ratingService)
+    public RatingController(IRatingService ratingService, IOnnxSentimentService onnxSentimentService)
     {
         _ratingService = ratingService;       
+        _onnxSentimentService = onnxSentimentService;      
     }
     [HttpPost]
     public IActionResult Create([FromBody] RatingRequestDTO ratingRequest)

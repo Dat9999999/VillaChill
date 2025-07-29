@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "V99HSOEsCiU=",
+  "dgSpecHash": "DCmUpFrwFqM=",
   "success": true,
   "projectFilePath": "/Users/huynhtandat/RiderProjects/VillaChill/ReservationApp.Web/ReservationApp.Web.csproj",
   "expectedPackageFiles": [
@@ -82,6 +82,8 @@
     "/Users/huynhtandat/.nuget/packages/microsoft.identitymodel.protocols/6.35.0/microsoft.identitymodel.protocols.6.35.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/6.35.0/microsoft.identitymodel.protocols.openidconnect.6.35.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.identitymodel.tokens/6.35.0/microsoft.identitymodel.tokens.6.35.0.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/microsoft.ml.onnxruntime/1.22.1/microsoft.ml.onnxruntime.1.22.1.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/microsoft.ml.onnxruntime.managed/1.22.1/microsoft.ml.onnxruntime.managed.1.22.1.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.net.http.headers/2.3.0/microsoft.net.http.headers.2.3.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
@@ -110,9 +112,10 @@
     "/Users/huynhtandat/.nuget/packages/system.identitymodel.tokens.jwt/6.35.0/system.identitymodel.tokens.jwt.6.35.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.io.packaging/4.5.0/system.io.packaging.4.5.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
-    "/Users/huynhtandat/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.memory.data/1.0.2/system.memory.data.1.0.2.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.net.websockets.websocketprotocol/5.1.0/system.net.websockets.websocketprotocol.5.1.0.nupkg.sha512",
+    "/Users/huynhtandat/.nuget/packages/system.numerics.tensors/9.0.0/system.numerics.tensors.9.0.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.reflection.emit/4.7.0/system.reflection.emit.4.7.0.nupkg.sha512",
     "/Users/huynhtandat/.nuget/packages/system.reflection.metadata/7.0.0/system.reflection.metadata.7.0.0.nupkg.sha512",
