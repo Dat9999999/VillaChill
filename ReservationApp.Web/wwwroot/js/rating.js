@@ -44,7 +44,7 @@ function renderRatings(container, ratings) {
                     <div class="text-dark mb-1" style="font-size: 15px;">
                         ${r.comment || "No comment"}
                     </div>
-                    <span class="badge bg-success">Score: ${r.score} / 10</span>
+                    <span class="badge bg-success">Score: ${r.score} / 5</span>
                 </div>
             </div>
         `);

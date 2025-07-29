@@ -1,6 +1,6 @@
 @model Booking
 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ratingModal">
-    10/10 Rating Villa
+    Rating Villa
 </button>
 <!-- Modal -->
 <div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
@@ -23,14 +23,21 @@
                     <input  type = "hidden" id="Name" asp-for="Name" />
 
                     
-                    <div class="mb-3 d-flex align-items-center">
-                        <label for="score" class="form-label me-2 mb-0">Score (0–10):</label>
-                        <input type="number" class="form-control form-control-sm" id="score" name="score"
-                               min="0" max="10" step="1" required style="width: 80px;">
+                    <div class="mb-3 d-flex flex-column align-items-start">
+                        <label class="form-label">Rating:</label>
+                        <div id="starRating" class="star-rating">
+                            <i class="fa-solid fa-star " data-value="1"></i>
+                            <i class="fa-solid fa-star " data-value="2"></i>
+                            <i class="fa-solid fa-star " data-value="3"></i>
+                            <i class="fa-solid fa-star " data-value="4"></i>
+                            <i class="fa-solid fa-star " data-value="5"></i>
+                        </div>
+                        <input type="hidden" id="score" name="score" value="3" required />
                     </div>
 
+
                     <div class="mb-3">
-                        <label for="comment" class="form-label">Your thought:</label>
+                        <label for="comment" class="form-label"></label>
                         <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Enter your thought..."></textarea>
                     </div>
 
@@ -43,6 +50,31 @@
     </div>
 </div>
 <script>
+    const stars = document.querySelectorAll('#starRating i');
+    const scoreInput = document.getElementById('score');
+
+    stars.forEach(star => {
+        star.addEventListener('mouseover', function () {
+            const val = parseInt(this.getAttribute('data-value'));
+            stars.forEach(s => {
+                const sVal = parseInt(s.getAttribute('data-value'));
+                s.classList.toggle('hovered', sVal <= val);
+            });
+        });
+
+        star.addEventListener('mouseout', function () {
+            stars.forEach(s => s.classList.remove('hovered'));
+        });
+
+        star.addEventListener('click', function () {
+            const val = parseInt(this.getAttribute('data-value'));
+            scoreInput.value = val;
+            stars.forEach(s => {
+                const sVal = parseInt(s.getAttribute('data-value'));
+                s.classList.toggle('selected', sVal <= val);
+            });
+        });
+    });
     document.getElementById("reviewForm").addEventListener("submit", async function (e) {
         e.preventDefault();
 
@@ -53,8 +85,8 @@
         const Name = document.getElementById("Name").value;
 
 
-        if (isNaN(score) || score < 0 || score > 10) {
-            alert("Please enter a valid score between 0 and 10.");
+        if (isNaN(score) || score < 1 || score > 5) {
+            alert("Please enter a valid score between 1 and 5.");
             return;
         }
         console.log(Name);

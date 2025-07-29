@@ -1,12 +1,14 @@
-.star-rating {
-    font-size: 1.5rem;
-    direction: rtl;
-    display: inline-flex;
-    justify-content: center;
+
+.star-rating i {
+    font-size: 1.8rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
-.star-rating input[type="radio"] {
-    display: none;
+.star-rating i.hovered,
+.star-rating i.selected {
+    color: gold;
 }
 
 .star-rating label {

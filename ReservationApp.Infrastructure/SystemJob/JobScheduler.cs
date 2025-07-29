@@ -11,8 +11,8 @@ public class JobScheduler:IJobScheduler
         // for testing use minutely
         RecurringJob.AddOrUpdate<IOwnerSettlementService>(
             x => x.RestrictOwnerAutomatically(),
-            Cron.Minutely
-            // Cron.Daily
+            // Cron.Minutely
+            Cron.Daily
             );
         RecurringJob.AddOrUpdate<IDashboardService>(
             x => x.exportRevenueReport(),

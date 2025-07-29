@@ -16,8 +16,11 @@ public class Rating
     public int VillaId { get; set; }
     [ValidateNever]
     public Villa Villa { get; set; }
-    [Required]  
+    [Required]
+    [Range(1,5)]
     public double Score { get; set; }
     public string? Comment { get; set; }
+    //use for classification 
+    public string? SentimentLabel { get; set; }
     public DateTime Date { get; set; }
 }
