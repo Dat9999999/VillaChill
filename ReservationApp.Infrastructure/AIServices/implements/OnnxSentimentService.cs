@@ -36,7 +36,7 @@ public class OnnxSentimentService : IOnnxSentimentService
         using var results = _session.Run(inputs);
         var scores = results.First().AsEnumerable<float>().ToArray();
 
-        return scores[1] > scores[0] ? "POSITIVE" : "NEGATIVE";
+        return scores[1] > scores[0] ? "positive" : "negative";
     }
 
 

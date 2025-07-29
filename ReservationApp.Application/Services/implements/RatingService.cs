@@ -11,10 +11,12 @@ public class RatingService : IRatingService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public RatingService(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IOnnxSentimentService _onnxSentimentService;
+    public RatingService(IUnitOfWork unitOfWork, IMapper mapper, IOnnxSentimentService onnxSentimentService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;       
+        _onnxSentimentService = onnxSentimentService;      
     }
     public IEnumerable<Rating> GetAll(Expression<Func<Rating, bool>>? filter = null, string includeProperties = "")
     {
@@ -41,6 +43,27 @@ public class RatingService : IRatingService
     {
         var rating = _mapper.Map<Rating>(RatingDto);
         rating.Date = DateTime.Now;
+        
+        
+        //sentiment prediction 
+        if (rating.Comment != null)
+        {
+            rating.SentimentLabel = _onnxSentimentService.Predict(RatingDto.Comment);
+        }
+        else
+        {
+            if (rating.Score > 3)
+            {
+                rating.SentimentLabel = "Positive";
+            }
+            else if (rating.Score < 3)
+            {
+                rating.SentimentLabel = "Negative";           
+            }
+            else rating.SentimentLabel = "Neutral";       
+        }
+        
+        //save rating
         _unitOfWork.Ratings.Add(rating);
         _unitOfWork.Save();   
     }

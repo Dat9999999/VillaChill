@@ -7,12 +7,10 @@ namespace ReservationApp.Controllers;
 public class RatingController : Controller
 {
     private readonly IRatingService _ratingService;
-    private readonly IOnnxSentimentService _onnxSentimentService;
 
-    public RatingController(IRatingService ratingService, IOnnxSentimentService onnxSentimentService)
+    public RatingController(IRatingService ratingService)
     {
         _ratingService = ratingService;       
-        _onnxSentimentService = onnxSentimentService;      
     }
     [HttpPost]
     public IActionResult Create([FromBody] RatingRequestDTO ratingRequest)
@@ -29,10 +27,5 @@ public class RatingController : Controller
     {
         var ratings = _ratingService.GetAll(u => u.VillaId == villaId);
         return Ok(ratings);       
-    }
-
-    public IActionResult GetSentiment([FromQuery] string input)
-    {
-        return Json(_onnxSentimentService.Predict(input));
     }
 }

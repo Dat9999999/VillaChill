@@ -174,6 +174,10 @@ public class BookingController : Controller
     [Route("qrcode")]
     public IActionResult GetQRCode([FromQuery]string checkInToken)
     {
+        if (string.IsNullOrEmpty(checkInToken))
+        {
+            return BadRequest("Invalid checkInToken");       
+        }
         var qrcode = _qrCodeService.GenerateQRCode(checkInToken);
         return File(qrcode, "image/png");
     }
