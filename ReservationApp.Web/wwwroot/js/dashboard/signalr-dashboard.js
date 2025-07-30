@@ -33,7 +33,9 @@ connection.on("BookingComplete", function (data) {
     loadTotalBookingRadialChart();
     loadVillaBookingPieChart();
 });
-
+connection.on("NewRating", function (data) {
+    console.log("📡 New rating received:", data);
+})
 
 connection.start().then(function () {
     console.log("✅ SignalR Connected.");
