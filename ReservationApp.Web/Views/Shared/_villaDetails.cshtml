@@ -1,4 +1,5 @@
 @model Villa
+@using ReservationApp.Views.ViewHelper
 <div class="row">
     <div class="col-12 col-md-5">
         <img src="@Model.ImageUrl" style="border-radius:10px;" width="100%" />
@@ -10,13 +11,6 @@
                 <p class="card-text" style="font-size:large">
                     @Html.Raw(Model.Description)
                 </p>
-                <p class="h5 text-white">Villa Amenities</p>
-                @foreach (var amenity in Model.Amenities)
-                {
-                    <ul>
-                        <li>@amenity.Name</li>
-                    </ul>
-                }
             </div>
         </div>
         <div class="row col-12">
@@ -35,15 +29,48 @@
         </div>
     </div>
     
-    <div id="ratings-container-@Model.Id"
-         class="ratings-box"
-         data-villa-id="@Model.Id"
-         data-loaded="false"
-         style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; border-radius: 10px; padding: 15px; background-color: #f8f9fa;">
-        <div class="sticky-top bg-light px-3 pt-3 pb-2 mb-2 border-bottom" style="z-index: 10;">
-            <h5 class="text-primary mb-0"><i class="bi bi-hand-thumbs-up"></i> Ratings</h5>
+    <!-- Tab buttons -->
+    <div class="btn-group mb-3" role="group">
+        <button type="button" class="btn btn-outline-primary active" id="tab-amenities-btn">Amenities</button>
+        <button type="button" class="btn btn-outline-primary" id="tab-reviews-btn">Reviews</button>
+    </div>
+
+    <!-- Tab content container -->
+    <div class="tab-content">
+        <div id="tab-amenities" class="row row-cols-1 row-cols-md-2 g-3 mt-2 tab-pane active">
+            @foreach (var amenity in Model.Amenities)
+            {
+                <div class="col">
+                    <div class="d-flex align-items-center p-3 rounded-4 shadow-sm amenity-card">
+                        <div class="icon-box me-3 d-flex justify-content-center align-items-center">
+                            <i class="@ViewFunction.GetAmenityIconClass(amenity.Name) fs-3 text-primary"></i>
+                        </div>
+                        <div class="text-white fw-medium fs-5">@amenity.Name</div>
+                    </div>
+                </div>
+            }
         </div>
-        <p class="text-body-secondary m-3">Loading...</p> <!-- placeholder -->
+
+
+
+
+        <!-- Reviews Tab -->
+        <div id="tab-reviews" class="tab-pane" style="display:none;">
+            <div id="ratings-container-@Model.Id" class="rating-container ratings-box"
+                 data-villa-id="@Model.Id" data-loaded="false">
+                <div class="rating-header d-flex align-items-center gap-3">
+                    <div class="overall-score">
+                        <div class="score-number">
+                            <i class="bi bi-star-fill"></i>  4/5
+                        </div>
+                    </div>
+                    <div class="rating-info">
+                        <h2>Very Good</h2>
+                        <div class="review-count">From 1,200 reviews</div>
+                    </div>
+                </div>
+                <div class="ratings-list"></div>
+            </div>
+        </div>
     </div>
 </div>
-

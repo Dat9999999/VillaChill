@@ -46,7 +46,7 @@ public class RatingService : IRatingService
         
         
         //sentiment prediction 
-        if (rating.Comment != null)
+        if (!string.IsNullOrEmpty(rating.Comment))
         {
             rating.SentimentLabel = _onnxSentimentService.Predict(RatingDto.Comment);
         }
@@ -54,13 +54,13 @@ public class RatingService : IRatingService
         {
             if (rating.Score > 3)
             {
-                rating.SentimentLabel = "Positive";
+                rating.SentimentLabel = "positive";
             }
             else if (rating.Score < 3)
             {
-                rating.SentimentLabel = "Negative";           
+                rating.SentimentLabel = "negative";           
             }
-            else rating.SentimentLabel = "Neutral";       
+            else rating.SentimentLabel = "neutral";       
         }
         
         //save rating

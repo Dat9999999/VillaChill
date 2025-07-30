@@ -1,0 +1,155 @@
+.rating-container {
+    max-height: 400px; /* Hoặc chiều cao bạn mong muốn */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    position: relative;
+    background-color: #fff;
+}
+
+/* Sticky header */
+.rating-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    padding: 10px 16px; /* thêm padding ngang để đẹp */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+    /* Thêm dòng sau để xếp ngang */
+    display: flex;
+    align-items: center;
+    gap: 16px; /* hoặc 24px nếu bạn muốn rộng hơn */
+}
+
+
+.overall-score {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    min-width: auto;
+}
+
+.score-number {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1976d2;
+    margin-bottom: 4px;
+}
+
+.rating-info h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #4285f4;
+    margin-bottom: 8px;
+}
+
+.review-count {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.provider-info {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.provider-info::after {
+    content: "✓";
+    color: #4285f4;
+    font-weight: bold;
+}
+
+.rating-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.rating-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rating-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    min-width: 120px;
+}
+
+.rating-bar-container {
+    flex: 1;
+    margin: 0 20px;
+    height: 8px;
+    background: #e8eaed;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rating-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4285f4, #1976d2);
+    border-radius: 4px;
+    transition: width 0.6s ease-out;
+}
+
+.rating-score {
+    font-size: 16px;
+    font-weight: 600;
+    color: #4285f4;
+    min-width: 32px;
+    text-align: right;
+}
+
+/* Animation cho các thanh bar */
+@keyframes slideIn {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100px;
+    }
+}
+
+.rating-bar.animate {
+    animation: slideIn 1s ease-out forwards;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .rating-container {
+        padding: 24px;
+    }
+
+    .rating-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .rating-info h2 {
+        font-size: 24px;
+    }
+
+    .rating-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .rating-bar-container {
+        margin: 0;
+    }
+
+    .rating-score {
+        text-align: center;
+    }
+}

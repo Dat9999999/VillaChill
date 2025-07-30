@@ -28,28 +28,32 @@ const observer = new IntersectionObserver((entries, obs) => {
 observer.observe(container);
 
 function renderRatings(container, ratings) {
+    const listContainer = container.querySelector(".ratings-list");
+
     if (!ratings || ratings.length === 0) {
-        container.innerHTML += `<p class='text-body-secondary p-2'>No comments yet. Be the first to review this villa!</p>`;
+        listContainer.innerHTML = `<p class='text-body-secondary p-2'>No comments yet. Be the first to review this villa!</p>`;
         return;
     }
 
     const items = ratings.map(r => `
-            <div class="d-flex mb-3">
-                <img src="/images/placeholder.png" class="rounded-circle me-3" style="width: 40px; height: 40px;" alt="avatar" />
-                <div class="w-100" style="background-color: #f0f2f5; border-radius: 16px; padding: 10px 15px;">
-                    <div class="fw-semibold text-dark mb-1" style="font-size: 14px;">
-                        ${r.customerName}
-                        <span class="text-body-secondary" style="font-size: 12px;"> · ${new Date(r.date).toLocaleDateString()}</span>
-                    </div>
-                    <div class="text-dark mb-1" style="font-size: 15px;">
-                        ${r.comment || "No comment"}
-                    </div>
-                    <span class="badge bg-success">Score: ${r.score} / 5</span>
+        <div class="rating-item d-flex mb-3" data-user-id="${r.userId}">
+            <img src="/images/placeholder.png" class="rounded-circle me-3" style="width: 40px; height: 40px;" alt="avatar" />
+            <div class="w-100" style="background-color: #f0f2f5; border-radius: 16px; padding: 10px 15px;">
+                <div class="fw-semibold text-dark mb-1" style="font-size: 14px;">
+                    ${r.customerName}
+                    <span class="text-body-secondary" style="font-size: 12px;"> · ${new Date(r.date).toLocaleDateString()}</span>
                 </div>
+                <div class="text-dark mb-1" style="font-size: 15px;">
+                    ${r.comment || "No comment"}
+                </div>
+                <span class="badge bg-success">Score: ${r.score} / 5</span>
             </div>
-        `);
-    container.innerHTML = container.querySelector(".sticky-top").outerHTML + items.join("");
+        </div>
+    `);
+
+    listContainer.innerHTML = items.join("");
 }
+
 
 // Razor in ra giá trị dạng chuỗi JS
 const currentUserId = "test-user-id";
