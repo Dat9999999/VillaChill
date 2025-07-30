@@ -35,6 +35,7 @@ connection.on("BookingComplete", function (data) {
 });
 connection.on("NewRating", function (data) {
     console.log("📡 New rating received:", data);
+    LoadSentimentDonutChart()
 })
 
 connection.start().then(function () {

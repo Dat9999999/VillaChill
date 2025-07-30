@@ -19,4 +19,5 @@ public interface IDashboardService
     public ColumnChartDTO GetRevenueChartData(string range, string ownerEmail);
 
     public Task exportRevenueReport();
+    public SentimentReviewsDTO GetSentimentRatio(string ownerId, int? villaId = null);
 }

@@ -11,13 +11,25 @@ namespace ReservationApp.Controllers;
 public class DashboardController : Controller
 {
     private readonly IDashboardService _dashboardService;
-    public DashboardController( IDashboardService dashboardService)
+    private readonly IVillaService _villaService;
+    public DashboardController( IDashboardService dashboardService,
+        IVillaService villaService)
     {
         _dashboardService = dashboardService;
+        _villaService = villaService;
     }
     // GET
     public IActionResult Index()
     {
+        var claimIdentity = (ClaimsIdentity)User.Identity;
+        var role = claimIdentity.FindFirst(ClaimTypes.Role).Value;
+        if (role == SD.Role_Owner)
+        {
+            var ownerEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var villas = _villaService.GetAll(x => x.OwnerEmail == ownerEmail);
+
+            ViewBag.Villas = villas;
+        }
         return View();
     }
 
@@ -71,5 +83,13 @@ public class DashboardController : Controller
        var userEmail = User.FindFirst(ClaimTypes.Name).Value;
         return Json(_dashboardService.GetRevenueChartData(range, userEmail));
     }
+    [HttpGet]
+    public IActionResult GetSentimentRatio([FromQuery] int? villaId)
+    {
+        var ownerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return Json(_dashboardService.GetSentimentRatio(ownerId, villaId));
+
+    }
+
 
 }

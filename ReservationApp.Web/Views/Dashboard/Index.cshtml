@@ -221,6 +221,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12 col-xl-4 mt-2">
+                    <div class="card">
+                        <div class="mb-3">
+                            <label for="villaSelect" class="form-label">Select a Villa</label>
+                            <select id="villaSelect" class="form-select">
+                                <option value="">-- All Villas --</option>
+                                @foreach (var villa in ViewBag.Villas as List<Villa>)
+                                {
+                                    <option value="@villa.Id">@villa.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-0">Review Sentiment Ratio</p>
+                            <div id="sentimentDonutChart" data-colors='["--bs-success","--bs-danger"]'></div>
+
+                            <div class="justify-content-center text-center chart-spinner" style="display:none">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     </div>
@@ -240,5 +264,6 @@
     <script src="~/js/dashboard/getNumberOfVilla.js"></script>
     <script src="~/js/dashboard/getRevenueColumnChart.js"></script>
     <script src="js/dashboard/signalr-dashboard.js"></script>
+    <script src="~/js/dashboard/getSentimentDonutChart.js"></script>
     
 }

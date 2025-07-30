@@ -311,4 +311,42 @@ public class DashboardService: IDashboardService
             _emailService.SendEmail(receiver.Email, "📊 Your Weekly Revenue Report", htmlBody, reportFile);
         }
     }
+
+    public SentimentReviewsDTO GetSentimentRatio(string ownerId, int? villaId = null)
+    {
+        var owner = _unitOfWork.ApplicationUsers.Get(x => x.Id == ownerId);
+        if (owner == null)
+        {
+            return new SentimentReviewsDTO(); // Trả về 0 hết nếu không tìm được owner
+        }
+
+        Villa villa;
+
+        if (villaId.HasValue)
+        {
+            villa = _unitOfWork.Villas.Get(x => x.Id == villaId.Value && x.OwnerEmail == owner.Email, "Ratings");
+        }
+        else
+        {
+            villa = _unitOfWork.Villas.Get(x => x.OwnerEmail == owner.Email, "Ratings");
+        }
+
+        if (villa == null || villa.Ratings == null || villa.Ratings.Count() == 0)
+        {
+            return new SentimentReviewsDTO(); // Trả về rỗng nếu không có đánh giá
+        }
+
+        var posRating = villa.Ratings.Count(x => x.SentimentLabel == "positive");
+        var negRating = villa.Ratings.Count(x => x.SentimentLabel == "negative");
+        var neutralRating = villa.Ratings.Count() - posRating - negRating;
+
+        var sentimentRatio = new SentimentReviewsDTO
+        {
+            Positive = posRating,
+            Negative = negRating,
+            Neutral = neutralRating
+        };
+
+        return sentimentRatio;
+    }
 }
