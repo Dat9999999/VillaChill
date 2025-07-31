@@ -27,12 +27,14 @@ public class BookingController : Controller
     private readonly IOwnerSettlementService _ownerSettlementService;
     private readonly IHubContext<DashBoardHub> _hubContext;
     private readonly IQRCoderService _qrCodeService;
+    private readonly ICacheService _cacheService;
     public BookingController(IVnPayService vnPayService, IExporter exporter,
         IBookingService bookingService, IVillaNumberService villaNumberService, IVillaService villaService,
         IAmenityService amenityService,
         UserManager<ApplicationUser> userManager, IEmailService emailService,
         IOwnerBalanceService ownerBalanceService, IHubContext<DashBoardHub> hubContext,
-        IOwnerSettlementService ownerSettlementService, IQRCoderService qrCodeService
+        IOwnerSettlementService ownerSettlementService, IQRCoderService qrCodeService,
+        ICacheService cacheService
         )
     {
         _vnPayService = vnPayService;
@@ -47,6 +49,7 @@ public class BookingController : Controller
         _hubContext = hubContext;
         _ownerSettlementService = ownerSettlementService;
         _qrCodeService = qrCodeService;
+        _cacheService = cacheService;
 
     }
 
@@ -284,35 +287,34 @@ public class BookingController : Controller
     #region  API  Call
 
     [HttpGet]
-    public IActionResult GetAll(string status)
+    public IActionResult GetAll(
+        string status)
     {
-            IEnumerable<Booking> objBookings;         
-            if (!User.IsInRole(SD.Role_Admin))
+        IEnumerable<Booking> objBookings;         
+        if (!User.IsInRole(SD.Role_Admin))
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //owner
+            if (User.IsInRole(SD.Role_Owner))
             {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                //owner
-                if (User.IsInRole(SD.Role_Owner))
-                {
-                    var ownerEmail = claimsIdentity.FindFirst(ClaimTypes.Name).Value;
-                    objBookings = _bookingService.GetAll(x=> x.Villa.OwnerEmail == ownerEmail);
-                }
-                
-                //customer
-                else
-                {
-                    objBookings = _bookingService.GetAll(x=> x.UserId == userId);
-                }
-                
+                var ownerEmail = claimsIdentity.FindFirst(ClaimTypes.Name).Value;
+                objBookings = _bookingService.GetAll(x=> x.Villa.OwnerEmail == ownerEmail
+                && x.Status.ToLower() == status.ToLower());
             }
-            //admin
-            else objBookings = _bookingService.GetAll();
-
-            if (!string.IsNullOrEmpty(status))
+            
+            //customer
+            else
             {
-                objBookings = objBookings.Where(x => x.Status.ToLower() == status.ToLower());           
+                //using cache
+                objBookings = _cacheService.GetBookings(userId, status);
             }
-            return Json(new { data = objBookings });
+            
+        }
+        //admin
+        else objBookings = _bookingService.GetAll(x => x.Status.ToLower() == status.ToLower());
+        
+        return Json(new { data = objBookings });
     }
     
 

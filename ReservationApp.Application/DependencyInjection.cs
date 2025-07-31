@@ -19,6 +19,7 @@ public static class DependencyInjection
        services.AddScoped<IComissionService, ComissionService>();
        services.AddScoped<IOwnerBalanceService, OwnerBalanceService>();
        services.AddScoped<IOwnerSettlementService,OwnerSettlementService>();
+       services.AddScoped<ICacheService,CacheService>();
        services.AddAutoMapper(typeof(MappingProfile));
         return services;
     }
