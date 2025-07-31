@@ -16,4 +16,5 @@ public interface IBookingService
    public  Booking CheckQRCodeVallid(int bookingId, string checkinToken);
    
    public void CancelBooking(int bookingId);
+   IEnumerable<Villa> CheckAvailability(int nights, DateOnly checkInDate, string city,int page, int pageSize);
 }

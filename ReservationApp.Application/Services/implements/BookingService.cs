@@ -11,10 +11,14 @@ public class BookingService : IBookingService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBackgroundJobScheduler _backgroundJobScheduler;
-    public BookingService(IUnitOfWork unitOfWork, IBackgroundJobScheduler backgroundJobScheduler)
+    private readonly ICacheService _cacheService;
+    public BookingService(IUnitOfWork unitOfWork, 
+        IBackgroundJobScheduler backgroundJobScheduler,
+        ICacheService cacheService)
     {
         _unitOfWork = unitOfWork;
         _backgroundJobScheduler = backgroundJobScheduler;      
+        _cacheService = cacheService;      
     }
     public IEnumerable<Booking> GetAll(Expression<Func<Booking, bool>>? filter = null,string includeProperties = "")
     {
@@ -108,5 +112,18 @@ public class BookingService : IBookingService
         booking.Status = SD.StatusCancelled;
         _unitOfWork.Bookings.Update(booking);       
         _unitOfWork.Save();       
+    }
+
+    public IEnumerable<Villa> CheckAvailability(int nights, DateOnly checkInDate, string city,int page, int pageSize)
+    {
+        var villaList = _cacheService.GetVillas(city, includeProperties: "Amenities", false, page, pageSize);
+        var villasBooked = _unitOfWork.Bookings.GetAll(u => u.Status != SD.StatusCancelled).ToList();
+        var villaNumbers = _unitOfWork.VillaNumbers.GetAll().ToList();
+        foreach (var villa in villaList)
+        {
+            HashSet<int> roomAvailable = SD.VillaRoomsAvailable_Count(villa.Id, villaNumbers ,checkInDate, nights, villasBooked);
+            villa.IsAvaliable = roomAvailable.Count > 0;
+        }
+        return villaList;       
     }
 }

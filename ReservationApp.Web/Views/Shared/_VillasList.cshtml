@@ -3,13 +3,14 @@
     @if (Model.VillaList != null && Model.VillaList.Any())
     {
         
-        @await Html.PartialAsync("_VillaCard", Model.VillaList, new ViewDataDictionary(ViewData)
+        @await Html.PartialAsync("_VillaCard", Model, new ViewDataDictionary(ViewData)
         {
             { "CheckInDate", Model.CheckInDate },
-            { "Nights", Model.Nights }
+            { "Nights", Model.Nights },
+            {"City",Model.City}
         })
     }
-    else
+    else if (Model.HasSearched)
     {
         <div class="alert alert-warning text-center fw-bold mt-4">
             No villas were found matching your search criteria.

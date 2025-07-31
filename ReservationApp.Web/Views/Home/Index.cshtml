@@ -34,7 +34,7 @@
             <div class="col-12 col-md-4">
                 <label asp-for="City" class="form-label ms-2">Select a province/city:</label>
                 <select asp-for="City" id="province" class="form-control border shadow">
-                    <option >Đang tải...</option>
+                    <option >Loading...</option>
                 </select>
             </div>
 
@@ -61,10 +61,13 @@
                     <i class="bi bi-search"></i> &nbsp;Check Availability
                 </button>
             </div>
+            <!-- Notice to user -->
+            <div id="searchNotice" class="alert alert-info mt-4 mx-md-5 mx-2">
+                Please click <strong>"Check Availability"</strong> to find a villa that suits you.
+            </div>
 
         </div>
         <div id="VillasList">
-            <partial name="_VillasList" model="Model" />
         </div>
     </form>
     
@@ -90,6 +93,15 @@
                     success: function(response) {
         
                         $("#VillasList").html(response);
+                        $("#searchNotice").fadeOut();
+                        reachedEnd = false;
+                        isLoading = false;
+                        
+                        const $container = $('#VillaContainer');
+                        if ($container.length > 0) {
+                            $container.attr('data-page', 1); // reset page
+                        }
+                        
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
@@ -103,17 +115,18 @@
         });
 </script>
     <script>
-    let isLoading = false;
     let reachedEnd = false;
+    let isLoading = false;
+
+    let scrollTimeout = null;
 
     $(window).on('scroll', function () {
-        if (isLoading || reachedEnd) return;
+        if (isLoading || reachedEnd ) return;
 
         const scrollTop = $(window).scrollTop();
         const scrollBottom = scrollTop + $(window).height();
         const docHeight = $(document).height();
 
-        // Khi gần đến đáy thì tải thêm
         if (scrollBottom + 100 >= docHeight) {
             loadMoreVillas();
         }
@@ -122,14 +135,18 @@
     function loadMoreVillas() {
         isLoading = true;
         $('#scrollSpinner').show();
+        let city = $("#province").val();
+        if (!city || city === "Loading...") return;
 
         const $container = $('#VillaContainer');
         const currentPage = parseInt($container.attr('data-page')) || 1;
         const nextPage = currentPage + 1;
         const pageSize = 6;
+        let nights = $(".form-select").val();
+        let checkInDate = $("#CheckInDate").val();
 
         $.ajax({
-            url: `/Home/LoadMoreVillas?page=${nextPage}&pageSize=${pageSize}`,
+            url: `/Home/LoadMoreVillas?page=${nextPage}&pageSize=${pageSize}&city=${city}&checkInDate=${encodeURIComponent(checkInDate)}&nights=${nights}`,
             method: 'GET',
             success: function (html) {
                 if ($.trim(html) === "") {

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReservationApp.Application.Common.Interfaces;
@@ -15,32 +16,41 @@ public class HomeController : Controller
     private readonly IVillaNumberService _villaNumberService;
     private readonly IVillaService _villaService;
     private readonly IBookingService _bookingService;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ICacheService _cacheService;
     public HomeController(IVillaNumberService villaNumberService, IVillaService villaService,
-        IBookingService bookingService, UserManager<ApplicationUser> userManager)
+        IBookingService bookingService, ICacheService cacheService)
     {
         _villaNumberService = villaNumberService;
         _villaService = villaService;
         _bookingService = bookingService;
-        _userManager = userManager;
+        _cacheService = cacheService;      
     }
 
-    public IActionResult Index(int? page = 1, int? pageSize = 6 )
+    public IActionResult Index()
     {
         HomeVM home = new ()
         {
-            VillaList = _villaService.GetAll(null, includeProperties: "Amenities", false,page, pageSize),
             CheckInDate = DateOnly.FromDateTime(DateTime.Now),
-            Nights = 1
+            Nights = 1,
         };
         return View(home);
     }
 
     [HttpGet]
-    public IActionResult LoadMoreVillas(int? page = 1, int? pageSize = 6 )
+    public IActionResult LoadMoreVillas(int page = 1, int pageSize = 6,
+        string? city = null, DateOnly checkInDate = default, int nights = 1)
     {
-        var VillaList = _villaService.GetAll(null, includeProperties: "Amenities", false, page, pageSize);
-        return PartialView("_VillaCard",VillaList);
+        var villaList = _bookingService.CheckAvailability(nights, checkInDate,city, page, pageSize);
+        
+        HomeVM home = new HomeVM()
+        {
+            VillaList = villaList,
+            CheckInDate = checkInDate,
+            Nights = nights,
+            HasSearched = true,
+            City = city,
+        };
+        return PartialView("_VillaCard",home);
     }
     [HttpPost]
     public IActionResult Index(HomeVM homevm)
@@ -51,23 +61,15 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult CheckAvailability(int nights, DateOnly checkInDate, string city)
     {
-        var villaIsRestricted = _villaService.GetVillaIsRestricted().Select(x=>x.Id).ToHashSet();
-        var villaList = _villaService.GetAll(null,"Amenities").Where(u => u.City == city &&
-                                                                         !villaIsRestricted.Contains(u.Id)).ToList();
-        var villasBooked = _bookingService.GetAll(u => u.Status != SD.StatusCancelled 
-        && u.Status != SD.StatusRefunded).ToList();
-        var villaNumbers = _villaNumberService.GetAll().ToList();
-        foreach (var villa in villaList)
-        {
-            HashSet<int> roomAvailable = SD.VillaRoomsAvailable_Count(villa.Id, villaNumbers ,checkInDate, nights, villasBooked);
-            villa.IsAvaliable = roomAvailable.Count > 0;
-        }
+        var villaList = _bookingService.CheckAvailability(nights, checkInDate,city, 1, 6);
         
         HomeVM home = new HomeVM()
         {
             VillaList = villaList,
             CheckInDate = checkInDate,
-            Nights = nights
+            Nights = nights,
+            HasSearched = true,
+            City = city,
         };
         return PartialView("_VillasList",home);
     }

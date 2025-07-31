@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.Extensions.Caching.Memory;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Services.interfaces;
@@ -25,5 +26,26 @@ public class CacheService:ICacheService
             );
         }
         return bookings;       
+    }
+
+    public IEnumerable<Villa> GetVillas(string? city, string includeProperties, bool isTracked ,int? page, int? pageSize)
+    {
+        var cityKey = string.IsNullOrEmpty(city) ? "AllCities" : city;
+        var key = $"Villas_City_{cityKey}_Include_{includeProperties}_Page_{page}_Size_{pageSize}";
+
+        Expression<Func<Villa, bool>>? filter = null;
+
+        if (!string.IsNullOrEmpty(city))
+        {
+            filter = x => x.City == city;
+        }
+        if (!_memoryCache.TryGetValue(key, out IEnumerable<Villa> villas))
+        {
+            villas = _unitOfWork.Villas.GetAll(filter, includeProperties: includeProperties, isTracked,page, pageSize);
+            _memoryCache.Set(key, villas, new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromMinutes(10))
+            );
+        }
+        return villas;
     }
 }

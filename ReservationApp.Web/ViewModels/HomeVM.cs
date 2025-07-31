@@ -12,4 +12,5 @@ public class HomeVM
     [Required]
     public string City { get; set; }
     public int Nights { get; set; }
+    public bool HasSearched { get; set; } = false;
 }

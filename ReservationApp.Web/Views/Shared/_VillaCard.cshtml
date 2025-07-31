@@ -1,7 +1,6 @@
-@model IEnumerable<Villa>
-@foreach (var villa in Model)
+@model HomeVM
+@foreach (var villa in Model.VillaList)
 {
-    
     <div class="p-4 col-md-12 col-lg-6">
         <div class="row" style="border-radius:5px; border: 1px solid #aaa">
             <div class="col-4 p-2">
@@ -25,13 +24,13 @@
             <div class="col-12">
                 <div class="row pb-3 pt-2">
                     <div class="col-4">
-                        @if (ViewBag.CheckInDate > DateOnly.FromDateTime(DateTime.Now))
+                        @if (Model.CheckInDate > DateOnly.FromDateTime(DateTime.Now))
                         {
                             if (villa.IsAvaliable)
                             {
                                 <a asp-controller="Booking" asp-action="FinalizeBooking" asp-route-VillaId="@villa.Id"
-                                   asp-route-checkInDate="@ViewBag.CheckInDate.ToString("dd/MM/yyyy")"
-                                   asp-route-Nights="@ViewBag.Nights"
+                                   asp-route-checkInDate="@Model.CheckInDate.ToString("dd/MM/yyyy")"
+                                   asp-route-Nights="@Model.Nights"
                                    class="btn btn-success form-control btn-block">
                                     Book
                                 </a>
