@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Http;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
@@ -61,5 +62,8 @@ public class AmenityService : IAmenityService
         return true;
     }
 
-    
+    public async Task BulkInsert(IFormFile file)
+    {
+        _unitOfWork.Amenities.BulkInsert(file);
+    }
 }

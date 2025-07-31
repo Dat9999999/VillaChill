@@ -112,4 +112,17 @@ public class AmenityController : Controller
         TempData["Error"] = errorMessage;
         return RedirectToAction("Error", "Home");
     }
+
+    [HttpPost]
+    public IActionResult ImportAmenities(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            TempData["Error"] = "import fail";
+            return RedirectToAction("Error", "Home");
+        }
+        _amenityService.BulkInsert(file);
+        TempData["Success"] = "import success";
+        return RedirectToAction(nameof(Index));
+    }
 }
