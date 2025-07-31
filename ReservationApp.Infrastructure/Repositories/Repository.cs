@@ -15,7 +15,11 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet = context.Set<T>();
         
     }
-    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool isTracked = false)
+    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, 
+        string? includeProperties = null, 
+        bool isTracked = false,
+        int? page = null,
+        int? pageSize = null)
     {
         IQueryable<T> query = _dbSet;
         if (!isTracked)
@@ -33,6 +37,11 @@ public class Repository<T> : IRepository<T> where T : class
             {
                 query = query.Include(includeProperty);
             }
+        }
+
+        if (page is not null && pageSize is not null)
+        {
+            query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
         }
         return query.ToList();
     }

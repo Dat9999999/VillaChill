@@ -17,9 +17,9 @@ public class VillaService : IVillaService
         _env = env;       
         
     }
-    public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter,string includeProperties)
+    public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter,string includeProperties, bool? isTracked, int? page, int? pageSize)
     {
-        return _unitOfWork.Villas.GetAll(filter,includeProperties: includeProperties);;
+        return _unitOfWork.Villas.GetAll(filter, includeProperties: includeProperties, false ,page, pageSize);
     }
 
     public Villa GetById(int id, string includeProperties = "")
@@ -108,4 +108,5 @@ public class VillaService : IVillaService
         return villaIsRestricted;      
         
     }
+
 }

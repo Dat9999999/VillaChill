@@ -25,15 +25,22 @@ public class HomeController : Controller
         _userManager = userManager;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(int? page = 1, int? pageSize = 6 )
     {
         HomeVM home = new ()
         {
-            VillaList = _villaService.GetAll(includeProperties: "Amenities"),
+            VillaList = _villaService.GetAll(null, includeProperties: "Amenities", false,page, pageSize),
             CheckInDate = DateOnly.FromDateTime(DateTime.Now),
             Nights = 1
         };
         return View(home);
+    }
+
+    [HttpGet]
+    public IActionResult LoadMoreVillas(int? page = 1, int? pageSize = 6 )
+    {
+        var VillaList = _villaService.GetAll(null, includeProperties: "Amenities", false, page, pageSize);
+        return PartialView("_VillaCard",VillaList);
     }
     [HttpPost]
     public IActionResult Index(HomeVM homevm)

@@ -71,35 +71,83 @@
 </div>
 @section Scripts {
     <script>
-$(document).ready(function() {
-    $("form").submit(function(e) {
-        e.preventDefault(); // Prevent default form submission
-        $(".spinner").show();
-        var checkInDate = $("#CheckInDate").val();
-        var nights = $(".form-select").val();
-        var city = $("#province").val();
+        $(document).ready(function() {
+            $("form").submit(function(e) {
+                e.preventDefault(); // Prevent default form submission
+                $(".spinner").show();
+                var checkInDate = $("#CheckInDate").val();
+                var nights = $(".form-select").val();
+                var city = $("#province").val();
+        
+                $.ajax({
+                    url: '/Home/CheckAvailability',
+                    type: 'POST',
+                    data: {
+                        checkInDate: checkInDate,
+                        nights: nights,
+                        city : city,
+                    },
+                    success: function(response) {
+        
+                        $("#VillasList").html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('Failed to check availability. Please try again.');
+                    },
+                    complete: function() {
+                        $( ".spinner" ).hide();
+                    }
+                });
+            });
+        });
+</script>
+    <script>
+    let isLoading = false;
+    let reachedEnd = false;
+
+    $(window).on('scroll', function () {
+        if (isLoading || reachedEnd) return;
+
+        const scrollTop = $(window).scrollTop();
+        const scrollBottom = scrollTop + $(window).height();
+        const docHeight = $(document).height();
+
+        // Khi gần đến đáy thì tải thêm
+        if (scrollBottom + 100 >= docHeight) {
+            loadMoreVillas();
+        }
+    });
+
+    function loadMoreVillas() {
+        isLoading = true;
+        $('#scrollSpinner').show();
+
+        const $container = $('#VillaContainer');
+        const currentPage = parseInt($container.attr('data-page')) || 1;
+        const nextPage = currentPage + 1;
+        const pageSize = 6;
 
         $.ajax({
-            url: '/Home/CheckAvailability',
-            type: 'POST',
-            data: {
-                checkInDate: checkInDate,
-                nights: nights,
-                city : city,
+            url: `/Home/LoadMoreVillas?page=${nextPage}&pageSize=${pageSize}`,
+            method: 'GET',
+            success: function (html) {
+                if ($.trim(html) === "") {
+                    reachedEnd = true; // Không còn dữ liệu
+                } else {
+                    $container.append(html);
+                    $container.attr('data-page', nextPage);
+                }
             },
-            success: function(response) {
-
-                $("#VillasList").html(response);
+            error: function (xhr, status, error) {
+                console.error("Lỗi khi tải thêm villa:", error);
             },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('Failed to check availability. Please try again.');
-            },
-            complete: function() {
-                $( ".spinner" ).hide();
+            complete: function () {
+                isLoading = false;
+                $('#scrollSpinner').hide();
             }
         });
-    });
-});
+    }
 </script>
+    
 }

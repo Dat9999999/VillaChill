@@ -5,7 +5,10 @@ namespace ReservationApp.Application.Services.interfaces;
 
 public interface IVillaService
 {
-    public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, string includeProperties = "");
+    public IEnumerable<Villa> GetAll(Expression<Func<Villa, bool>>? filter = null, 
+        string includeProperties = "",
+        bool? isTracked = false,
+        int? page = null, int? pageSize = null);
     public Villa GetById(int id, string includeProperties = "");
     public void Update(Villa villa);
     public bool Delete(Villa villa, out string errorMessage);
