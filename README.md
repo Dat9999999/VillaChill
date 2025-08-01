@@ -44,7 +44,7 @@ A web-based villa reservation system built with **ASP.NET Core MVC** following *
  Notes
 
 Admin, Villa Owner, and Guest roles are seeded by default
-Configuration settings (e.g., connection strings, SMTP, VNPay) are located in appsettings.json
+You need to configure settings before run this project (e.g., connection strings, SMTP, VNPay) are located in appsettings.json
 
 ## 🚀 Getting Started
 
