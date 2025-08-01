@@ -217,5 +217,26 @@ public class AccountController : Controller
     {
         return View();
     }
-    
+
+    public async Task<IActionResult> Index()
+    {
+        var users = _userManager.Users.ToList();
+        var userVMs = new List<UserVM>();
+
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+
+            userVMs.Add(new UserVM
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name, // nếu có
+                AvatarUrl = user.AvatarUrl,
+                Role = roles.FirstOrDefault() ?? "None"
+            });
+        }
+
+        return View(userVMs);  
+    }
 }
