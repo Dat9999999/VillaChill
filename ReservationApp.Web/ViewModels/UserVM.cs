@@ -11,4 +11,5 @@ public class UserVM
     public bool LockoutEnabled { get; set; }
     public DateOnly LastLoginTime { get; set; }
     public bool IsLocked { get; set; }
+    public int totalUser { get; set; }
 }

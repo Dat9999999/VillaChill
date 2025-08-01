@@ -220,9 +220,11 @@ public class AccountController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? page = 1, int? pageSize = 3)
     {
-        var users = _userManager.Users.ToList();
+        var users = _userManager.Users
+            .ToList().Skip(pageSize.Value * (page.Value -1)).Take(pageSize.Value);
+        var total = _userManager.Users.Count();
         var userVMs = new List<UserVM>();
 
         foreach (var user in users)
@@ -238,10 +240,17 @@ public class AccountController : Controller
                 Role = roles.FirstOrDefault() ?? "None",
                 IsLocked = user.LockoutEnd.HasValue,
                 CreatedAt = user.CreatedAt,
-                LastLoginTime = user.LastLoginDate ?? DateOnly.FromDateTime(DateTime.MinValue)
+                LastLoginTime = user.LastLoginDate ?? DateOnly.FromDateTime(DateTime.MinValue),
             });
         }
 
-        return View(userVMs);  
+        UserManagementVM userManagementVm = new UserManagementVM()
+        {
+            TotalCount = total,
+            Users = userVMs,
+            CurrentPage = page.Value,
+        };
+
+        return View(userManagementVm);  
     }
 }
