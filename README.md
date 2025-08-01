@@ -1,31 +1,54 @@
-# 🏨 ReservationApp
+# 🏨 ReservationApp (VillaChill)
 
-A web-based reservation system built using **Clean Architecture** with ASP.NET Core.
+A web-based villa reservation system built with **ASP.NET Core MVC** following **Clean Architecture**. The system allows customers to book villas, make payments, and check in via QR code, while villa owners can track revenue and feedback in real-time through an interactive dashboard.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
+
+- 📊 **Real-time Dashboard**  
+  Live tracking of revenue, bookings, and customer feedback through interactive charts.
+
+- 💳 **Integrated Payment Gateway (VNPay)**  
+  Secure and seamless online payment processing via VNPay.
+
+- 🧠 **Sentiment Analysis for Reviews**  
+  Automatically classifies customer feedback into positive/negative sentiments.
+
+- 📲 **QR Code Check-in System**  
+  Generates and scans QR codes for smooth guest check-in at the villa.
+
+- 📧 **Automated Email Reports**  
+  Sends weekly/monthly booking and revenue summaries to villa owners.
+
+- 📄 **Dynamic Invoice Generation**  
+  Exports invoices with booking data and charts in `.docx` format.
 
 - 🔐 **Authentication & Authorization**  
-  Secure login and role-based access with **ASP.NET Identity**.
+  Role-based access control for Guest, Villa Owner, and Admin using ASP.NET Identity.
 
-- 💳 **VNPay Integration**  
-  Seamless payment processing via **VNPay** gateway.
-
-- 📁 **File Download**  
-  Allow users to download important reservation-related files.
-
-- 🔧 **CRUD Operations**  
-  Full Create, Read, Update, Delete functionality for core entities.
-
-- 🚀 **Easy to Deploy & Test**  
-  Ready-to-run with simple setup for local or production environments.
+- 🛠️ **Full CRUD Operations**  
+  Complete Create/Read/Update/Delete for key entities: User, Villa, Booking, Review, Invoice...
 
 ---
+
+## 🧰 Tech Stack
+
+- **Backend:** ASP.NET Core MVC, C#, Entity Framework Core, LINQ  
+- **Frontend:** Razor View, HTML/CSS/JavaScript, Bootstrap  
+- **Database:** Microsoft SQL Server  
+- **Others:** ASP.NET Identity, VNPay API, QRCoder, Chart.js, Xceed.Words.NET, SMTP
+
+---
+
+ Notes
+
+Admin, Villa Owner, and Guest roles are seeded by default
+Configuration settings (e.g., connection strings, SMTP, VNPay) are located in appsettings.json
 
 ## 🚀 Getting Started
 
-Follow these steps to run the project locally:
+To run the project locally:
 
 ```bash
 # Step 1: Navigate to the web project folder
