@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Domain.Entities;
 
@@ -183,6 +184,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithMany()
             .HasForeignKey(x => x.BookingId)
             .OnDelete(DeleteBehavior.Restrict);
+        var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(
+            d => d.ToDateTime(TimeOnly.MinValue),
+            d => DateOnly.FromDateTime(d)
+        );
+
+        modelBuilder.Entity<ApplicationUser>()
+            .Property(u => u.LastLoginDate)
+            .HasConversion(dateOnlyConverter);
 
     }
 }

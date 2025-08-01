@@ -51,6 +51,8 @@ public class AccountController : Controller
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(loginVm.Email);
+                user.LastLoginDate = DateOnly.FromDateTime(DateTime.Now);
+                await _userManager.UpdateAsync(user);
                 if (await _userManager.IsInRoleAsync(user, SD.Role_Admin) ||
                     await _userManager.IsInRoleAsync(user, SD.Role_Owner))
                 {
@@ -233,7 +235,10 @@ public class AccountController : Controller
                 Email = user.Email,
                 Name = user.Name, // nếu có
                 AvatarUrl = user.AvatarUrl,
-                Role = roles.FirstOrDefault() ?? "None"
+                Role = roles.FirstOrDefault() ?? "None",
+                IsLocked = user.LockoutEnd.HasValue,
+                CreatedAt = user.CreatedAt,
+                LastLoginTime = user.LastLoginDate ?? DateOnly.FromDateTime(DateTime.MinValue)
             });
         }
 

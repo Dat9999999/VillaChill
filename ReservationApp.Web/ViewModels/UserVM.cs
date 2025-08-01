@@ -9,6 +9,6 @@ public class UserVM
     public string Role { get; set; }
     public DateTime CreatedAt { get; set; }
     public bool LockoutEnabled { get; set; }
-    public DateTime LastLoginTime { get; set; }
+    public DateOnly LastLoginTime { get; set; }
     public bool IsLocked { get; set; }
 }
