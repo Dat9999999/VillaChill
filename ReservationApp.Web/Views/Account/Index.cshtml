@@ -17,14 +17,18 @@
 
             <!-- Search Bar -->
             <form method="get" class="mb-3" style="max-width: 300px;">
-                <div class="input-group">
-                    <input type="text" name="search" value="@keyword"
-                           class="form-control border-start-0" placeholder="Search name or email" />
-                    <button class="btn btn-primary" type="submit">
-                        <i class="bi bi-search text-muted"></i> Search
+                <div class="input-group input-group-sm">
+                    <input type="text"
+                           name="search"
+                           value="@keyword"
+                           class="form-control"
+                           placeholder="Search by name or email..." />
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="bi bi-search"></i>
                     </button>
                 </div>
             </form>
+
 
             <!-- User Table -->
             <table class="table table-hover align-middle w-100 mb-0">
@@ -66,25 +70,29 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" asp-action="Details" asp-route-id="@user.Id">
+                                            <a class="btn btn-sm btn-light view-user-btn" data-user-id="@user.Id">
                                                 <i class="bi bi-eye-fill"></i> View
                                             </a>
                                         </li>
-                                        @if (user.IsLocked)
+                                        @if (user.Role != SD.Role_Admin)
                                         {
-                                            <li>
-                                                <a class="dropdown-item text-success" asp-action="Unlock" asp-route-id="@user.Id">
-                                                    <i class="bi bi-unlock-fill"></i> Unlock
-                                                </a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li>
-                                                <a class="dropdown-item text-danger" asp-action="Lock" asp-route-id="@user.Id">
-                                                    <i class="bi bi-lock-fill"></i> Lock
-                                                </a>
-                                            </li>
+                                            if (user.IsLocked)
+                                            {
+                                                <li>
+                                                    <a class="dropdown-item text-success" asp-action="Unlock" 
+                                                       asp-route-userId="@user.Id">
+                                                        <i class="bi bi-unlock-fill"></i> Unlock
+                                                    </a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    <a class="dropdown-item text-danger" asp-action="Lock" asp-route-userId="@user.Id">
+                                                        <i class="bi bi-lock-fill"></i> Lock
+                                                    </a>
+                                                </li>
+                                            }
                                         }
                                     </ul>
                                 </div>
@@ -102,10 +110,54 @@
             <ul class="pagination justify-content-center mb-0">
                 @for (int i = 1; i <= totalPages; i++)
                 {
-                    <li class="page-item"><a class="page-link @(i == Model.CurrentPage ? "active" : "")"  asp-controller="Account" asp-action="Index"
+                    <li class="page-item"><a class="page-link @(i == Model.CurrentPage ? "active" : "")"  asp-controller="Account" asp-action="Index" asp-route-search="@keyword"
                                              asp-route-page= "@i" >@i</a></li>
                 }
             </ul>
         </nav>
     </div>
 </div>
+<div class="modal fade" id="userDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="user-detail-content">
+                <div class="text-center text-muted">Loading...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".view-user-btn").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const userId = this.getAttribute("data-user-id");
+                    const modalBody = document.getElementById("user-detail-content");
+                    modalBody.innerHTML = `<div class="text-center text-muted">Loading...</div>`;
+                    
+                    fetch(`/Account/Profile?userId=${userId}`)
+                        .then(res => res.text())
+                        .then(html => {
+                            modalBody.innerHTML = html;
+                            const modal = new bootstrap.Modal(document.getElementById("userDetailModal"));
+                            modal.show();
+                        })
+                        .catch(err => {
+                            modalBody.innerHTML = `<div class="text-danger">Failed to load user details.</div>`;
+                        });
+                });
+            });
+        });
+    </script>
+    <script>
+    document.querySelector("form").addEventListener("submit", function () {
+        const pageInput = document.querySelector("input[name='page']");
+        if (pageInput) pageInput.value = 1;
+    });
+    </script>
+}

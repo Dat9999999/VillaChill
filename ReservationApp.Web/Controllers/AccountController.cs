@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,6 +8,7 @@ using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
 using ReservationApp.Domain.Entities;
 using ReservationApp.Hubs;
+using ReservationApp.Models;
 using ReservationApp.ViewModels;
 
 namespace ReservationApp.Controllers;
@@ -64,6 +66,7 @@ public class AccountController : Controller
                 }
                 return Redirect(loginVm.ReturnUrl);
             }
+            TempData["Error"] = "Username or password is incorrect. Or your account is locked.";
             ModelState.AddModelError("", "Invalid login attempt.");
         }
         return View(loginVm);
@@ -220,11 +223,26 @@ public class AccountController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Index(int? page = 1, int? pageSize = 3)
+    public async Task<IActionResult> Index(int? page = 1, int? pageSize = 3, string search = "")
     {
-        var users = _userManager.Users
-            .ToList().Skip(pageSize.Value * (page.Value -1)).Take(pageSize.Value);
+        var query = _userManager.Users.AsQueryable();
         var total = _userManager.Users.Count();
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.ToLower();
+            query = query.Where(u =>
+                u.Email.ToLower().Contains(search) ||
+                u.Name.ToLower().Contains(search));
+            total = query.Count();
+        }
+
+        var users = query
+            .Skip(pageSize.Value * (page.Value - 1))
+            .Take(pageSize.Value)
+            .ToList();
+
+
+        
         var userVMs = new List<UserVM>();
 
         foreach (var user in users)
@@ -241,6 +259,7 @@ public class AccountController : Controller
                 IsLocked = user.LockoutEnd.HasValue,
                 CreatedAt = user.CreatedAt,
                 LastLoginTime = user.LastLoginDate ?? DateOnly.FromDateTime(DateTime.MinValue),
+                PhoneNumber = user.PhoneNumber,
             });
         }
 
@@ -253,4 +272,56 @@ public class AccountController : Controller
 
         return View(userManagementVm);  
     }
+
+    public IActionResult Profile(string userId)
+    {
+        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+        var roles = _userManager.GetRolesAsync(user);
+        if (user is null)
+            return RedirectToAction("Error", "Home");
+        UserProfileVM userVm = new UserProfileVM()
+        {
+            Name = user.Name,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            AvatarUrl = user.AvatarUrl,
+            Role = roles.Result.FirstOrDefault() ?? "None",
+            IsLocked = user.LockoutEnd.HasValue
+        };
+        return PartialView("_UserDetailsPartial", userVm);
+    }
+    
+    [Authorize(Roles = SD.Role_Admin)]
+    public async Task<IActionResult> Lock(string userId)
+    {
+        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+        var roles = _userManager.GetRolesAsync(user);
+        if (user is null)
+            return RedirectToAction("Error", "Home");
+        if (roles.Result.FirstOrDefault() == SD.Role_Admin)
+        {
+            TempData["Error"] = "You can't lock admin";
+            return RedirectToAction("Index"); 
+        }
+        user.LockoutEnd = DateTime.Now.AddDays(1);
+        await _userManager.UpdateAsync(user);
+        TempData["Success"] = "User is locked";
+        return RedirectToAction("Index");   
+    }
+    [Authorize(Roles = SD.Role_Admin)]
+    public async Task<IActionResult> Unlock(string userId)
+    {
+        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+        if (user is null)
+        {
+            TempData["Error"] = "User not found";
+            return RedirectToAction("Error", "Home");
+        }
+        user.LockoutEnd = null;
+        await _userManager.UpdateAsync(user);
+        TempData["Success"] = "User is unlocked";
+        return RedirectToAction("Index");  
+    }
+
+    
 }
