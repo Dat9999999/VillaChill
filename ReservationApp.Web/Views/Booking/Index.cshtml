@@ -5,6 +5,7 @@
     var checkedIn = "";
     var completed = "";
     var cancelled = "";
+    var refunded = "";
 
     switch (status)
     {
@@ -22,6 +23,9 @@
             break;
         case SD.StatusCancelled:
             cancelled = "text-white bg-success";
+            break;
+        case SD.StatusRefunded:
+            refunded = "text-white bg-success";
             break;
         default:
             break;
@@ -55,6 +59,9 @@
                 </a>
                 <a style="text-decoration: none" asp-controller="Booking" asp-action="Index" asp-route-status="@SD.StatusCompleted">
                     <li class="list-group-item @completed">@SD.StatusCompleted</li>
+                </a>
+                <a style="text-decoration: none" asp-controller="Booking" asp-action="Index" asp-route-status="@SD.StatusRefunded">
+                    <li class="list-group-item @refunded">@SD.StatusRefunded</li>
                 </a>
                 </ul>
         </div>

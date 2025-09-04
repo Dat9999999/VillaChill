@@ -133,11 +133,11 @@ public class BookingService : IBookingService
         var booking = _unitOfWork.Bookings.Get(x => x.Id == id);
         DateOnly today = DateOnly.ParseExact(DateTime.Now.ToString("yyyy-MM-dd"), "yyyy-MM-dd");
         DateOnly checkinTime = booking.CheckInDate;
-        // only paid and checkin > today 2 days can refund 
-        if (booking.IsPaymentSuccessful &&
-            checkinTime.AddDays(-1) == checkinTime) return false;
+        // only paid and before checkin day 2 days can refund  
+        if (!booking.IsPaymentSuccessful ||
+            checkinTime.AddDays(-1) < today) return false;
         
-        booking.Status = SD.StatusCancelled;
+        booking.Status = SD.StatusRefunded;
         
         _unitOfWork.Bookings.Update(booking);       
         _unitOfWork.Save(); 

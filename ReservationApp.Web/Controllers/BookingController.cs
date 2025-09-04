@@ -330,7 +330,14 @@ public class BookingController : Controller
 
     public IActionResult Refund(int id)
     {
-        _bookingService.Refund(id);
-        return Json(new { success = true, message = "Refund" });
+        
+        var res = _bookingService.Refund(id);
+        if (!res)
+        {
+            TempData["Error"] = "Refund failed your booking is not qualify for refund";
+            return RedirectToAction(nameof(BookingDetails), new { bookingId = id });       
+        } 
+        TempData["Success"] = "Refund successfully";
+        return  RedirectToAction(nameof(Index), new { status = SD.StatusRefunded});
     }
 }
