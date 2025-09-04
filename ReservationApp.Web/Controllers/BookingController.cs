@@ -327,4 +327,9 @@ public class BookingController : Controller
         TempData["Success"] = "Booking is approved successfully";
         return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
     }
+
+    public IActionResult Refund(int id)
+    {
+        return Json(new { success = true, message = "Refund" });
+    }
 }

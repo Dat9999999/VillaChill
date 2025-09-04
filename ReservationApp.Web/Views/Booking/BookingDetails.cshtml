@@ -185,6 +185,12 @@
                         }
                     </div>
                 }
+                @if (Model.Status == SD.StatusApproved)
+                {
+                    <button class="bg-danger" type = "submit" asp-controller="Booking" asp-action="Refund" asp-route-id = "@Model.Id">
+                        Refund
+                    </button>
+                }
             </form>
         </div>
     </div>
