@@ -330,6 +330,7 @@ public class BookingController : Controller
 
     public IActionResult Refund(int id)
     {
+        _bookingService.Refund(id);
         return Json(new { success = true, message = "Refund" });
     }
 }

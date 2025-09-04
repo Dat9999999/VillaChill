@@ -1,5 +1,6 @@
 using System.Data;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices.JavaScript;
 using ReservationApp.Application.Common.Interfaces;
 using ReservationApp.Application.Common.utility;
 using ReservationApp.Application.Services.interfaces;
@@ -125,5 +126,22 @@ public class BookingService : IBookingService
             villa.IsAvaliable = roomAvailable.Count > 0;
         }
         return villaList;       
+    }
+
+    public bool Refund(int id)
+    {
+        var booking = _unitOfWork.Bookings.Get(x => x.Id == id);
+        DateOnly today = DateOnly.ParseExact(DateTime.Now.ToString("yyyy-MM-dd"), "yyyy-MM-dd");
+        DateOnly checkinTime = booking.CheckInDate;
+        // only paid and checkin > today 2 days can refund 
+        if (booking.IsPaymentSuccessful &&
+            checkinTime.AddDays(-1) == checkinTime) return false;
+        
+        booking.Status = SD.StatusCancelled;
+        
+        _unitOfWork.Bookings.Update(booking);       
+        _unitOfWork.Save(); 
+        
+        return true;       
     }
 }
